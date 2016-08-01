@@ -1,11 +1,11 @@
 {
   "name": "node-lgsdk",
   "version": "0.1.0",
-  "description": "Wrapper for Logitech Gaming Software APIs in node.js",
+  "description": "A wrapper for Logitech Gaming Software APIs in node.js",
   "main": "./dest/index.js",
   "scripts": {
     "postinstall": "typings install",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node dest/test/test.js",
     "tsc": "tsc",
     "typings": "typings"
   },
