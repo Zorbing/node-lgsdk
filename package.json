@@ -1,0 +1,24 @@
+{
+  "name": "node-lgsdk",
+  "version": "0.1.0",
+  "description": "Wrapper for Logitech Gaming Software APIs in node.js",
+  "main": "./dest/index.js",
+  "scripts": {
+    "postinstall": "typings install",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "typings": "typings"
+  },
+  "author": "Martin Boekhoff <zorbing@gmx.net>",
+  "license": "ISC",
+  "dependencies": {
+    "ffi": "^2.0.0",
+    "ref": "^1.3.2",
+    "ref-array": "^1.1.2",
+    "ref-wchar": "^1.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.0",
+    "typings": "^1.3.2"
+  }
+}
