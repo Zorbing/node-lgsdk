@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"noImplicitAny": false,
+		"noImplicitThis": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"removeComments": true,
+		"outDir": "dest/",
+		"preserveConstEnums": true,
+		"sourceMap": false,
+		"strictNullChecks": true,
+		"target": "es6"
+	},
+	"include": [
+		"src/**/*.ts",
+		"typings/**/*",
+		"typings-own/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts"
+	]
+}

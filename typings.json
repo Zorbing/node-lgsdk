@@ -1,0 +1,10 @@
+{
+  "name": "discord.io",
+  "dependencies": {},
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20160728152422",
+    "ref": "registry:dt/ref#0.0.0+20160316155526",
+    "ref-array": "registry:dt/ref-array#0.0.0+20160316155526",
+    "ref-struct": "registry:dt/ref-struct#0.0.0+20160316155526"
+  }
+}
