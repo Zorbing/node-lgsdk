@@ -1,0 +1,16 @@
+# nodejs npm modules
+/node_modules
+
+# TypeScript
+/.tscache
+/typings
+
+# just some files to ignore
+./settings
+Thumbs.db
+
+# debug.log
+npm-debug.log
+
+# build
+/dest
