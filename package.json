@@ -5,7 +5,7 @@
   "main": "./dest/index.js",
   "scripts": {
     "postinstall": "typings install",
-    "test": "node dest/test/test.js",
+    "test": "node dest/test/lcd.js",
     "tsc": "tsc",
     "typings": "typings"
   },
