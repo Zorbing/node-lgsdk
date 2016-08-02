@@ -4,9 +4,9 @@ import * as wchar_t from 'ref-wchar';
 
 var wchar_string = wchar_t.string;
 
-// const LOGITECH_MAX_MOUSE_BUTTONS = 20;
-// const LOGITECH_MAX_GKEYS = 29;
-// const LOGITECH_MAX_M_STATES = 3;
+const LOGITECH_MAX_MOUSE_BUTTONS = 20;
+const LOGITECH_MAX_GKEYS = 29;
+const LOGITECH_MAX_M_STATES = 3;
 
 export interface GkeyCode
 {
@@ -54,8 +54,32 @@ var gkeyLib = ffi.Library(libPath('gkey'), {
 	, 'LogiGkeyShutdown': ['void', []]
 });
 
+function checkButtonNumber(buttonNumber: number)
+{
+	if (buttonNumber < 0 || buttonNumber > LOGITECH_MAX_MOUSE_BUTTONS)
+	{
+		throw new Error('Mouse button number out of range (allowed values: 0-' + LOGITECH_MAX_MOUSE_BUTTONS + ')');
+	}
+}
+function checkGkeyNumber(gkeyNumber: number)
+{
+	if (gkeyNumber < 0 || gkeyNumber > LOGITECH_MAX_GKEYS)
+	{
+		throw new Error('G-Key number out of range (allowed values: 0-' + LOGITECH_MAX_GKEYS + ')');
+	}
+}
+function checkModeNumber(modeNumber: number)
+{
+	if (modeNumber < 0 || modeNumber > LOGITECH_MAX_M_STATES)
+	{
+		throw new Error('Mode number out of range (allowed values: 0-' + LOGITECH_MAX_M_STATES + ')');
+	}
+}
+
+
 export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 {
+	// TODO: wrap callback with ffi.Callback
 	if (!callback)
 	{
 		return gkeyLib.LogiGkeyInitWithoutCallback();
@@ -72,18 +96,28 @@ export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 }
 export function isMouseButtonPressed(buttonNumber: number): boolean
 {
+	checkButtonNumber(buttonNumber);
+	
 	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
 }
 export function getMouseButtonString(buttonNumber: number): string
 {
+	checkButtonNumber(buttonNumber);
+	
 	return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
 }
 export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
 {
+	checkGkeyNumber(gkeyNumber);
+	checkModeNumber(modeNumber);
+	
 	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
 }
 export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
 {
+	checkGkeyNumber(gkeyNumber);
+	checkModeNumber(modeNumber);
+	
 	return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber);
 }
 export function shutdown(): void
