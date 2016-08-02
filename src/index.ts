@@ -1,4 +1,4 @@
-import * as gKeyTmp from './gkey';
+import * as gKeyTmp from './gKey';
 export const gKey = gKeyTmp;
 
 export {
