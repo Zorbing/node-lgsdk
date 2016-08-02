@@ -1,8 +1,10 @@
 import libPath from './path';
 import * as ffi from 'ffi';
+import * as ref from 'ref';
 import * as wchar_t from 'ref-wchar';
+import * as Struct from 'ref-struct';
 
-var wchar_string = wchar_t.string;
+let wchar_string = wchar_t.string;
 
 const LOGITECH_MAX_MOUSE_BUTTONS = 20;
 const LOGITECH_MAX_GKEYS = 29;
@@ -23,6 +25,15 @@ export interface GkeyCode
     // 16 bit; reserved2
 	reserved2: number;
 }
+let GkeyCode = Struct({
+	'keyIdx': 'int'
+	, 'keyDown': 'int'
+	, 'mState': 'int'
+	, 'mouse': 'int'
+	, 'reserved1': 'int'
+	, 'reserved2': 'int'
+});
+let GkeyCodePtr = ref.refType(GkeyCode);
 
 export interface logiGkeyCB
 {
@@ -34,10 +45,15 @@ export interface logiGkeyCBContext
 	gkeyCallBack: logiGkeyCB;
 	gkeyContext: any/*void* */;
 }
+let CBContext = Struct({
+	'gkeyCallBack': 'pointer'//logiGkeyCB
+	, 'gkeyContext': 'pointer'//void*
+});
+let CBContextPtr = ref.refType(CBContext);
 
-var gkeyLib = ffi.Library(libPath('gkey'), {
+let gkeyLib = ffi.Library(libPath('gkey'), {
 	// Enable the Gkey SDK by calling this function
-	  'LogiGkeyInit': ['bool', ['pointer'/*logiGkeyCBContext* gkeyCBContext*/]]
+	  'LogiGkeyInit': ['bool', [CBContextPtr/*logiGkeyCBContext* gkeyCBContext*/]]
 	// Enable the Gkey SDK by calling this function if not using callback. Use this initialization if using Unreal Engine
 	, 'LogiGkeyInitWithoutCallback': ['bool', []]
 	// Enable the Gkey SDK be calling this function if not using context. Use this initialization if working with Unity Engine
@@ -75,22 +91,33 @@ function checkModeNumber(modeNumber: number)
 		throw new Error('Mode number out of range (allowed values: 0-' + LOGITECH_MAX_M_STATES + ')');
 	}
 }
+function createInitCallback(callback: Function)
+{
+	return ffi.Callback(
+		ref.refType(ref.types.void)
+		, [GkeyCodePtr, wchar_string, ref.refType(ref.types.void)]
+		, callback
+	);
+}
 
 
 export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 {
-	// TODO: wrap callback with ffi.Callback
+	// TODO: test wrapping callback with ffi.Callback
 	if (!callback)
 	{
 		return gkeyLib.LogiGkeyInitWithoutCallback();
 	}
 	if (typeof callback === 'function')
 	{
-		return gkeyLib.LogiGkeyInitWithoutContext(callback);
+		return gkeyLib.LogiGkeyInitWithoutContext(createInitCallback(callback));
 	}
 	if (callback.hasOwnProperty('gkeyCallBack') && callback.hasOwnProperty('gkeyContext'))
 	{
-		return gkeyLib.LogiGkeyInit(callback);
+		let context = new CBContext();
+		context.gkeyCallBack = createInitCallback(callback.gkeyCallBack);
+		context.gkeyContext = callback.gkeyContext;
+		return gkeyLib.LogiGkeyInit(context);
 	}
 	return false;
 }
