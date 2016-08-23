@@ -111,7 +111,8 @@ export module mono
 	}
 	export function setText(lineNumber: number, text: string): boolean
 	{
-		if (lineNumber < 0 || lineNumber > 4)
+		// TODO: check if lineNumber is an integer
+		if (lineNumber < 0 || lineNumber > 3)
 		{
 			throw new Error(LINE_ERROR(lineNumber, 4));
 		}

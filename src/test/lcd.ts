@@ -35,7 +35,7 @@ console.log('connected:', connected);
 lgsdk.lcd.mono.setText(0, 'This is the first line of text...');
 lgsdk.lcd.mono.setText(1, '');
 lgsdk.lcd.mono.setText(2, '');
-lgsdk.lcd.mono.setText(3, '');
+lgsdk.lcd.mono.setText(3, 'Last (4.) line!');
 
 // let bitmap: number[] = [];
 // for (let i = 0; i < lgsdk.lcd.mono.BITMAP_LENGTH; i++)
