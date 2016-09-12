@@ -14,11 +14,9 @@
 	},
 	"include": [
 		"src/**/*.ts",
-		"typings/**/*",
 		"typings-own/**/*"
 	],
 	"exclude": [
-		"node_modules",
 		"**/*.spec.ts"
 	]
 }

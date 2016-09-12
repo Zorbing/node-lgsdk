@@ -3,10 +3,10 @@
 // Definitions by: Paul Loyd <https://github.com/loyd>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference path="../../typings/globals/node/index.d.ts" />
+/// <reference path="../../node_modules/@types/node/index.d.ts" />
 /// <reference path="ffi-buffer.d.ts" />
-/// <reference path="../../typings/globals/ref/index.d.ts" />
-/// <reference path="../../typings/globals/ref-struct/index.d.ts" />
+/// <reference path="../../node_modules/@types/ref/index.d.ts" />
+/// <reference path="../../node_modules/@types/ref-struct/index.d.ts" />
 
 declare module "ffi" {
     import ref = require('ref');

@@ -4,10 +4,8 @@
   "description": "A wrapper for Logitech Gaming SDKs in node.js",
   "main": "./dest/index.js",
   "scripts": {
-    "postinstall": "typings install",
     "test": "node dest/test/lcd.js",
-    "tsc": "tsc",
-    "typings": "typings"
+    "tsc": "tsc"
   },
   "author": "Martin Boekhoff <zorbing@gmx.net>",
   "license": "ISC",
@@ -18,7 +16,10 @@
     "ref-wchar": "^1.0.2"
   },
   "devDependencies": {
-    "typescript": "^2.0.0",
-    "typings": "^1.3.2"
+    "@types/node": "^6.0.38",
+    "@types/ref": "0.0.27",
+    "@types/ref-array": "0.0.27",
+    "@types/ref-struct": "0.0.27",
+    "typescript": "^2.0.2"
   }
 }
