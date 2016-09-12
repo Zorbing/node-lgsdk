@@ -5,17 +5,17 @@ import * as ArrayType from 'ref-array';
 import * as wchar_t from 'ref-wchar';
 
 var byte = ref.types.uchar;
-var byteArray = ArrayType(byte);
+var byteArray = ArrayType<number>(byte);
 var wchar_string = wchar_t.string;
 
 
-const LOGI_LCD_TYPE_MONO	= 0x00000001;
-const LOGI_LCD_TYPE_COLOR	= 0x00000002;
+const LOGI_LCD_TYPE_MONO  = 0x00000001;
+const LOGI_LCD_TYPE_COLOR = 0x00000002;
 
-const LOGI_LCD_MONO_BUTTON_0	= 0x00000001;
-const LOGI_LCD_MONO_BUTTON_1	= 0x00000002;
-const LOGI_LCD_MONO_BUTTON_2	= 0x00000004;
-const LOGI_LCD_MONO_BUTTON_3	= 0x00000008;
+const LOGI_LCD_MONO_BUTTON_0 = 0x00000001;
+const LOGI_LCD_MONO_BUTTON_1 = 0x00000002;
+const LOGI_LCD_MONO_BUTTON_2 = 0x00000004;
+const LOGI_LCD_MONO_BUTTON_3 = 0x00000008;
 
 const LOGI_LCD_COLOR_BUTTON_LEFT	= 0x00000100;
 const LOGI_LCD_COLOR_BUTTON_RIGHT	= 0x00000200;
@@ -49,10 +49,10 @@ var lcdLib = ffi.Library(libPath('lcd'), {
 });
 
 const BUTTON_ERROR = 'The given button does not exist.';
-const BITMAP_ERROR_LENGTH = (num) => 'The bitmap must contain ' + num + ' elements';
+const BITMAP_ERROR_LENGTH = (num) => `The bitmap must contain ${num} elements`;
 const BITMAP_ERROR_RANGE = 'The bitmap must contain only bytes. Allowed values are: 0-255';
 const COLOR_ERROR = 'Each color must be a byte (allowed values: 0-255)';
-const LINE_ERROR = (num, max) => 'Not allowed value "' + num + '" for line number. Allowed values are: 0-' + max;
+const LINE_ERROR = (num, max) => `Not allowed value "${num}" for line number. Allowed values are: 0-${max}`;
 
 export module mono
 {
