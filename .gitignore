@@ -1,16 +1,33 @@
-# nodejs npm modules
-/node_modules
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# TypeScript
-/.tscache
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
 /typings
 
-# just some files to ignore
-./settings
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+#System Files
+.DS_Store
 Thumbs.db
-
-# debug.log
-npm-debug.log
-
-# build
-/dest

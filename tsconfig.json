@@ -6,9 +6,9 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": false,
 		"removeComments": true,
-		"outDir": "dest/",
+		"outDir": "dist/",
 		"preserveConstEnums": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"strictNullChecks": true,
 		"target": "es6"
 	},

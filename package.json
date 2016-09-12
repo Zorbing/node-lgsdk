@@ -2,9 +2,9 @@
   "name": "node-lgsdk",
   "version": "0.1.0",
   "description": "A wrapper for Logitech Gaming SDKs in node.js",
-  "main": "./dest/index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "node dest/test/lcd.js",
+    "test": "node dist/test/lcd.js",
     "tsc": "tsc"
   },
   "author": "Martin Boekhoff <zorbing@fileface.net>",
