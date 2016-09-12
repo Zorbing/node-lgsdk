@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "npm run tsc && npm run test:samples",
+    "test:gKey": "node dist/test/gKey.js",
     "test:samples": "node dist/tests/test.js",
     "tsc": "tsc"
   },
