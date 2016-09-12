@@ -10,16 +10,20 @@ const LOGITECH_MAX_MOUSE_BUTTONS = 20;
 const LOGITECH_MAX_GKEYS = 29;
 const LOGITECH_MAX_M_STATES = 3;
 
+type mouseButtonNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
+type gkeyNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29;
+type modeNumber = 1 | 2 | 3;
+
 export interface GkeyCode
 {
 	// 8 bit; index of the G key or mouse button, for example, 6 for G6 or Button 6
 	keyIdx: number;
     // 1 bit; key up or down, 1 is down, 0 is up
-	keyDown: number;
+	keyDown: 0 | 1;
     // 2 bit; mState (1, 2 or 3 for M1, M2 and M3)
-	mState: number;
+	mState: modeNumber;
     // 1 bit; indicate if the Event comes from a mouse, 1 is yes, 0 is no.
-	mouse: number;
+	mouse: 0 | 1;
     // 4 bit; reserved1
 	reserved1: number;
     // 16 bit; reserved2
@@ -70,25 +74,25 @@ let gkeyLib = ffi.Library(libPath('gkey'), {
 	, 'LogiGkeyShutdown': ['void', []]
 });
 
-function checkButtonNumber(buttonNumber: number)
+function checkButtonNumber(buttonNumber: mouseButtonNumber)
 {
 	if (buttonNumber < 0 || buttonNumber > LOGITECH_MAX_MOUSE_BUTTONS)
 	{
 		throw new Error('Mouse button number out of range (allowed values: 0-' + LOGITECH_MAX_MOUSE_BUTTONS + ')');
 	}
 }
-function checkGkeyNumber(gkeyNumber: number)
+function checkGkeyNumber(gkeyNumber: gkeyNumber)
 {
 	if (gkeyNumber < 0 || gkeyNumber > LOGITECH_MAX_GKEYS)
 	{
 		throw new Error('G-Key number out of range (allowed values: 0-' + LOGITECH_MAX_GKEYS + ')');
 	}
 }
-function checkModeNumber(modeNumber: number)
+function checkModeNumber(modeNumber: modeNumber)
 {
-	if (modeNumber < 0 || modeNumber > LOGITECH_MAX_M_STATES)
+	if (modeNumber < 1 || modeNumber > LOGITECH_MAX_M_STATES)
 	{
-		throw new Error('Mode number out of range (allowed values: 0-' + LOGITECH_MAX_M_STATES + ')');
+		throw new Error('Mode number out of range (allowed values: 1-' + LOGITECH_MAX_M_STATES + ')');
 	}
 }
 function createInitCallback(callback: Function)
@@ -121,26 +125,26 @@ export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 	}
 	return false;
 }
-export function isMouseButtonPressed(buttonNumber: number): boolean
+export function isMouseButtonPressed(buttonNumber: mouseButtonNumber): boolean
 {
 	checkButtonNumber(buttonNumber);
 	
 	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
 }
-export function getMouseButtonString(buttonNumber: number): string
+export function getMouseButtonString(buttonNumber: mouseButtonNumber): string
 {
 	checkButtonNumber(buttonNumber);
 	
 	return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
 }
-export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
+export function isKeyboardGkeyPressed(gkeyNumber: gkeyNumber, modeNumber: modeNumber): boolean
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
 	
 	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
 }
-export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
+export function getKeyboardGkeyString(gkeyNumber: gkeyNumber, modeNumber: modeNumber): string
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
