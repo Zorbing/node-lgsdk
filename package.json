@@ -7,8 +7,18 @@
     "test": "node dest/test/lcd.js",
     "tsc": "tsc"
   },
-  "author": "Martin Boekhoff <zorbing@gmx.net>",
+  "author": "Martin Boekhoff <zorbing@fileface.net>",
   "license": "ISC",
+  "engines": {
+    "node" : "^6.3.0"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "ia32"
+  ],
   "dependencies": {
     "ffi": "^2.0.0",
     "ref": "^1.3.2",
