@@ -22,7 +22,7 @@ export function shutdown()
 	lcd.mono.shutdown();
 }
 
-export function testTextOld()
+export function testText()
 {
 	init();
 
@@ -34,7 +34,7 @@ export function testTextOld()
 	lcd.mono.update();
 }
 
-export function testBackgroundOld()
+export function testBackground()
 {
 	init();
 

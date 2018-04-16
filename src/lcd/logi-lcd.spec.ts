@@ -16,6 +16,17 @@ function init()
 	return instance;
 }
 
+function resetText(instance: LogiLcd)
+{
+	instance.setText([
+		'',
+		'',
+		'',
+		'',
+	]);
+	instance.update();
+}
+
 export function testText()
 {
 	const instance = init();
@@ -30,15 +41,58 @@ export function testText()
 	instance.update();
 }
 
-export function testBackground()
+/** On the G15 the colors white and black are switched... */
+
+export function testWhiteBackground()
 {
 	const instance = init();
+	resetText(instance);
+
+	let bitmap: number[] = [];
+	for (let i = 0; i < instance.bitmapLength; i++)
+	{
+		// TODO: change lcd.mono.WHITE to something color independent
+		bitmap[i] = lcd.mono.WHITE;
+	}
+	instance.setBackground(bitmap);
+
+	instance.update();
+}
+
+export function testBlackBackground()
+{
+	const instance = init();
+	resetText(instance);
+
+	let bitmap: number[] = [];
+	for (let i = 0; i < instance.bitmapLength; i++)
+	{
+		// TODO: change lcd.mono.BLACK to something color independent
+		bitmap[i] = lcd.mono.BLACK;
+	}
+	instance.setBackground(bitmap);
+
+	instance.update();
+}
+
+export function testRandomBackground()
+{
+	const instance = init();
+	resetText(instance);
 
 	let bitmap: number[] = [];
 	for (let i = 0; i < instance.bitmapLength; i++)
 	{
 		// TODO: change lcd.mono.WHITE/lcd.mono.BLACK to something color independent
-		bitmap[i] = Math.random() < .5 ? lcd.mono.WHITE : lcd.mono.BLACK;
+		const color = Math.random() < .5 ? [lcd.mono.WHITE] : [lcd.mono.BLACK];
+		for (let j = 0; j < color.length; j++)
+		{
+			if (j !== 0)
+			{
+				i++;
+			}
+			bitmap[i] = color[j];
+		}
 	}
 	instance.setBackground(bitmap);
 

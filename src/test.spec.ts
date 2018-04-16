@@ -16,14 +16,14 @@ function delayPromise(time: number = 1e3)
 delayPromise(0)
 	.then(() =>
 	{
-		oldTests.testTextOld();
+		oldTests.testText();
 		return delayPromise();
 	})
 	.then(() =>
 	{
 		oldTests.shutdown();
 
-		oldTests.testBackgroundOld();
+		oldTests.testBackground();
 		return delayPromise();
 	})
 	.then(() =>
@@ -35,7 +35,21 @@ delayPromise(0)
 	})
 	.then(() =>
 	{
-		tests.testBackground();
+		tests.testWhiteBackground();
 		return delayPromise();
+	})
+	.then(() =>
+	{
+		tests.testBlackBackground();
+		return delayPromise();
+	})
+	.then(() =>
+	{
+		tests.testRandomBackground();
+		return delayPromise();
+	})
+	.catch((error) =>
+	{
+		console.log('error:', error);
 	})
 ;
