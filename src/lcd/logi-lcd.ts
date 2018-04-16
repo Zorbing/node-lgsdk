@@ -170,10 +170,10 @@ export class LogiLcd
 		let result = false;
 		if (text instanceof Array)
 		{
-			result = false;
+			result = true;
 			for (let i = 0; i < text.length; i++)
 			{
-				result = result &&!this.setText(text[i], i, color)
+				result = result && this.setText(text[i], i, color);
 			}
 		}
 		else if (lineNumber !== undefined && this._checkLineNumber(lineNumber))
