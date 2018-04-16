@@ -55,6 +55,8 @@ const BITMAP_ERROR_LENGTH = (num) => `The bitmap must contain ${num} elements`;
 const BITMAP_ERROR_RANGE = 'The bitmap must contain only bytes. Allowed values are: 0-255';
 const COLOR_ERROR = 'Each color must be a byte (allowed values: 0-255)';
 const LINE_ERROR = (num, max) => `Not allowed value "${num}" for line number. Allowed values are: 0-${max}`;
+const LINE_INTEGER_ERROR = 'The line number must be an integer.';
+
 
 export module mono
 {
@@ -69,59 +71,69 @@ export module mono
 	export const WHITE = 0;
 	export const BLACK = 255;
 
-	export function init(name: string): boolean
+	export function init(name: string)
 	{
-		return lcdLib.LogiLcdInit(name, TYPE);
+		return lcdLib.LogiLcdInit(name, TYPE) as boolean;
 	}
 
-	export function isConnected(): boolean
+	export function isConnected()
 	{
-		return lcdLib.LogiLcdIsConnected(TYPE);
+		return lcdLib.LogiLcdIsConnected(TYPE) as boolean;
 	}
 
-	export function isButtonPressed(button: number): boolean
+	export function isButtonPressed(button: number)
 	{
 		if (button !== BUTTON_0 && button !== BUTTON_1 &&
 			button !== BUTTON_2 && button !== BUTTON_3)
 		{
 			throw new Error(BUTTON_ERROR);
 		}
-
-		return lcdLib.LogiLcdIsButtonPressed(button);
+		else
+		{
+			return lcdLib.LogiLcdIsButtonPressed(button) as boolean;
+		}
 	}
-	export function update(): void
+	export function update()
 	{
-		return lcdLib.LogiLcdUpdate();
+		lcdLib.LogiLcdUpdate();
 	}
-	export function shutdown(): void
+	export function shutdown()
 	{
-		return lcdLib.LogiLcdShutdown();
+		lcdLib.LogiLcdShutdown();
 	}
 
-	export function setBackground(bitmap: number[]): boolean
+	export function setBackground(bitmap: number[])
 	{
 		if (bitmap.length !== BITMAP_LENGTH)
 		{
 			throw new Error(BITMAP_ERROR_LENGTH(BITMAP_LENGTH));
 		}
-		if (bitmap.some((byte) => (byte & 255) !== byte))
+		else if (bitmap.some((byte) => (byte & 255) !== byte))
 		{
 			throw new Error(BITMAP_ERROR_RANGE);
 		}
-
-		return lcdLib.LogiLcdMonoSetBackground(bitmap);
+		else
+		{
+			return lcdLib.LogiLcdMonoSetBackground(bitmap) as boolean;
+		}
 	}
-	export function setText(lineNumber: number, text: string): boolean
+	export function setText(lineNumber: number, text: string)
 	{
-		// TODO: check if lineNumber is an integer
-		if (lineNumber < 0 || lineNumber > 3)
+		if (!Number.isInteger(lineNumber))
+		{
+			throw new Error(LINE_INTEGER_ERROR);
+		}
+		else if (lineNumber < 0 || lineNumber > 3)
 		{
 			throw new Error(LINE_ERROR(lineNumber, 4));
 		}
-
-		return lcdLib.LogiLcdMonoSetText(lineNumber, text);
+		else
+		{
+			return lcdLib.LogiLcdMonoSetText(lineNumber, text) as boolean;
+		}
 	}
 }
+
 
 export module color
 {
@@ -137,17 +149,17 @@ export module color
 	export const HEIGHT = LOGI_LCD_COLOR_HEIGHT;
 	export const BITMAP_LENGTH = WIDTH * HEIGHT * 4;
 
-	export function init(name: string): boolean
+	export function init(name: string)
 	{
-		return lcdLib.LogiLcdInit(name, TYPE);
+		return lcdLib.LogiLcdInit(name, TYPE) as boolean;
 	}
 
-	export function isConnected(): boolean
+	export function isConnected()
 	{
-		return lcdLib.LogiLcdIsConnected(TYPE);
+		return lcdLib.LogiLcdIsConnected(TYPE) as boolean;
 	}
 
-	export function isButtonPressed(button: number): boolean
+	export function isButtonPressed(button: number)
 	{
 		if (button !== BUTTON_LEFT && button !== BUTTON_RIGHT &&
 			button !== BUTTON_UP && button !== BUTTON_DOWN &&
@@ -156,32 +168,36 @@ export module color
 		{
 			throw new Error(BUTTON_ERROR);
 		}
-
-		return lcdLib.LogiLcdIsButtonPressed(button);
+		else
+		{
+			return lcdLib.LogiLcdIsButtonPressed(button) as boolean;
+		}
 	}
-	export function update(): void
+	export function update()
 	{
-		return lcdLib.LogiLcdUpdate();
+		lcdLib.LogiLcdUpdate();
 	}
-	export function shutdown(): void
+	export function shutdown()
 	{
-		return lcdLib.LogiLcdShutdown();
+		lcdLib.LogiLcdShutdown();
 	}
 
-	export function setBackground(bitmap: number[]): boolean
+	export function setBackground(bitmap: number[])
 	{
 		if (bitmap.length !== BITMAP_LENGTH)
 		{
 			throw new Error(BITMAP_ERROR_LENGTH(BITMAP_LENGTH));
 		}
-		if (bitmap.some((byte) => (byte & 255) !== byte))
+		else if (bitmap.some((byte) => (byte & 255) !== byte))
 		{
 			throw new Error(BITMAP_ERROR_RANGE);
 		}
-
-		return lcdLib.LogiLcdColorSetBackground(bitmap);
+		else
+		{
+			return lcdLib.LogiLcdColorSetBackground(bitmap) as boolean;
+		}
 	}
-	export function setTitle(text: string, red = 255, green = 255, blue = 255): boolean
+	export function setTitle(text: string, red = 255, green = 255, blue = 255)
 	{
 		if ((red & 255) !== red ||
 			(green & 255) !== green ||
@@ -189,21 +205,30 @@ export module color
 		{
 			throw new Error(COLOR_ERROR);
 		}
-		return lcdLib.LogiLcdColorSetTitle(text, red, green, blue);
+		else
+		{
+			return lcdLib.LogiLcdColorSetTitle(text, red, green, blue) as boolean;
+		}
 	}
-	export function setText(lineNumber: number, text: string, red = 255, green = 255, blue = 255): boolean
+	export function setText(lineNumber: number, text: string, red = 255, green = 255, blue = 255)
 	{
-		if (lineNumber < 0 || lineNumber > 7)
+		if (!Number.isInteger(lineNumber))
+		{
+			throw new Error(LINE_INTEGER_ERROR);
+		}
+		else if (lineNumber < 0 || lineNumber > 7)
 		{
 			throw new Error(LINE_ERROR(lineNumber, 7));
 		}
-		if ((red & 255) !== red ||
+		else if ((red & 255) !== red ||
 			(green & 255) !== green ||
 			(blue & 255) !== blue)
 		{
 			throw new Error(COLOR_ERROR);
 		}
-
-		return lcdLib.LogiLcdColorSetText(lineNumber, text, red, green, blue);
+		else
+		{
+			return lcdLib.LogiLcdColorSetText(lineNumber, text, red, green, blue) as boolean;
+		}
 	}
 }
