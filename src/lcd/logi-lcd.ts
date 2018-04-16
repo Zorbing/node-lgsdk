@@ -368,16 +368,16 @@ export class LogiLcd
 
 	private _toGrayscaleAverage(red: number, green: number, blue: number, alpha = 255)
 	{
-		return (red + green + blue) / 3;
+		return Math.round((red + green + blue) / 3);
 	}
 
 	private _toGrayscaleLightness(red: number, green: number, blue: number, alpha = 255)
 	{
-		return (Math.max(red, green, blue) + Math.min(red, green, blue)) / 2;
+		return Math.round((Math.max(red, green, blue) + Math.min(red, green, blue)) / 2);
 	}
 
 	private _toGrayscaleLuminosity(red: number, green: number, blue: number, alpha = 255)
 	{
-		return 0.21 * red + 0.72 * green + 0.07 * blue;
+		return Math.round(0.21 * red + 0.72 * green + 0.07 * blue);
 	}
 }
