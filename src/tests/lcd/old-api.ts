@@ -1,5 +1,5 @@
-import { lcd } from '../index';
-import { addDestroyHandler } from './error-messages';
+import { lcd } from '../../index';
+import { addDestroyHandler } from '../../lcd/error-messages';
 
 
 function init()

@@ -1,5 +1,5 @@
-import * as tests from './lcd/logi-lcd.spec';
-import * as oldTests from './lcd/old-api.spec';
+import * as tests from './lcd/logi-lcd';
+import * as oldTests from './lcd/old-api';
 
 
 function delayPromise(time: number = 1e3)
@@ -13,6 +13,7 @@ function delayPromise(time: number = 1e3)
 	});
 }
 
+
 delayPromise(0)
 	.then(() =>
 	{
@@ -21,8 +22,6 @@ delayPromise(0)
 	})
 	.then(() =>
 	{
-		oldTests.shutdown();
-
 		oldTests.testBackground();
 		return delayPromise();
 	})

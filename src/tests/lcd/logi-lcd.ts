@@ -1,4 +1,7 @@
-import { lcd, LogiLcd } from '../index';
+import * as bmp from 'bmp-js';
+import * as fs from 'fs';
+
+import { lcd, LogiLcd } from '../..';
 
 
 function init()
@@ -26,6 +29,7 @@ function resetText(instance: LogiLcd)
 	]);
 	instance.update();
 }
+
 
 export function testText()
 {
