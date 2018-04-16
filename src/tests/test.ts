@@ -47,6 +47,16 @@ delayPromise(0)
 		tests.testRandomBackground();
 		return delayPromise();
 	})
+	.then(() =>
+	{
+		tests.testImageBackground();
+		return delayPromise();
+	})
+	.then(() =>
+	{
+		tests.testInvertedImageBackground();
+		return delayPromise();
+	})
 	.catch((error) =>
 	{
 		console.log('error:', error);

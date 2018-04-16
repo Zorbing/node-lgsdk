@@ -134,6 +134,25 @@ export class LogiLcd
 		}
 	}
 
+	public prepareImage(buffer: Buffer)
+	{
+		const array = [...buffer];
+		if (this.isColor)
+		{
+			return array;
+		}
+		else
+		{
+			const bitmap = new Array<number>(this.bitmapLength);
+			for (let i = 0; i < this.bitmapLength * 4; i += 4)
+			{
+				// TODO: convert color information into black-and-white
+				bitmap[i / 4] = array[i];
+			}
+			return bitmap;
+		}
+	}
+
 	public setBackground(bitmap: number[]): boolean
 	{
 		if (!this.initialized)

@@ -1,12 +1,12 @@
 /**
  * Monochrome displays (resolution 160x43):
- *	- G510
+ *	- G510 / G510s
  *	- G13
  *	- G15v1
  *	- G15v2
  *
  * Color displays (resoultion 320x240, full RGBA):
- *	- G19
+ *	- G19 / G19s
  */
 
 export interface LcdConfig

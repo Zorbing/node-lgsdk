@@ -102,3 +102,46 @@ export function testRandomBackground()
 
 	instance.update();
 }
+
+const testAssetsPath = './src/tests/assets/';
+export function testImageBackground()
+{
+	const instance = init();
+	resetText(instance);
+
+	fs.readFile(testAssetsPath + 'LogiLogoMono.bmp', (error, data) =>
+	{
+		if (error)
+		{
+			console.log('error:', error);
+		}
+		else
+		{
+			const bmpData = bmp.decode(data);
+			const bitmap = instance.prepareImage(bmpData.data);
+			instance.setBackground(bitmap);
+			instance.update();
+		}
+	});
+}
+
+export function testInvertedImageBackground()
+{
+	const instance = init();
+	resetText(instance);
+
+	fs.readFile(testAssetsPath + 'LogiLogoMonoInverted.bmp', (error, data) =>
+	{
+		if (error)
+		{
+			console.log('error:', error);
+		}
+		else
+		{
+			const bmpData = bmp.decode(data);
+			const bitmap = instance.prepareImage(bmpData.data);
+			instance.setBackground(bitmap);
+			instance.update();
+		}
+	});
+}
