@@ -72,7 +72,7 @@ export class LogiLcd
 		this._autoUpdate = true;
 	}
 
-	public init(name: string)
+	public init(name: string, type = LOGI_LCD.mono.type | LOGI_LCD.color.type)
 	{
 		if (this.initialized)
 		{
@@ -80,7 +80,7 @@ export class LogiLcd
 		}
 
 		this.name = name;
-		this._initialized = lcdLib.LogiLcdInit(name, LOGI_LCD.color.type | LOGI_LCD.mono.type);
+		this._initialized = lcdLib.LogiLcdInit(name, type);
 		if (this.initialized)
 		{
 			this.isColor = this.isConnected(LOGI_LCD.color.type);
