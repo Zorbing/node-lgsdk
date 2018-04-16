@@ -3,7 +3,7 @@ import * as ref from 'ref';
 import * as ArrayType from 'ref-array';
 import * as wchar_t from 'ref-wchar';
 
-import { libPath } from './path';
+import { libPath } from '../path';
 
 
 var byte = ref.types.uchar;
