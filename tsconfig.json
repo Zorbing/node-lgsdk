@@ -15,8 +15,5 @@
 	"include": [
 		"src/**/*.ts",
 		"typings-own/**/*"
-	],
-	"exclude": [
-		"**/*.spec.ts"
 	]
 }

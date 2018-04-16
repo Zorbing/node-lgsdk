@@ -8,7 +8,7 @@
 	},
   "scripts": {
 		"start": "npm run tsc && npm run test",
-    "test": "node dist/test/lcd.js",
+    "test": "node dist/test.spec.js",
     "tsc": "tsc"
   },
   "author": "Martin Boekhoff <zorbing@fileface.net>",
