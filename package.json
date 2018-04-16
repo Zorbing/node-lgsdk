@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "A wrapper for Logitech Gaming SDKs in node.js",
   "main": "./dist/index.js",
+	"config": {
+		"lcd": "8.57.148"
+	},
   "scripts": {
 		"start": "npm run tsc && npm run test",
     "test": "node dist/test/lcd.js",
