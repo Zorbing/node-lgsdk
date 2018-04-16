@@ -118,7 +118,7 @@ export function testImageBackground()
 		else
 		{
 			const bmpData = bmp.decode(data);
-			const bitmap = instance.prepareImage(bmpData.data);
+			const bitmap = instance.convertImage2Array(bmpData.data);
 			instance.setBackground(bitmap);
 			instance.update();
 		}
@@ -139,7 +139,7 @@ export function testInvertedImageBackground()
 		else
 		{
 			const bmpData = bmp.decode(data);
-			const bitmap = instance.prepareImage(bmpData.data);
+			const bitmap = instance.convertImage2Array(bmpData.data);
 			instance.setBackground(bitmap);
 			instance.update();
 		}

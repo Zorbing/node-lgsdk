@@ -3,11 +3,16 @@ import { errorMsg, addDestroyHandler } from './error-messages';
 import { lcdLib } from './ffi-instance';
 
 
-export interface Color
+interface Color2GrayscaleConversionFunction
 {
-	blue: number;
-	green: number;
-	red: number;
+	(red: number, green: number, blue: number, alpha?: number): number;
+}
+
+export enum COLOR_TO_GRAYSCALE_CONVERSION
+{
+	average,
+	lightness,
+	luminosity,
 }
 
 
@@ -29,6 +34,7 @@ export class LogiLcd
 	private _autoUpdate = false;
 	private _buttonList: number[] = [];
 	private _config: LcdConfig;
+	private _color2Grayscale: Color2GrayscaleConversionFunction;
 	private _initialized = false;
 
 
@@ -47,6 +53,11 @@ export class LogiLcd
 
 	private constructor()
 	{
+		this._toGrayscaleAverage = this._toGrayscaleAverage.bind(this);
+		this._toGrayscaleLightness = this._toGrayscaleLightness.bind(this);
+		this._toGrayscaleLuminosity = this._toGrayscaleLuminosity.bind(this);
+
+		this.setGrayscaleConversion(COLOR_TO_GRAYSCALE_CONVERSION.luminosity);
 	}
 
 
@@ -61,6 +72,30 @@ export class LogiLcd
 	}
 
 
+
+	public convertImage2Array(buffer: Buffer)
+	{
+		const array = [...buffer];
+		if (this.isColor)
+		{
+			return array;
+		}
+		else
+		{
+			const bitmap = new Array<number>(this.bitmapLength);
+			for (let i = 0; i < this.bitmapLength; i++)
+			{
+				const j = i * 4;
+				bitmap[i] = this._color2Grayscale(
+					array[j + 0],
+					array[j + 1],
+					array[j + 2],
+					array[j + 3],
+				);
+			}
+			return bitmap;
+		}
+	}
 
 	public disableAutoUpdate()
 	{
@@ -134,25 +169,6 @@ export class LogiLcd
 		}
 	}
 
-	public prepareImage(buffer: Buffer)
-	{
-		const array = [...buffer];
-		if (this.isColor)
-		{
-			return array;
-		}
-		else
-		{
-			const bitmap = new Array<number>(this.bitmapLength);
-			for (let i = 0; i < this.bitmapLength * 4; i += 4)
-			{
-				// TODO: convert color information into black-and-white
-				bitmap[i / 4] = array[i];
-			}
-			return bitmap;
-		}
-	}
-
 	public setBackground(bitmap: number[]): boolean
 	{
 		if (!this.initialized)
@@ -179,7 +195,32 @@ export class LogiLcd
 		return result;
 	}
 
-	public setText(text: string | string[], lineNumber?: number, color?: Color): boolean
+	/**
+	 * Sets the function which will be used to convert color information to grayscale.
+	 *
+	 * @param conversion The conversion type which should be used
+	 */
+	public setGrayscaleConversion(conversionType: COLOR_TO_GRAYSCALE_CONVERSION)
+	{
+		if (conversionType === COLOR_TO_GRAYSCALE_CONVERSION.average)
+		{
+			this._color2Grayscale = this._toGrayscaleAverage;
+		}
+		else if (conversionType === COLOR_TO_GRAYSCALE_CONVERSION.lightness)
+		{
+			this._color2Grayscale = this._toGrayscaleLightness;
+		}
+		else if (conversionType === COLOR_TO_GRAYSCALE_CONVERSION.luminosity)
+		{
+			this._color2Grayscale = this._toGrayscaleLuminosity;
+		}
+		else
+		{
+			throw new Error('Unknown image conversion type: ' + conversionType);
+		}
+	}
+
+	public setText(text: string | string[], lineNumber?: number | null, red = 255, green = 255, blue = 255): boolean
 	{
 		if (!this.initialized)
 		{
@@ -192,17 +233,16 @@ export class LogiLcd
 			result = true;
 			for (let i = 0; i < text.length; i++)
 			{
-				result = result && this.setText(text[i], i, color);
+				result = result && this.setText(text[i], i, red, green, blue);
 			}
 		}
 		else if (lineNumber !== undefined && this._checkLineNumber(lineNumber))
 		{
 			if (this.isColor)
 			{
-				color = this._ensureColor(color);
-				if (this._checkColor(color))
+				if (this._checkColors(red, green, blue))
 				{
-					result = lcdLib.LogiLcdColorSetText(lineNumber, text, color.red, color.green, color.blue);
+					result = lcdLib.LogiLcdColorSetText(lineNumber, text, red, green, blue);
 				}
 			}
 			else
@@ -217,7 +257,7 @@ export class LogiLcd
 		return result;
 	}
 
-	public setTitle(text: string, color?: Color): boolean
+	public setTitle(text: string, red = 255, green = 255, blue = 255): boolean
 	{
 		if (!this.initialized)
 		{
@@ -227,10 +267,9 @@ export class LogiLcd
 		let result = false;
 		if (this.isColor)
 		{
-			color = this._ensureColor(color);
-			if (this._checkColor(color))
+			if (this._checkColors(red, green, blue))
 			{
-				result = lcdLib.LogiLcdColorSetTitle(text, color.red, color.green, color.blue);
+				result = lcdLib.LogiLcdColorSetTitle(text, red, green, blue);
 				if (this._autoUpdate)
 				{
 					this.update();
@@ -278,11 +317,11 @@ export class LogiLcd
 		}
 	}
 
-	private _checkColor(color: Color)
+	private _checkColors(red: number, green: number, blue: number)
 	{
-		if ((color.red & 255) !== color.red ||
-			(color.green & 255) !== color.green ||
-			(color.blue & 255) !== color.blue)
+		if ((red & 255) !== red ||
+			(green & 255) !== green ||
+			(blue & 255) !== blue)
 		{
 			throw new Error(errorMsg.colorByte);
 		}
@@ -308,19 +347,18 @@ export class LogiLcd
 		}
 	}
 
-	private _ensureColor(color?: Color)
+	private _toGrayscaleAverage(red: number, green: number, blue: number, alpha = 255)
 	{
-		if (color)
-		{
-			return color;
-		}
-		else
-		{
-			return {
-				blue: 255,
-				green: 255,
-				red: 255,
-			};
-		}
+		return (red + green + blue) / 3;
+	}
+
+	private _toGrayscaleLightness(red: number, green: number, blue: number, alpha = 255)
+	{
+		return (Math.max(red, green, blue) + Math.min(red, green, blue)) / 2;
+	}
+
+	private _toGrayscaleLuminosity(red: number, green: number, blue: number, alpha = 255)
+	{
+		return 0.21 * red + 0.72 * green + 0.07 * blue;
 	}
 }
