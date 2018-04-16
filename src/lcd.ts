@@ -1,8 +1,10 @@
-import libPath from './path';
 import * as ffi from 'ffi';
 import * as ref from 'ref';
 import * as ArrayType from 'ref-array';
 import * as wchar_t from 'ref-wchar';
+
+import { libPath } from './path';
+
 
 var byte = ref.types.uchar;
 var byteArray = ArrayType<number>(byte);
@@ -37,11 +39,11 @@ var lcdLib = ffi.Library(libPath('lcd'), {
 	, 'LogiLcdIsButtonPressed': ['bool', ['int' /*button*/]]
 	, 'LogiLcdUpdate': ['void', []]
 	, 'LogiLcdShutdown': ['void', []]
-	
+
 	// Monochrome LCD functions
 	, 'LogiLcdMonoSetBackground': ['bool', [byteArray /*monoBitmap[]*/]]
 	, 'LogiLcdMonoSetText': ['bool', ['int' /*lineNumber*/, wchar_string /*text*/]]
-	
+
 	// Color LCD functions
 	, 'LogiLcdColorSetBackground': ['bool', [byteArray /*colorBitmap[]*/]]
 	, 'LogiLcdColorSetTitle': ['bool', [wchar_string /*text*/, 'int' /*red = 255*/, 'int' /*green = 255*/, 'int' /*blue = 255*/]]
@@ -66,17 +68,17 @@ export module mono
 	export const BITMAP_LENGTH = WIDTH * HEIGHT;
 	export const WHITE = 0;
 	export const BLACK = 255;
-	
+
 	export function init(name: string): boolean
 	{
 		return lcdLib.LogiLcdInit(name, TYPE);
 	}
-	
+
 	export function isConnected(): boolean
 	{
 		return lcdLib.LogiLcdIsConnected(TYPE);
 	}
-	
+
 	export function isButtonPressed(button: number): boolean
 	{
 		if (button !== BUTTON_0 && button !== BUTTON_1 &&
@@ -84,7 +86,7 @@ export module mono
 		{
 			throw new Error(BUTTON_ERROR);
 		}
-		
+
 		return lcdLib.LogiLcdIsButtonPressed(button);
 	}
 	export function update(): void
@@ -95,7 +97,7 @@ export module mono
 	{
 		return lcdLib.LogiLcdShutdown();
 	}
-	
+
 	export function setBackground(bitmap: number[]): boolean
 	{
 		if (bitmap.length !== BITMAP_LENGTH)
@@ -106,7 +108,7 @@ export module mono
 		{
 			throw new Error(BITMAP_ERROR_RANGE);
 		}
-		
+
 		return lcdLib.LogiLcdMonoSetBackground(bitmap);
 	}
 	export function setText(lineNumber: number, text: string): boolean
@@ -116,7 +118,7 @@ export module mono
 		{
 			throw new Error(LINE_ERROR(lineNumber, 4));
 		}
-		
+
 		return lcdLib.LogiLcdMonoSetText(lineNumber, text);
 	}
 }
@@ -134,17 +136,17 @@ export module color
 	export const WIDTH = LOGI_LCD_COLOR_WIDTH;
 	export const HEIGHT = LOGI_LCD_COLOR_HEIGHT;
 	export const BITMAP_LENGTH = WIDTH * HEIGHT * 4;
-	
+
 	export function init(name: string): boolean
 	{
 		return lcdLib.LogiLcdInit(name, TYPE);
 	}
-	
+
 	export function isConnected(): boolean
 	{
 		return lcdLib.LogiLcdIsConnected(TYPE);
 	}
-	
+
 	export function isButtonPressed(button: number): boolean
 	{
 		if (button !== BUTTON_LEFT && button !== BUTTON_RIGHT &&
@@ -154,7 +156,7 @@ export module color
 		{
 			throw new Error(BUTTON_ERROR);
 		}
-		
+
 		return lcdLib.LogiLcdIsButtonPressed(button);
 	}
 	export function update(): void
@@ -165,7 +167,7 @@ export module color
 	{
 		return lcdLib.LogiLcdShutdown();
 	}
-	
+
 	export function setBackground(bitmap: number[]): boolean
 	{
 		if (bitmap.length !== BITMAP_LENGTH)
@@ -176,7 +178,7 @@ export module color
 		{
 			throw new Error(BITMAP_ERROR_RANGE);
 		}
-		
+
 		return lcdLib.LogiLcdColorSetBackground(bitmap);
 	}
 	export function setTitle(text: string, red = 255, green = 255, blue = 255): boolean
@@ -201,7 +203,7 @@ export module color
 		{
 			throw new Error(COLOR_ERROR);
 		}
-		
+
 		return lcdLib.LogiLcdColorSetText(lineNumber, text, red, green, blue);
 	}
 }

@@ -5,7 +5,7 @@ function exitHandler(options: { cleanup?: boolean; exit?: boolean }, error: any)
 {
 	if (options.cleanup)
 	{
-		console.log('clean');
+		console.log('shutting down');
 		lgsdk.lcd.mono.shutdown();
 	}
 	if (error)
@@ -26,10 +26,10 @@ process.on('SIGINT', exitHandler.bind(null, { exit: true }));
 process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 
-var success = lgsdk.lcd.mono.init('Test');
+const success = lgsdk.lcd.mono.init('Test');
 console.log('success:', success);
 
-var connected = lgsdk.lcd.mono.isConnected();
+const connected = lgsdk.lcd.mono.isConnected();
 console.log('connected:', connected);
 
 lgsdk.lcd.mono.setText(0, 'This is the first line of text...');
