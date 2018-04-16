@@ -1,7 +1,7 @@
 import * as bmp from 'bmp-js';
 import * as fs from 'fs';
 
-import { lcd, LogiLcd } from '../..';
+import { LogiLcd } from '../..';
 
 
 function init()
@@ -30,6 +30,21 @@ function resetText(instance: LogiLcd)
 	instance.update();
 }
 
+function fillBitmap(instance: LogiLcd, colorFn: (i: number) => number[])
+{
+	let bitmap: number[] = [];
+	for (let i = 0; i < instance.bitmapLength; i++)
+	{
+		const color = colorFn(i);
+		for (let j = 0; j < color.length; j++, i++)
+		{
+			bitmap[i] = color[j];
+		}
+		i--;
+	}
+	return bitmap;
+}
+
 
 export function testText()
 {
@@ -52,12 +67,8 @@ export function testWhiteBackground()
 	const instance = init();
 	resetText(instance);
 
-	let bitmap: number[] = [];
-	for (let i = 0; i < instance.bitmapLength; i++)
-	{
-		// TODO: change lcd.mono.WHITE to something color independent
-		bitmap[i] = lcd.mono.WHITE;
-	}
+	const bitmap = fillBitmap(instance, () => instance.white);
+	console.log('bitmap size:', bitmap.length);
 	instance.setBackground(bitmap);
 
 	instance.update();
@@ -68,12 +79,7 @@ export function testBlackBackground()
 	const instance = init();
 	resetText(instance);
 
-	let bitmap: number[] = [];
-	for (let i = 0; i < instance.bitmapLength; i++)
-	{
-		// TODO: change lcd.mono.BLACK to something color independent
-		bitmap[i] = lcd.mono.BLACK;
-	}
+	const bitmap = fillBitmap(instance, () => instance.black);
 	instance.setBackground(bitmap);
 
 	instance.update();
@@ -84,20 +90,10 @@ export function testRandomBackground()
 	const instance = init();
 	resetText(instance);
 
-	let bitmap: number[] = [];
-	for (let i = 0; i < instance.bitmapLength; i++)
+	const bitmap = fillBitmap(instance, () =>
 	{
-		// TODO: change lcd.mono.WHITE/lcd.mono.BLACK to something color independent
-		const color = Math.random() < .5 ? [lcd.mono.WHITE] : [lcd.mono.BLACK];
-		for (let j = 0; j < color.length; j++)
-		{
-			if (j !== 0)
-			{
-				i++;
-			}
-			bitmap[i] = color[j];
-		}
-	}
+		return Math.random() < .5 ? instance.white : instance.black;
+	});
 	instance.setBackground(bitmap);
 
 	instance.update();

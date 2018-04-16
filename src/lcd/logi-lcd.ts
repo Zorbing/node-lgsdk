@@ -1,4 +1,4 @@
-import { LcdConfig, LOGI_LCD } from './constants';
+import { LcdConfig, LOGI_LCD, BLACK, WHITE } from './constants';
 import { errorMsg, addDestroyHandler } from './error-messages';
 import { lcdLib } from './ffi-instance';
 
@@ -39,6 +39,7 @@ export class LogiLcd
 
 
 
+	public black: number[];
 	public bitmapLength: number = 0;
 
 	public get initialized()
@@ -48,6 +49,7 @@ export class LogiLcd
 
 	public isColor = false;
 	public name: string | null = null;
+	public white: number[];
 
 
 
@@ -119,9 +121,26 @@ export class LogiLcd
 		if (this.initialized)
 		{
 			this.isColor = this.isConnected(LOGI_LCD.color.type);
-			this._config = this.isColor ? LOGI_LCD.color : LOGI_LCD.mono;
-			this.bitmapLength = this._config.width * this._config.height * this._config.bitsPerPixel;
-			this._buttonList = this.isColor ? LogiLcd.BUTTON_LIST_COLOR : LogiLcd.BUTTON_LIST_MONO;
+			if (this.isColor)
+			{
+				this._config = {
+					...LOGI_LCD.color,
+				};
+				this.bitmapLength = this._config.width * this._config.height * 4;
+				this._buttonList = [...LogiLcd.BUTTON_LIST_COLOR];
+				this.black = [...BLACK];
+				this.white = [...WHITE];
+			}
+			else
+			{
+				this._config = {
+					...LOGI_LCD.mono,
+				};
+				this.bitmapLength = this._config.width * this._config.height * 1;
+				this._buttonList = [...LogiLcd.BUTTON_LIST_MONO];
+				this.black = [this._color2Grayscale(BLACK[0], BLACK[1], BLACK[2], BLACK[3])];
+				this.white = [this._color2Grayscale(WHITE[0], WHITE[1], WHITE[2], WHITE[3])];
+			}
 
 			addDestroyHandler(() =>
 			{
@@ -236,7 +255,7 @@ export class LogiLcd
 				result = result && this.setText(text[i], i, red, green, blue);
 			}
 		}
-		else if (lineNumber !== undefined && this._checkLineNumber(lineNumber))
+		else if (lineNumber != null && this._checkLineNumber(lineNumber))
 		{
 			if (this.isColor)
 			{

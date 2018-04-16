@@ -2,10 +2,13 @@ import * as tests from './lcd/logi-lcd';
 import * as oldTests from './lcd/old-api';
 
 
-function delayPromise(time: number = 1e3)
+function executeTest(description: string, fn: Function, time = 1e3)
 {
 	return new Promise<void>((resolve, reject) =>
 	{
+		console.log('[Test] ' + description);
+		fn();
+
 		setTimeout(() =>
 		{
 			resolve();
@@ -14,48 +17,31 @@ function delayPromise(time: number = 1e3)
 }
 
 
-delayPromise(0)
-	.then(() =>
-	{
-		oldTests.testText();
-		return delayPromise();
-	})
-	.then(() =>
-	{
-		oldTests.testBackground();
-		return delayPromise();
-	})
-	.then(() =>
-	{
-		oldTests.shutdown();
+async function runTests()
+{
+	console.log('Old API');
+	console.log('===');
 
-		tests.testText();
-		return delayPromise();
-	})
+	await executeTest('normal text', oldTests.testText);
+	await executeTest('random background', oldTests.testBackground);
+	oldTests.shutdown();
+
+	console.log('New API');
+	console.log('===');
+
+	await executeTest('normal text', tests.testText);
+	await executeTest('white background', tests.testWhiteBackground);
+	await executeTest('black background', tests.testBlackBackground);
+	await executeTest('random background', tests.testRandomBackground);
+	await executeTest('image', tests.testImageBackground);
+	await executeTest('inverted image', tests.testInvertedImageBackground);
+
+}
+
+runTests()
 	.then(() =>
 	{
-		tests.testWhiteBackground();
-		return delayPromise();
-	})
-	.then(() =>
-	{
-		tests.testBlackBackground();
-		return delayPromise();
-	})
-	.then(() =>
-	{
-		tests.testRandomBackground();
-		return delayPromise();
-	})
-	.then(() =>
-	{
-		tests.testImageBackground();
-		return delayPromise();
-	})
-	.then(() =>
-	{
-		tests.testInvertedImageBackground();
-		return delayPromise();
+		console.log('All tests run without any errors.');
 	})
 	.catch((error) =>
 	{
