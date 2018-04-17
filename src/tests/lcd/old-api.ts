@@ -1,7 +1,8 @@
 import { lcd } from '../../index';
-import { addDestroyHandler } from '../../lcd/error-messages';
+import { getDestroyPromise } from '../../lcd/error-messages';
 
 
+let isRunning = false;
 function init()
 {
 	const success = lcd.mono.init('Test');
@@ -10,16 +11,21 @@ function init()
 	const connected = lcd.mono.isConnected();
 	console.log('connected:', connected);
 
-	addDestroyHandler(() =>
+	if (!isRunning)
 	{
-		console.log('shutting down');
-		lcd.mono.shutdown();
-	});
+		isRunning = true;
+		getDestroyPromise().then(() => shutdown());
+	}
 }
 
 export function shutdown()
 {
-	lcd.mono.shutdown();
+	if (isRunning)
+	{
+		console.log('shutting down old api');
+		lcd.mono.shutdown();
+		isRunning = false;
+	}
 }
 
 export function testText()

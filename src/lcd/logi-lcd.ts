@@ -1,5 +1,5 @@
 import { LcdConfig, LOGI_LCD, BLACK, WHITE } from './constants';
-import { errorMsg, addDestroyHandler } from './error-messages';
+import { errorMsg, getDestroyPromise } from './error-messages';
 import { lcdLib } from './ffi-instance';
 
 
@@ -142,11 +142,7 @@ export class LogiLcd
 				this.white = [this._color2Grayscale(WHITE[0], WHITE[1], WHITE[2], WHITE[3])];
 			}
 
-			addDestroyHandler(() =>
-			{
-				console.log('shutting down');
-				this.shutdown();
-			});
+			getDestroyPromise().then(() => this.shutdown());
 			return true;
 		}
 		else
@@ -300,12 +296,17 @@ export class LogiLcd
 
 	public shutdown()
 	{
-		if (!this.initialized)
+		if (this.initialized)
 		{
-			throw new Error(errorMsg.notInitialized);
+			console.log('shutting down new api');
+			lcdLib.LogiLcdShutdown();
+			this._initialized = false;
+			return true;
 		}
-
-		lcdLib.LogiLcdShutdown();
+		else
+		{
+			return false;
+		}
 	}
 
 	public update()

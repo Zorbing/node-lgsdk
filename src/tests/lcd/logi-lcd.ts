@@ -68,7 +68,6 @@ export function testWhiteBackground()
 	resetText(instance);
 
 	const bitmap = fillBitmap(instance, () => instance.white);
-	console.log('bitmap size:', bitmap.length);
 	instance.setBackground(bitmap);
 
 	instance.update();

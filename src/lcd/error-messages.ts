@@ -9,28 +9,31 @@ export const errorMsg = {
 	notInitialized: 'The LCD-connection is not yet initialized. Please call `init`.',
 };
 
-export function addDestroyHandler(handler: Function)
+export function getDestroyPromise()
 {
-	function exitHandler(options: { cleanup?: boolean; exit?: boolean }, error: any)
+	return new Promise<void>((resolve, reject) =>
 	{
-		if (options.cleanup)
+		function exitHandler(options: { cleanup?: boolean; exit?: boolean }, error: any)
 		{
-			handler();
+			if (options.cleanup)
+			{
+				resolve();
+			}
+			if (error)
+			{
+				reject(error);
+			}
+			if (options.exit)
+			{
+				process.exit();
+			}
 		}
-		if (error)
-		{
-			console.log(error.stack);
-		}
-		if (options.exit)
-		{
-			process.exit();
-		}
-	}
 
-	// do something when app is closing
-	process.on('exit', exitHandler.bind(null, { cleanup: true }));
-	// catch ctrl+c event
-	process.on('SIGINT', exitHandler.bind(null, { exit: true }));
-	// catch uncaught exceptions
-	process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
+		// do something when app is closing
+		process.on('exit', exitHandler.bind(null, { cleanup: true }));
+		// catch ctrl+c event
+		process.on('SIGINT', exitHandler.bind(null, { exit: true }));
+		// catch uncaught exceptions
+		process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
+	});
 }
