@@ -4,6 +4,7 @@
   "description": "A wrapper for Logitech Gaming SDKs in node.js",
   "main": "./dist/index.js",
   "config": {
+    "gkey": "8.57.148",
     "lcd": "8.57.148"
   },
   "scripts": {
