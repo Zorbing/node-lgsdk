@@ -1,3 +1,4 @@
-import * as lcdTmp from './lcd';
-
-export const lcd = lcdTmp;
+export {
+	lcd,
+	LogiLcd,
+} from './lcd';
