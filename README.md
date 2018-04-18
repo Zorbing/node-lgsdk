@@ -13,4 +13,3 @@ The [Logitech Gaming Software (LGS)](http://support.logitech.com/en_us/software/
 * Support Logitech Arx Control SDK
 * Support Logitech Steering Wheel SDK
 * Documentation
-* Add method to load image from disk and display in Lcd (either in color or in black-and-white)
