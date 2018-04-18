@@ -1,44 +1,66 @@
-import * as lgsdk from '../../index';
+import { gKey } from '../..';
+import { getDestroyPromise } from '../../error';
+import { logiGkeyCB, logiGkeyCBContext } from '../../g-key/ffi-instance';
 
-function exitHandler(options: { cleanup?: boolean; exit?: boolean }, error: any)
+
+let isRunning = false;
+function init(callback?: logiGkeyCB | logiGkeyCBContext)
 {
-	if (options.cleanup)
+	gKey.init(callback);
+
+	if (!isRunning)
 	{
-		console.log('shutting down...');
-		lgsdk.gKey.shutdown();
-	}
-	if (error)
-	{
-		console.log(error.stack);
-	}
-	if (options.exit)
-	{
-		process.exit();
+		isRunning = true;
+		getDestroyPromise().then(() => shutdown());
 	}
 }
 
-// do something when app is closing
-process.on('exit', exitHandler.bind(null,{ cleanup: true }));
-// catch ctrl+c event
-process.on('SIGINT', exitHandler.bind(null, { exit: true }));
-// catch uncaught exceptions
-process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
-
-lgsdk.gKey.init();
-// lgsdk.gKey.init((gkeyCode, gkeyOrButtonString, context) =>
-// {
-// 	console.log('initiated:', gkeyCode, gkeyOrButtonString, context);
-// });
-
-let lastState = false;
-setInterval(() =>
+export function shutdown()
 {
-	let state = lgsdk.gKey.isKeyboardGkeyPressed(1, 1);
-	if (state !== lastState)
+	if (isRunning)
 	{
-		lastState = state;
-		console.log('changed state!', state);
+		console.log('shutting down old api');
+		gKey.shutdown();
+		isRunning = false;
 	}
-}, 100);
+}
 
-process.stdin.resume();
+export function testPressedKeys(ms: number)
+{
+	init();
+
+	const timeStep = 100;
+	let lastState = false;
+	let remainingMs = ms;
+	console.log('You can press G1 in M1 mode and observe the state changes here.');
+	return new Promise<boolean>((resolve, reject) =>
+	{
+		const interval = setInterval(() =>
+		{
+			let state = gKey.isKeyboardGkeyPressed(1, 1);
+			if (state !== lastState)
+			{
+				lastState = state;
+				console.log('changed state! pressed:', state);
+			}
+
+			remainingMs -= timeStep;
+			if (remainingMs <= 0)
+			{
+				clearInterval(interval);
+				resolve(true);
+			}
+		}, timeStep);
+	});
+}
+
+export function testCallback()
+{
+	gKey.init((gkeyCode, gkeyOrButtonString, context) =>
+	{
+		console.log('initiated:', gkeyCode, gkeyOrButtonString, context);
+	});
+
+	// TODO: write this test
+	return Promise.reject('Not finished test.');
+}
