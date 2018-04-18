@@ -1,4 +1,4 @@
-import libPath from './path';
+import { libPath } from '../path';
 import * as ffi from 'ffi';
 import * as ref from 'ref';
 import * as wchar_t from 'ref-wchar';
@@ -128,27 +128,27 @@ export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 export function isMouseButtonPressed(buttonNumber: mouseButtonNumber): boolean
 {
 	checkButtonNumber(buttonNumber);
-	
+
 	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
 }
 export function getMouseButtonString(buttonNumber: mouseButtonNumber): string
 {
 	checkButtonNumber(buttonNumber);
-	
+
 	return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
 }
 export function isKeyboardGkeyPressed(gkeyNumber: gkeyNumber, modeNumber: modeNumber): boolean
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
-	
+
 	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
 }
 export function getKeyboardGkeyString(gkeyNumber: gkeyNumber, modeNumber: modeNumber): string
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
-	
+
 	return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber);
 }
 export function shutdown(): void

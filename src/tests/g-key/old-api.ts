@@ -1,4 +1,4 @@
-import * as lgsdk from '../index';
+import * as lgsdk from '../../index';
 
 function exitHandler(options: { cleanup?: boolean; exit?: boolean }, error: any)
 {

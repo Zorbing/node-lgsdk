@@ -1,6 +1,6 @@
-import * as gKeyTmp from './gKey';
-export const gKey = gKeyTmp;
-
+export {
+	gKey,
+} from './g-key';
 export {
 	lcd,
 	LogiLcd,
