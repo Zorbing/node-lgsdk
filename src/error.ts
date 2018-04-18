@@ -10,6 +10,7 @@ export function getDestroyPromise()
 			}
 			if (error)
 			{
+				console.error('error:', error);
 				reject(error);
 			}
 			if (options.exit)

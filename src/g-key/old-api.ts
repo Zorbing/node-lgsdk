@@ -24,7 +24,7 @@ function checkButtonNumber(buttonNumber: mouseButtonNumber)
 
 function checkGkeyNumber(gkeyNumber: gkeyNumber)
 {
-	if (isGkeyNumberValid(gkeyNumber))
+	if (!isGkeyNumberValid(gkeyNumber))
 	{
 		throw new Error(GKEY_NUMBER_INVALID);
 	}
@@ -32,7 +32,7 @@ function checkGkeyNumber(gkeyNumber: gkeyNumber)
 
 function checkModeNumber(modeNumber: modeNumber)
 {
-	if (isModeNumberValid(modeNumber))
+	if (!isModeNumberValid(modeNumber))
 	{
 		throw new Error(MODE_NUMBER_INVALID);
 	}
