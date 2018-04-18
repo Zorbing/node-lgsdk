@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@types/ffi@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/ffi/-/ffi-0.1.0.tgz#b3521ce9a47aea5acad4b5735d46e9edb5136f9a"
+  dependencies:
+    "@types/node" "*"
+    "@types/ref" "*"
+    "@types/ref-struct" "*"
+
 "@types/node@*":
   version "9.6.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.5.tgz#ee700810fdf49ac1c399fc5980b7559b3e5a381d"
@@ -20,13 +28,19 @@
   dependencies:
     "@types/ref" "0.0.*"
 
+"@types/ref-struct@*":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/ref-struct/-/ref-struct-0.0.29.tgz#a2d7c113a43d1182be99a22dfca8bf94bae97afa"
+  dependencies:
+    "@types/ref" "*"
+
 "@types/ref-struct@0.0.27":
   version "0.0.27"
   resolved "https://registry.yarnpkg.com/@types/ref-struct/-/ref-struct-0.0.27.tgz#daa0e04da297b01845f02245aa2bd8e874308f80"
   dependencies:
     "@types/ref" "0.0.*"
 
-"@types/ref@0.0.*":
+"@types/ref@*", "@types/ref@0.0.*":
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/ref/-/ref-0.0.28.tgz#15a61253ed1259038b47499de1c9b0cbca57f55c"
   dependencies:

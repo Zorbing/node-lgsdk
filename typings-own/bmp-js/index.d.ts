@@ -1,7 +1,8 @@
-// Type definitions for bmp-js
+// Type definitions for bmp-js@0.0.3
 // Project: https://github.com/shaozilee/bmp-js
 // Definitions by: Martin Boekhoff <https://github.com/Zorbing>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript version: 2.8
 
 declare module 'bmp-js'
 {

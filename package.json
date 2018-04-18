@@ -31,6 +31,7 @@
     "ref-wchar": "1.0.2"
   },
   "devDependencies": {
+    "@types/ffi": "0.1.0",
     "@types/node": "8.10.8",
     "@types/ref": "0.0.27",
     "@types/ref-array": "0.0.27",

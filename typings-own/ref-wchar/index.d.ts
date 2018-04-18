@@ -1,7 +1,7 @@
-// Type definitions for ref-wchar
+// Type definitions for ref-wchar@1.0.2
 // Project: https://github.com/TooTallNate/ref-wchar
 // Definitions by: Martin Boekhoff <https://github.com/Zorbing>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript version: 2.8
 
 /// <reference path="../../node_modules/@types/ref/index.d.ts" />
 
