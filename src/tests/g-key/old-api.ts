@@ -33,7 +33,7 @@ export function testPressedKeys(ms: number)
 	let lastState = false;
 	let remainingMs = ms;
 	console.log('You can press G1 in M1 mode and observe the state changes here.');
-	return new Promise<boolean>((resolve, reject) =>
+	return new Promise<void>((resolve, reject) =>
 	{
 		const interval = setInterval(() =>
 		{
@@ -48,7 +48,7 @@ export function testPressedKeys(ms: number)
 			if (remainingMs <= 0)
 			{
 				clearInterval(interval);
-				resolve(true);
+				resolve();
 			}
 		}, timeStep);
 	});

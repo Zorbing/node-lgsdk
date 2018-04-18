@@ -14,8 +14,7 @@ import { runLcdTests } from './lcd';
 	console.log('G-key');
 	console.log('===');
 
-	const test = await runGkeyTests();
-	console.log('result of function:', test);
+	await runGkeyTests();
 })()
 	.then(() =>
 	{
