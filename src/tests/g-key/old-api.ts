@@ -66,3 +66,19 @@ export function testCallback(ms: number)
 		setTimeout(() => resolve(), ms);
 	});
 }
+
+export function testContext(ms: number)
+{
+	gKey.init({
+		gkeyCallBack: function (gkeyCode, gkeyOrButtonString, context)
+		{
+			console.log('key state changed:', gkeyCode, gkeyOrButtonString, context, 'this:', this);
+		},
+		gkeyContext: { test: 'hello' },
+	});
+
+	return new Promise<void>((resolve, reject) =>
+	{
+		setTimeout(() => resolve(), ms);
+	});
+}
