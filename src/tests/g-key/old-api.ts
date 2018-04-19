@@ -63,9 +63,6 @@ export function testCallback(ms: number)
 
 	return new Promise<void>((resolve, reject) =>
 	{
-		setTimeout(() =>
-		{
-			resolve();
-		}, ms);
+		setTimeout(() => resolve(), ms);
 	});
 }

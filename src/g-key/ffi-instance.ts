@@ -18,25 +18,35 @@ export interface GkeyCode
 	// 8 bit; index of the G key or mouse button, for example, 6 for G6 or Button 6
 	keyIdx: number;
     // 1 bit; key up or down, 1 is down, 0 is up
-	keyDown: 0 | 1;
+	keyDown: boolean;
     // 2 bit; mState (1, 2 or 3 for M1, M2 and M3)
 	mState: modeNumber;
     // 1 bit; indicate if the Event comes from a mouse, 1 is yes, 0 is no.
-	mouse: 0 | 1;
+	mouse: boolean;
     // 4 bit; reserved1
 	reserved1: number;
     // 16 bit; reserved2
 	reserved2: number;
 }
-export const GkeyCode = Struct({
-	'keyIdx': 'int'
-	, 'keyDown': 'int'
-	, 'mState': 'int'
-	, 'mouse': 'int'
-	, 'reserved1': 'int'
-	, 'reserved2': 'int'
+
+export const GkeyCodeBitfield = new Struct({
+	'bitfield': 'uint32',
 });
-export const GkeyCodePtr = ref.refType(GkeyCode);
+export const GkeyCode = function (arg, data)
+{
+	const result = (GkeyCodeBitfield as any).call(this, arg, data);
+	const buffer = this['ref.buffer'];
+	this['keyIdx'] = buffer[0];
+	this['keyDown'] = Boolean((buffer[1] >> 0) & 0b0001);
+	this['mState'] = (buffer[1] >> 1) & 0b0011;
+	this['mouse'] = Boolean((buffer[1] >> 3) & 0b0001);
+	this['reserved1'] = (buffer[1] >> 4) & 0b1111;
+	this['reserved2'] = (buffer[2] << 8) | buffer[3];
+	delete this['bitfield'];
+	return result;
+};
+GkeyCode.prototype = GkeyCodeBitfield.prototype;
+Object.keys(GkeyCodeBitfield).forEach(key => GkeyCode[key] = GkeyCodeBitfield[key]);
 
 export interface logiGkeyCB
 {
@@ -57,21 +67,21 @@ export const CBContextPtr = ref.refType(CBContext);
 
 export const gkeyLib = ffi.Library(libPath('gkey'), {
 	// Enable the Gkey SDK by calling this function
-	  'LogiGkeyInit': ['bool', [CBContextPtr/*logiGkeyCBContext* gkeyCBContext*/]]
+	'LogiGkeyInit': ['bool', [CBContextPtr/*logiGkeyCBContext* gkeyCBContext*/]],
 	// Enable the Gkey SDK by calling this function if not using callback. Use this initialization if using Unreal Engine
-	, 'LogiGkeyInitWithoutCallback': ['bool', []]
+	'LogiGkeyInitWithoutCallback': ['bool', []],
 	// Enable the Gkey SDK be calling this function if not using context. Use this initialization if working with Unity Engine
-	, 'LogiGkeyInitWithoutContext': ['bool', ['pointer'/*logiGkeyCB gkeyCallBack*/]]
+	'LogiGkeyInitWithoutContext': ['bool', ['pointer'/*logiGkeyCB gkeyCallBack*/]],
 	// Check if a mouse button is currently pressed
-	, 'LogiGkeyIsMouseButtonPressed': ['bool', ['int'/*const int buttonNumber*/]]
+	'LogiGkeyIsMouseButtonPressed': ['bool', ['int'/*const int buttonNumber*/]],
 	// Get friendly name for mouse button
-	, 'LogiGkeyGetMouseButtonString': [wchar_string, ['int'/*const int buttonNumber*/]]
+	'LogiGkeyGetMouseButtonString': [wchar_string, ['int'/*const int buttonNumber*/]],
 	// Check if a keyboard G-key is currently pressed
-	, 'LogiGkeyIsKeyboardGkeyPressed': ['bool', ['int'/*const int gkeyNumber*/, 'int'/*const  int modeNumber*/]]
+	'LogiGkeyIsKeyboardGkeyPressed': ['bool', ['int'/*const int gkeyNumber*/, 'int'/*const  int modeNumber*/]],
 	// Get friendly name for G-key
-	, 'LogiGkeyGetKeyboardGkeyString': [wchar_string, ['int'/*const int gkeyNumber*/, 'int'/*const  int modeNumber*/]]
+	'LogiGkeyGetKeyboardGkeyString': [wchar_string, ['int'/*const int gkeyNumber*/, 'int'/*const  int modeNumber*/]],
 	// Disable the Gkey SDK, free up all the resources.
-	, 'LogiGkeyShutdown': ['void', []]
+	'LogiGkeyShutdown': ['void', []],
 });
 
 
@@ -94,7 +104,7 @@ export function createInitCallback(callback: Function)
 {
 	return ffi.Callback(
 		ref.types.void
-		, [ref.refType(ref.types.void)/*GkeyCodePtr*/, wchar_string, ref.refType(ref.types.void)]
+		, [GkeyCode, wchar_string, ref.refType(ref.types.void)]
 		, callback
 	);
 }
