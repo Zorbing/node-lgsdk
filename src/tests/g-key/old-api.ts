@@ -29,15 +29,19 @@ export function testPressedKeys(ms: number)
 {
 	init();
 
+	const gKeyNumber = 4;
+	const modeNumber = 1;
+	const keyString = gKey.getKeyboardGkeyString(gKeyNumber, modeNumber);
+	console.log(`You can press G${gKeyNumber} in M${modeNumber} mode (${keyString}) and observe the state changes here.`);
+
 	const timeStep = 100;
 	let lastState = false;
 	let remainingMs = ms;
-	console.log('You can press G1 in M1 mode and observe the state changes here.');
 	return new Promise<void>((resolve, reject) =>
 	{
 		const interval = setInterval(() =>
 		{
-			let state = gKey.isKeyboardGkeyPressed(1, 1);
+			let state = gKey.isKeyboardGkeyPressed(gKeyNumber, modeNumber);
 			if (state !== lastState)
 			{
 				lastState = state;
