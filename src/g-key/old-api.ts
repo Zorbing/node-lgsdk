@@ -42,14 +42,13 @@ function checkModeNumber(modeNumber: modeNumber)
 const callbackList: any[] = [];
 export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 {
-	// TODO: test wrapping callback with ffi.Callback
+	// TODO: test wrapping in callback context
 	if (!callback)
 	{
 		return gkeyLib.LogiGkeyInitWithoutCallback();
 	}
 	if (typeof callback === 'function')
 	{
-		console.log('callback:', createInitCallback(callback));
 		const ffiCallback = createInitCallback(callback);
 		callbackList.push(ffiCallback);
 		return gkeyLib.LogiGkeyInitWithoutContext(ffiCallback);
