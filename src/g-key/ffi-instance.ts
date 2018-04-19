@@ -58,8 +58,8 @@ export interface logiGkeyCBContext
 	gkeyContext: any/*void* */;
 }
 export const CBContext = Struct({
-	'gkeyCallBack': 'pointer'//logiGkeyCB
-	, 'gkeyContext': 'pointer'//void*
+	'gkeyCallBack': ffi.Function('void *', [GkeyCode, wchar_string, 'void *'])/*logiGkeyCB*/, // 'pointer',
+	'gkeyContext': 'void *',
 });
 export const CBContextPtr = ref.refType(CBContext);
 

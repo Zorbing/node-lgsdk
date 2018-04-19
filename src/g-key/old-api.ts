@@ -1,6 +1,5 @@
 import { BUTTON_NUMBER_INVALID, GKEY_NUMBER_INVALID, MODE_NUMBER_INVALID } from './error-messages';
 import {
-    CBContext,
     createInitCallback,
     gkeyLib,
     gkeyNumber,
@@ -42,7 +41,6 @@ function checkModeNumber(modeNumber: modeNumber)
 const callbackList: any[] = [];
 export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 {
-	// TODO: test wrapping in callback context
 	if (!callback)
 	{
 		return gkeyLib.LogiGkeyInitWithoutCallback();
@@ -55,10 +53,7 @@ export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 	}
 	if (callback.hasOwnProperty('gkeyCallBack') && callback.hasOwnProperty('gkeyContext'))
 	{
-		let context = new CBContext();
-		context.gkeyCallBack = createInitCallback(callback.gkeyCallBack);
-		context.gkeyContext = callback.gkeyContext;
-		return gkeyLib.LogiGkeyInit(context);
+		return init(callback.gkeyCallBack.bind(callback.gkeyContext));
 	}
 	return false;
 }
