@@ -54,13 +54,18 @@ export function testPressedKeys(ms: number)
 	});
 }
 
-export function testCallback()
+export function testCallback(ms: number)
 {
 	gKey.init((gkeyCode, gkeyOrButtonString, context) =>
 	{
-		console.log('initiated:', gkeyCode, gkeyOrButtonString, context);
+		console.log('key state changed:', gkeyCode, gkeyOrButtonString, context);
 	});
 
-	// TODO: write this test
-	return Promise.reject('Not finished test.');
+	return new Promise<void>((resolve, reject) =>
+	{
+		setTimeout(() =>
+		{
+			resolve();
+		}, ms);
+	});
 }

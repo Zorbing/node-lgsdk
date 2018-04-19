@@ -93,8 +93,8 @@ export function isModeNumberValid(modeNumber: modeNumber)
 export function createInitCallback(callback: Function)
 {
 	return ffi.Callback(
-		ref.refType(ref.types.void)
-		, [GkeyCodePtr, wchar_string, ref.refType(ref.types.void)]
+		ref.types.void
+		, [ref.refType(ref.types.void)/*GkeyCodePtr*/, wchar_string, ref.refType(ref.types.void)]
 		, callback
 	);
 }
