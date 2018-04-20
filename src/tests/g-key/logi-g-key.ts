@@ -70,7 +70,7 @@ export function testSpecificEventListener(ms: number)
 {
 	const instance = init();
 
-	console.log('Press any G4 key -Key down to test.');
+	console.log('Press any G4 key down to test.');
 	const gKeyNumber = 4;
 	const modeNumber = 1;
 	const keyString = instance.getKeyboardGkeyString(gKeyNumber, modeNumber);
