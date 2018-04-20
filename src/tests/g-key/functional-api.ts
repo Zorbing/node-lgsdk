@@ -1,6 +1,6 @@
 import { gKey } from '../..';
 import { getDestroyPromise } from '../../error';
-import { logiGkeyCB, logiGkeyCBContext } from '../../g-key/ffi-instance';
+import { logiGkeyCB, logiGkeyCBContext } from '../../g-key/ffi-lib';
 
 
 let isRunning = false;

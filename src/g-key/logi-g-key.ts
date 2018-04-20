@@ -1,7 +1,15 @@
 import { getDestroyPromise } from '../error';
 import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
 import { errorMsg } from './error-messages';
-import { createInitCallback, GkeyCode, gkeyLib } from './ffi-instance';
+import { GkeyCodeData } from './ffi-lib';
+import {
+    getKeyboardGkeyString,
+    getMouseButtonString,
+    init,
+    isKeyboardGkeyPressed,
+    isMouseButtonPressed,
+    shutdown,
+} from './functional-api';
 
 
 // mouse button strings or g-key strings are also allowed (e.g., 'G4/M1' and 'Mouse Btn 8')
@@ -9,7 +17,7 @@ type EventType = 'keyDown' | 'keyUp' | 'mouse' | string;
 
 interface ListenerFunction
 {
-	(eventData: GkeyCode): any;
+	(eventData: GkeyCodeData): any;
 }
 
 
@@ -26,7 +34,6 @@ export class LogiGkey
 
 
 	private _eventListener: Record<string, ListenerFunction[]> = {};
-	private _ffiCallback: Buffer | null = null;
 	private _initialized = false;
 
 
@@ -66,17 +73,12 @@ export class LogiGkey
 
 	public getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
 	{
-		this._checkGkeyNumber(gkeyNumber);
-		this._checkModeNumber(modeNumber);
-
-		return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber);
+		return getKeyboardGkeyString(gkeyNumber, modeNumber);
 	}
 
 	public getMouseButtonString(buttonNumber: number): string
 	{
-		this._checkButtonNumber(buttonNumber);
-
-		return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
+		return getMouseButtonString(buttonNumber);
 	}
 
 	public init()
@@ -86,31 +88,24 @@ export class LogiGkey
 			throw new Error(errorMsg.alreadyInitialized);
 		}
 
-		// store the callback to keep it from being garbage collected
 		const that = this;
-		this._ffiCallback = createInitCallback(function (gkeyCode, gkeyOrButtonString, context)
+		// always init with a callback
+		init(function (gkeyCode, gkeyOrButtonString, context)
 		{
 			return that._callback(this, gkeyCode, gkeyOrButtonString, context);
 		});
-		// always init with a callback
-		this._initialized = gkeyLib.LogiGkeyInitWithoutContext(this._ffiCallback);
 
 		getDestroyPromise().then(() => this.shutdown());
 	}
 
 	public isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
 	{
-		this._checkGkeyNumber(gkeyNumber);
-		this._checkModeNumber(modeNumber);
-
-		return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
+		return isKeyboardGkeyPressed(gkeyNumber, modeNumber);
 	}
 
 	public isMouseButtonPressed(buttonNumber: number): boolean
 	{
-		this._checkButtonNumber(buttonNumber);
-
-		return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
+		return isMouseButtonPressed(buttonNumber);
 	}
 
 	public removeAllEventListeners(type?: EventType)
@@ -154,11 +149,8 @@ export class LogiGkey
 	{
 		if (this.initialized)
 		{
-			console.log('shutting down new api');
-			gkeyLib.LogiLcdShutdown();
+			shutdown();
 			this._initialized = false;
-			// free the callback buffer for being garbage collected
-			this._ffiCallback = null;
 			return true;
 		}
 		else
@@ -169,7 +161,7 @@ export class LogiGkey
 
 
 
-	private _callback(that: any, gkeyCode: GkeyCode, gkeyOrButtonString: string, context: any)
+	private _callback(that: any, gkeyCode: GkeyCodeData, gkeyOrButtonString: string, context: any)
 	{
 		// create a copy of the object with only a selection of its properties
 		const eventData = {
@@ -195,31 +187,7 @@ export class LogiGkey
 		this._trigger(gkeyOrButtonString, eventData);
 	}
 
-	private _checkButtonNumber(buttonNumber: number)
-	{
-		if (LogiGkey.MOUSE_BUTTON_LIST.indexOf(buttonNumber) === -1)
-		{
-			throw new Error(errorMsg.buttonNumberInvalid(LOGITECH_MAX_MOUSE_BUTTONS));
-		}
-	}
-
-	private _checkGkeyNumber(gkeyNumber: number)
-	{
-		if (LogiGkey.GKEY_LIST.indexOf(gkeyNumber) === -1)
-		{
-			throw new Error(errorMsg.gkeyNumberInvalid(LOGITECH_MAX_GKEYS));
-		}
-	}
-
-	private _checkModeNumber(modeNumber: number)
-	{
-		if (LogiGkey.M_STATE_LIST.indexOf(modeNumber) === -1)
-		{
-			throw new Error(errorMsg.modeNumberInvalid(LOGITECH_MAX_M_STATES));
-		}
-	}
-
-	private _trigger(type: EventType, eventData: GkeyCode)
+	private _trigger(type: EventType, eventData: GkeyCodeData)
 	{
 		if (this._eventListener.hasOwnProperty(type))
 		{
