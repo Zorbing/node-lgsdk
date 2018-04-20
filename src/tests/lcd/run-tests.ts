@@ -5,7 +5,7 @@ import * as functionalTests from './functional-api';
 
 export async function runLcdTests()
 {
-	console.log('Old API');
+	console.log('Functional API');
 	console.log('---');
 
 	await executeTest('normal text', functionalTests.testText);
@@ -13,7 +13,7 @@ export async function runLcdTests()
 	functionalTests.shutdown();
 
 	console.log('');
-	console.log('New API');
+	console.log('Object Oriented API');
 	console.log('---');
 
 	await executeTest('normal text', tests.testText);

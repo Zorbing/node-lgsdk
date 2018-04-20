@@ -6,6 +6,7 @@ import {
     isButtonValidForMono,
     isValidBitmapValues,
     isValidColorBitmapLength,
+    isValidMonoBitmapLength,
     lcdLib,
 } from './ffi-lib';
 
@@ -50,7 +51,7 @@ export function setColorBackground(bitmap: number[])
 
 export function setMonoBackground(bitmap: number[])
 {
-	if (!isValidColorBitmapLength(bitmap))
+	if (!isValidMonoBitmapLength(bitmap))
 	{
 		throw new Error(errorMsg.bitmapLength(BITMAP_LENGTH_MONO));
 	}

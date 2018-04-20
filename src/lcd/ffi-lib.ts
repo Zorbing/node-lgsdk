@@ -76,15 +76,15 @@ export function isButtonValidForColor(button: number)
 
 export function isValidColorBitmapLength(bitmap: number[])
 {
-	return bitmap.length !== BITMAP_LENGTH_COLOR;
+	return bitmap.length === BITMAP_LENGTH_COLOR;
 }
 
 export function isValidMonoBitmapLength(bitmap: number[])
 {
-	return bitmap.length !== BITMAP_LENGTH_MONO;
+	return bitmap.length === BITMAP_LENGTH_MONO;
 }
 
 export function isValidBitmapValues(bitmap: number[])
 {
-	return bitmap.some((byte) => (byte & 255) !== byte);
+	return bitmap.every((byte) => (byte & 255) === byte);
 }

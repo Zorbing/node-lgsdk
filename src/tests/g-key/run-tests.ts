@@ -5,7 +5,7 @@ import * as functionalTests from './functional-api';
 
 export async function runGkeyTests()
 {
-	console.log('Old API');
+	console.log('Functional API');
 	console.log('---');
 
 	await executeTest('pressed keys', () => functionalTests.testPressedKeys(10e3));
@@ -16,7 +16,7 @@ export async function runGkeyTests()
 	functionalTests.shutdown();
 
 	console.log('');
-	console.log('New API');
+	console.log('Object Oriented API');
 	console.log('---');
 
 	await executeTest('pressed keys', () => tests.testPressedKeys(10e3));
