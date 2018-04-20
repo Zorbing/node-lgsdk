@@ -20,7 +20,7 @@ export class LogiGkey
 
 
 	private _eventListener: Record<string, Function[]> = {};
-	private _ffiCallback: Buffer;
+	private _ffiCallback: Buffer | null = null;
 	private _initialized = false;
 
 
@@ -118,6 +118,23 @@ export class LogiGkey
 			}
 			while (index !== -1);
 			return found;
+		}
+	}
+
+	public shutdown()
+	{
+		if (this.initialized)
+		{
+			console.log('shutting down new api');
+			gkeyLib.LogiLcdShutdown();
+			this._initialized = false;
+			// free the callback buffer for being garbage collected
+			this._ffiCallback = null;
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
