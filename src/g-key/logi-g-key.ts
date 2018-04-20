@@ -1,5 +1,5 @@
 import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
-import { BUTTON_NUMBER_INVALID, GKEY_NUMBER_INVALID, MODE_NUMBER_INVALID } from './error-messages';
+import { errorMsg } from './error-messages';
 import { createInitCallback, GkeyCode, gkeyLib } from './ffi-instance';
 
 
@@ -34,14 +34,6 @@ export class LogiGkey
 
 	private constructor()
 	{
-		// store the callback to keep it from being garbage collected
-		const that = this;
-		this._ffiCallback = createInitCallback(function (gkeyCode, gkeyOrButtonString, context)
-		{
-			return that._callback(this, gkeyCode, gkeyOrButtonString, context);
-		});
-		// always init with callback
-		this._initialized = gkeyLib.LogiGkeyInitWithoutContext(this._ffiCallback);
 	}
 
 
@@ -79,6 +71,23 @@ export class LogiGkey
 		this._checkButtonNumber(buttonNumber);
 
 		return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
+	}
+
+	public init()
+	{
+		if (this.initialized)
+		{
+			throw new Error(errorMsg.alreadyInitialized);
+		}
+
+		// store the callback to keep it from being garbage collected
+		const that = this;
+		this._ffiCallback = createInitCallback(function (gkeyCode, gkeyOrButtonString, context)
+		{
+			return that._callback(this, gkeyCode, gkeyOrButtonString, context);
+		});
+		// always init with a callback
+		this._initialized = gkeyLib.LogiGkeyInitWithoutContext(this._ffiCallback);
 	}
 
 	public isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
@@ -142,7 +151,7 @@ export class LogiGkey
 
 	private _callback(that: any, gkeyCode: GkeyCode, gkeyOrButtonString: string, context: any)
 	{
-		// filter using the information in `gkeyCode`
+		// create a copy of the object with only a selection of its properties
 		const eventData = {
 			'keyDown': gkeyCode['keyDown'],
 			'keyIdx': gkeyCode['keyIdx'],
@@ -151,6 +160,7 @@ export class LogiGkey
 			'reserved1': gkeyCode['reserved1'],
 			'reserved2': gkeyCode['reserved2'],
 		};
+		// filter using the information in `gkeyCode`
 		this._trigger(gkeyCode.keyDown ? 'keyDown' : 'keyUp', eventData);
 		this._trigger(gkeyOrButtonString, eventData);
 	}
@@ -159,7 +169,7 @@ export class LogiGkey
 	{
 		if (LogiGkey.MOUSE_BUTTON_LIST.indexOf(buttonNumber) === -1)
 		{
-			throw new Error(BUTTON_NUMBER_INVALID);
+			throw new Error(errorMsg.buttonNumberInvalid(LOGITECH_MAX_MOUSE_BUTTONS));
 		}
 	}
 
@@ -167,7 +177,7 @@ export class LogiGkey
 	{
 		if (LogiGkey.GKEY_LIST.indexOf(gkeyNumber) === -1)
 		{
-			throw new Error(GKEY_NUMBER_INVALID);
+			throw new Error(errorMsg.gkeyNumberInvalid(LOGITECH_MAX_GKEYS));
 		}
 	}
 
@@ -175,7 +185,7 @@ export class LogiGkey
 	{
 		if (LogiGkey.M_STATE_LIST.indexOf(modeNumber) === -1)
 		{
-			throw new Error(MODE_NUMBER_INVALID);
+			throw new Error(errorMsg.modeNumberInvalid(LOGITECH_MAX_M_STATES));
 		}
 	}
 

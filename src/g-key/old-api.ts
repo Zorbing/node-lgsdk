@@ -1,4 +1,5 @@
-import { BUTTON_NUMBER_INVALID, GKEY_NUMBER_INVALID, MODE_NUMBER_INVALID } from './error-messages';
+import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
+import { errorMsg } from './error-messages';
 import {
     createInitCallback,
     gkeyLib,
@@ -17,7 +18,7 @@ function checkButtonNumber(buttonNumber: mouseButtonNumber)
 {
 	if (!isButtonNumberValid(buttonNumber))
 	{
-		throw new Error(BUTTON_NUMBER_INVALID);
+		throw new Error(errorMsg.buttonNumberInvalid(LOGITECH_MAX_MOUSE_BUTTONS));
 	}
 }
 
@@ -25,7 +26,7 @@ function checkGkeyNumber(gkeyNumber: gkeyNumber)
 {
 	if (!isGkeyNumberValid(gkeyNumber))
 	{
-		throw new Error(GKEY_NUMBER_INVALID);
+		throw new Error(errorMsg.gkeyNumberInvalid(LOGITECH_MAX_GKEYS));
 	}
 }
 
@@ -33,7 +34,7 @@ function checkModeNumber(modeNumber: modeNumber)
 {
 	if (!isModeNumberValid(modeNumber))
 	{
-		throw new Error(MODE_NUMBER_INVALID);
+		throw new Error(errorMsg.modeNumberInvalid(LOGITECH_MAX_M_STATES));
 	}
 }
 
