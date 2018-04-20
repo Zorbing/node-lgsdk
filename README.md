@@ -8,7 +8,6 @@ The [Logitech Gaming Software (LGS)](http://support.logitech.com/en_us/software/
 
 ## Roadmap
 
-* Support Logitech G-Key Macro SDK with callback
 * Support Logitech LED Illumination SDK
 * Support Logitech Arx Control SDK
 * Support Logitech Steering Wheel SDK

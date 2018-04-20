@@ -1,5 +1,5 @@
-import { lcd } from '../../index';
-import { getDestroyPromise } from '../../lcd/error-messages';
+import { lcd } from '../..';
+import { getDestroyPromise } from '../../error';
 
 
 let isRunning = false;

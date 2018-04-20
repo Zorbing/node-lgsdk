@@ -1,13 +1,15 @@
 {
   "name": "node-lgsdk",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A wrapper for Logitech Gaming SDKs in node.js",
   "main": "./dist/index.js",
   "config": {
+    "gkey": "8.57.148",
     "lcd": "8.57.148"
   },
   "scripts": {
     "test": "npm run tsc && npm run test:samples",
+    "test:gKey": "node dist/test/gKey.js",
     "test:samples": "node dist/tests/test.js",
     "tsc": "tsc"
   },

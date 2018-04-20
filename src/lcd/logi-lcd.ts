@@ -1,5 +1,6 @@
-import { LcdConfig, LOGI_LCD, BLACK, WHITE } from './constants';
-import { errorMsg, getDestroyPromise } from './error-messages';
+import { getDestroyPromise } from '../error';
+import { BLACK, LcdConfig, LOGI_LCD, WHITE } from './constants';
+import { errorMsg } from './error-messages';
 import { lcdLib } from './ffi-instance';
 
 
