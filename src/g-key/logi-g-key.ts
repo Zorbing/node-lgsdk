@@ -7,6 +7,11 @@ import { createInitCallback, GkeyCode, gkeyLib } from './ffi-instance';
 // mouse button strings or g-key strings are also allowed (e.g., 'G4/M1' and 'Mouse Btn 8')
 type EventType = 'keyDown' | 'keyUp' | 'mouse' | string;
 
+interface ListenerFunction
+{
+	(eventData: GkeyCode): any;
+}
+
 
 export class LogiGkey
 {
@@ -20,7 +25,7 @@ export class LogiGkey
 
 
 
-	private _eventListener: Record<string, Function[]> = {};
+	private _eventListener: Record<string, ListenerFunction[]> = {};
 	private _ffiCallback: Buffer | null = null;
 	private _initialized = false;
 
@@ -50,7 +55,7 @@ export class LogiGkey
 
 
 
-	public addEventListener(type: EventType, listener: Function)
+	public addEventListener(type: EventType, listener: ListenerFunction)
 	{
 		if (!this._eventListener.hasOwnProperty(type))
 		{
@@ -108,7 +113,19 @@ export class LogiGkey
 		return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
 	}
 
-	public removeEventListener(type: EventType, listener: Function)
+	public removeAllEventListeners(type?: EventType)
+	{
+		if (type)
+		{
+			this._eventListener[type] = [];
+		}
+		else
+		{
+			this._eventListener = {};
+		}
+	}
+
+	public removeEventListener(type: EventType, listener: ListenerFunction)
 	{
 		if (!this._eventListener.hasOwnProperty(type))
 		{

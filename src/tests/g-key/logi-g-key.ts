@@ -58,7 +58,11 @@ export function testGeneralEventListener(ms: number)
 
 	return new Promise<void>((resolve, reject) =>
 	{
-		setTimeout(() => resolve(), ms);
+		setTimeout(() =>
+		{
+			instance.removeAllEventListeners();
+			resolve();
+		}, ms);
 	});
 }
 
@@ -79,6 +83,10 @@ export function testSpecificEventListener(ms: number)
 
 	return new Promise<void>((resolve, reject) =>
 	{
-		setTimeout(() => resolve(), ms);
+		setTimeout(() =>
+		{
+			instance.removeAllEventListeners();
+			resolve();
+		}, ms);
 	});
 }
