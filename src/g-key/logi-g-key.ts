@@ -1,0 +1,172 @@
+import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
+import { BUTTON_NUMBER_INVALID, GKEY_NUMBER_INVALID, MODE_NUMBER_INVALID } from './error-messages';
+import { createInitCallback, GkeyCode, gkeyLib } from './ffi-instance';
+
+
+// mouse button strings or g-key strings are also allowed (e.g., 'G4/M1' and 'Mouse Btn 8')
+type EventType = 'keyDown' | 'keyUp' | 'mouse' | string;
+
+
+export class LogiGkey
+{
+	private static _instance: LogiGkey | null = null;
+
+
+
+	public static GKEY_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_GKEYS)).map((_, i) => i + 1);
+	public static MOUSE_BUTTON_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_MOUSE_BUTTONS)).map((_, i) => i + 1);
+	public static M_STATE_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_M_STATES)).map((_, i) => i + 1);
+
+
+
+	private _eventListener: Record<string, Function[]> = {};
+	private _ffiCallback: Buffer;
+	private _initialized = false;
+
+
+
+	public get initialized()
+	{
+		return this._initialized;
+	}
+
+
+
+	private constructor()
+	{
+		// store the callback to keep it from being garbage collected
+		const that = this;
+		this._ffiCallback = createInitCallback(function (gkeyCode, gkeyOrButtonString, context)
+		{
+			return that._callback(this, gkeyCode, gkeyOrButtonString, context);
+		});
+		// always init with callback
+		this._initialized = gkeyLib.LogiGkeyInitWithoutContext(this._ffiCallback);
+	}
+
+
+
+	public static getInstance()
+	{
+		if (!this._instance)
+		{
+			this._instance = new LogiGkey();
+		}
+		return this._instance;
+	}
+
+
+
+	public addEventListener(type: EventType, listener: Function)
+	{
+		if (!this._eventListener.hasOwnProperty(type))
+		{
+			this._eventListener[type] = [];
+		}
+		this._eventListener[type].push(listener);
+	}
+
+	public getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
+	{
+		this._checkGkeyNumber(gkeyNumber);
+		this._checkModeNumber(modeNumber);
+
+		return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber);
+	}
+
+	public getMouseButtonString(buttonNumber: number): string
+	{
+		this._checkButtonNumber(buttonNumber);
+
+		return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
+	}
+
+	public isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
+	{
+		this._checkGkeyNumber(gkeyNumber);
+		this._checkModeNumber(modeNumber);
+
+		return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
+	}
+
+	public isMouseButtonPressed(buttonNumber: number): boolean
+	{
+		this._checkButtonNumber(buttonNumber);
+
+		return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
+	}
+
+	public removeEventListener(type: EventType, listener: Function)
+	{
+		if (!this._eventListener.hasOwnProperty(type))
+		{
+			return false;
+		}
+		else
+		{
+			// remove all listener references from the array of that type
+			let index = 0;
+			let found = false;
+			do
+			{
+				index = this._eventListener[type].indexOf(listener, index);
+				if (index !== -1)
+				{
+					this._eventListener[type].splice(index, 1);
+					found = true;
+				}
+			}
+			while (index !== -1);
+			return found;
+		}
+	}
+
+
+
+	private _callback(that: any, gkeyCode: GkeyCode, gkeyOrButtonString: string, context: any)
+	{
+		// filter using the information in `gkeyCode`
+		const eventData = {
+			'keyDown': gkeyCode['keyDown'],
+			'keyIdx': gkeyCode['keyIdx'],
+			'mouse': gkeyCode['mouse'],
+			'mState': gkeyCode['mState'],
+			'reserved1': gkeyCode['reserved1'],
+			'reserved2': gkeyCode['reserved2'],
+		};
+		this._trigger(gkeyCode.keyDown ? 'keyDown' : 'keyUp', eventData);
+		this._trigger(gkeyOrButtonString, eventData);
+	}
+
+	private _checkButtonNumber(buttonNumber: number)
+	{
+		if (LogiGkey.MOUSE_BUTTON_LIST.indexOf(buttonNumber) === -1)
+		{
+			throw new Error(BUTTON_NUMBER_INVALID);
+		}
+	}
+
+	private _checkGkeyNumber(gkeyNumber: number)
+	{
+		if (LogiGkey.GKEY_LIST.indexOf(gkeyNumber) === -1)
+		{
+			throw new Error(GKEY_NUMBER_INVALID);
+		}
+	}
+
+	private _checkModeNumber(modeNumber: number)
+	{
+		if (LogiGkey.M_STATE_LIST.indexOf(modeNumber) === -1)
+		{
+			throw new Error(MODE_NUMBER_INVALID);
+		}
+	}
+
+	private _trigger(type: EventType, eventData: GkeyCode)
+	{
+		if (this._eventListener.hasOwnProperty(type))
+		{
+			this._eventListener[type].forEach(listener => listener(eventData));
+		}
+	}
+}
