@@ -9,7 +9,9 @@
   },
   "scripts": {
     "clean": "rimraf ./dist",
-    "test": "npm run clean && npm run tsc && npm run test:samples",
+    "compile": "npm run clean && npm run tsc",
+    "example": "npm run compile && node dist/example.js",
+    "test": "npm run compile && npm run test:samples",
     "test:samples": "node dist/tests/test.js",
     "tsc": "tsc"
   },
