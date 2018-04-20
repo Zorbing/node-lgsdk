@@ -1,3 +1,4 @@
+import { getDestroyPromise } from '../error';
 import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
 import { errorMsg } from './error-messages';
 import { createInitCallback, GkeyCode, gkeyLib } from './ffi-instance';
@@ -88,6 +89,8 @@ export class LogiGkey
 		});
 		// always init with a callback
 		this._initialized = gkeyLib.LogiGkeyInitWithoutContext(this._ffiCallback);
+
+		getDestroyPromise().then(() => this.shutdown());
 	}
 
 	public isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
