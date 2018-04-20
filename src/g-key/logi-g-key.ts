@@ -180,8 +180,18 @@ export class LogiGkey
 			'reserved1': gkeyCode['reserved1'],
 			'reserved2': gkeyCode['reserved2'],
 		};
-		// filter using the information in `gkeyCode`
+		// filter using the information in `gkeyCode` and trigger from the most general to the most specific event
 		this._trigger(gkeyCode.keyDown ? 'keyDown' : 'keyUp', eventData);
+		if (gkeyCode.mouse)
+		{
+			this._trigger('mouse', eventData);
+		}
+		// enable listening to just G1 or M1 to get notified when ever G1 (mode independent) or any G-key in a specific mode is triggered
+		const parts = gkeyOrButtonString.split('/');
+		if (parts.length > 0)
+		{
+			parts.forEach(part => this._trigger(part, eventData));
+		}
 		this._trigger(gkeyOrButtonString, eventData);
 	}
 
