@@ -60,7 +60,7 @@ export function testPressedKeys(ms: number)
 
 export function testCallback(ms: number)
 {
-	gKey.init((gkeyCode, gkeyOrButtonString, context) =>
+	init((gkeyCode, gkeyOrButtonString, context) =>
 	{
 		console.log('key state changed:', gkeyCode, gkeyOrButtonString, context);
 	});
@@ -73,7 +73,7 @@ export function testCallback(ms: number)
 
 export function testContext(ms: number)
 {
-	gKey.init({
+	init({
 		gkeyCallBack: function (gkeyCode, gkeyOrButtonString, context)
 		{
 			console.log('key state changed:', gkeyCode, gkeyOrButtonString, context, 'this:', this);

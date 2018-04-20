@@ -8,7 +8,9 @@ export async function runGkeyTests()
 	console.log('---');
 
 	await executeTest('pressed keys', () => oldTests.testPressedKeys(10e3));
+	oldTests.shutdown();
 	await executeTest('init with callback', () => oldTests.testCallback(10e3));
-	await executeTest('init with callback', () => oldTests.testContext(10e3));
+	oldTests.shutdown();
+	await executeTest('init with callback and context', () => oldTests.testContext(10e3));
 	oldTests.shutdown();
 }

@@ -39,7 +39,7 @@ function checkModeNumber(modeNumber: modeNumber)
 }
 
 
-const callbackList: any[] = [];
+let callbackList: any[] = [];
 export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 {
 	if (!callback)
@@ -91,5 +91,7 @@ export function getKeyboardGkeyString(gkeyNumber: gkeyNumber, modeNumber: modeNu
 
 export function shutdown(): void
 {
+	// free all callbacks to be garbage collected
+	callbackList = [];
 	return gkeyLib.LogiGkeyShutdown();
 }
