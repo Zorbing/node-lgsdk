@@ -135,16 +135,16 @@ export function flashLighting(
 	redPercentage: number,
 	greenPercentage: number,
 	bluePercentage: number,
-	milliSecondsDuration: number,
-	milliSecondsInterval: number
+	msDuration: number,
+	msInterval: number
 )
 {
 	return ledLib.LogiLedFlashLighting(
 		redPercentage,
 		greenPercentage,
 		bluePercentage,
-		milliSecondsDuration,
-		milliSecondsInterval
+		msDuration,
+		msInterval
 	) as boolean;
 }
 
@@ -152,16 +152,16 @@ export function pulseLighting(
 	redPercentage: number,
 	greenPercentage: number,
 	bluePercentage: number,
-	milliSecondsDuration: number,
-	milliSecondsInterval: number
+	msDuration: number,
+	msInterval: number
 )
 {
 	return ledLib.LogiLedPulseLighting(
 		redPercentage,
 		greenPercentage,
 		bluePercentage,
-		milliSecondsDuration,
-		milliSecondsInterval
+		msDuration,
+		msInterval
 	) as boolean;
 }
 
