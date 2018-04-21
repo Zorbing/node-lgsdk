@@ -10,6 +10,60 @@ const wchar_string = wchar_t.string;
 
 
 /**
+ * Devices:
+ * - G910 Orion Spark:
+ *		Single key RGB support.
+ *		This keyboard supports all the functions available in the SDK, both per-key lighting and full keyboard lighting.
+ * - G810 Orion Spectrum:
+ *		Single key RGB support.
+ *		This keyboard supports all the functions available in the SDK, both per-key lighting and full keyboard lighting.
+ * - G610 Orion Brown:
+ *		Single key Monochrome support.
+ *		This device accepts all the functions for devices of type `LOGI_DEVICETYPE_PERKEY_RGB`. It will only display the
+ *		highest value for R,G,B on each key.
+ * - G710+:
+ *		Single color only. Full resolution. Highest value for R, G or B defines brightness.
+ * - G633 & G933:
+ *		Supports full RGB.
+ * - G600:
+ *		Supports full RGB, will work with the SDK only if set to Host mode through Logitech Gaming Software.
+ * - G510 / G510s:
+ *		Supports full RGB.
+ * - G110:
+ *		Supports full R(ed) and B(lue), but not G(reen).
+ *		When calling the SDK’s LogiLedSetLighting function, values for green will be ignored.
+ * - G19 / G19s:
+ *		Supports full RGB.
+ * - G105:
+ *		Single color only. Full resolution. Highest value for R, G or B defines brightness.
+ * - G105 Call Of Duty:
+ *		Single color only. Full resolution. Highest value for R, G or B defines brightness.
+ * - G300:
+ *		Supports red on/off, green on/off, blue on/off, or a combination of the three. When calling the SDK's
+ *		`setLighting()` function, if the percentage given is below 50, the color will be off, and when above 50, the
+ *		color will be on.
+ * - G900 Chaos Spectrum:
+ *		Supports Full RGB.
+ * - G303 Daedalus Apex:
+ *		Supports Full RGB.
+ * - G11:
+ *		Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
+ *		RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
+ *		when above 66, the brightness will be high.
+ * - G13 (The SDK treats this device as a keyboard.):
+ *		Supports full RGB.
+ * - G15 v1:
+ *		Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
+ *		RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
+ *		when above 66, the brightness will be high.
+ * - G15 v2:
+ *		Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
+ *		RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
+ *		when above 66, the brightness will be high.
+ */
+
+
+/**
  * Enum of keys:
  *	- ESC:                0x01
  *	- F1:                 0x3b
