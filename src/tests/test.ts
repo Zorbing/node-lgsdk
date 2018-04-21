@@ -1,5 +1,6 @@
 import { runGkeyTests } from './g-key';
 import { runLcdTests } from './lcd';
+import { runLedTests } from './led';
 
 
 (async function ()
@@ -15,6 +16,13 @@ import { runLcdTests } from './lcd';
 	console.log('===');
 
 	await runGkeyTests();
+
+	console.log('');
+	console.log('');
+	console.log('Led');
+	console.log('===');
+
+	await runLedTests();
 })()
 	.then(() =>
 	{
