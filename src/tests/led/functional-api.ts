@@ -6,7 +6,7 @@ let isRunning = false;
 function init()
 {
 	const success = led.init();
-	console.log('success:', success);
+	console.log('init success:', success);
 
 	if (!isRunning)
 	{

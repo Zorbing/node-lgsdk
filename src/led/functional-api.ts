@@ -3,7 +3,7 @@ import * as wchar_t from 'ref-wchar';
 
 import { KeyName as KeyNameEnum } from './constants';
 import { errorMsg } from './error-messages';
-import { isBitmapValid, ledLib } from './ffi-instance';
+import { isBitmapValid, ledLib } from './ffi-lib';
 
 
 const wchar_string = wchar_t.string;
