@@ -9,7 +9,7 @@ import { errorMsg } from './error-messages';
 const wchar_string = wchar_t.string;
 
 
-export const KeyNameEnum = KeyName;
+export const KeyNameEnums = KeyName;
 
 export function init()
 {
