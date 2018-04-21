@@ -42,3 +42,8 @@ export const ledLib = ffi.Library(libPath('led'), {
 
 	'LogiLedShutdown': ['void', []],
 });
+
+export function isBitmapValid(bitmap: number[])
+{
+	return bitmap.every(bit => bit >= 0 && bit <= 0b11111111);
+}

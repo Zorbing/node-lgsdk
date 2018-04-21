@@ -15,7 +15,7 @@ interface Buffer
 	 * if it's greater than 1 then it merely returns another Buffer, but with
 	 * one level less indirection.
 	 */
-	deref(): any;
+	deref<T = any>(): T;
 	/** Read a JS Object that has previously been written. */
 	readObject(offset?: number): object;
 	/**
