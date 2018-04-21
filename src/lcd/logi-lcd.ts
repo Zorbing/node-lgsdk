@@ -1,7 +1,18 @@
 import { getDestroyPromise } from '../error';
 import { BLACK, LcdConfig, LOGI_LCD, WHITE } from './constants';
 import { errorMsg } from './error-messages';
-import { lcdLib } from './ffi-instance';
+import {
+    init,
+    isButtonPressed,
+    isConnected,
+    setColorBackground,
+    setColorText,
+    setColorTitle,
+    setMonoBackground,
+    setMonoText,
+    shutdown,
+    update,
+} from './functional-api';
 
 
 interface Color2GrayscaleConversionFunction
@@ -33,7 +44,6 @@ export class LogiLcd
 
 
 	private _autoUpdate = false;
-	private _buttonList: number[] = [];
 	private _config: LcdConfig;
 	private _color2Grayscale: Color2GrayscaleConversionFunction;
 	private _initialized = false;
@@ -118,7 +128,7 @@ export class LogiLcd
 		}
 
 		this.name = name;
-		this._initialized = lcdLib.LogiLcdInit(name, type);
+		this._initialized = init(name, type);
 		if (this.initialized)
 		{
 			this.isColor = this.isConnected(LOGI_LCD.color.type);
@@ -128,7 +138,6 @@ export class LogiLcd
 					...LOGI_LCD.color,
 				};
 				this.bitmapLength = this._config.width * this._config.height * 4;
-				this._buttonList = [...LogiLcd.BUTTON_LIST_COLOR];
 				this.black = [...BLACK];
 				this.white = [...WHITE];
 			}
@@ -138,7 +147,6 @@ export class LogiLcd
 					...LOGI_LCD.mono,
 				};
 				this.bitmapLength = this._config.width * this._config.height * 1;
-				this._buttonList = [...LogiLcd.BUTTON_LIST_MONO];
 				this.black = [this._color2Grayscale(BLACK[0], BLACK[1], BLACK[2], BLACK[3])];
 				this.white = [this._color2Grayscale(WHITE[0], WHITE[1], WHITE[2], WHITE[3])];
 			}
@@ -159,14 +167,7 @@ export class LogiLcd
 			throw new Error(errorMsg.notInitialized);
 		}
 
-		if (this._buttonList.indexOf(button) === -1)
-		{
-			throw new Error(errorMsg.buttonId);
-		}
-		else
-		{
-			return lcdLib.LogiLcdIsButtonPressed(button);
-		}
+		return isButtonPressed(button);
 	}
 
 	public isConnected(type?: number): boolean
@@ -175,13 +176,13 @@ export class LogiLcd
 		{
 			return false;
 		}
-		else if (type === undefined)
-		{
-			return this.isConnected(this._config.type);
-		}
 		else
 		{
-			return lcdLib.LogiLcdIsConnected(type);
+			if (type === undefined)
+			{
+				type = this.isColor ? LOGI_LCD.color.type : LOGI_LCD.mono.type;
+			}
+			return isConnected(type);
 		}
 	}
 
@@ -193,20 +194,17 @@ export class LogiLcd
 		}
 
 		let result = false;
-		if (this._checkBitmap(bitmap))
+		if (this.isColor)
 		{
-			if (this.isColor)
-			{
-				result = lcdLib.LogiLcdColorSetBackground(bitmap);
-			}
-			else
-			{
-				result = lcdLib.LogiLcdMonoSetBackground(bitmap);
-			}
-			if (this._autoUpdate)
-			{
-				this.update();
-			}
+			result = setColorBackground(bitmap);
+		}
+		else
+		{
+			result = setMonoBackground(bitmap);
+		}
+		if (this._autoUpdate)
+		{
+			this.update();
 		}
 		return result;
 	}
@@ -236,7 +234,7 @@ export class LogiLcd
 		}
 	}
 
-	public setText(text: string | string[], lineNumber?: number | null, red = 255, green = 255, blue = 255): boolean
+	public setText(text: string | string[], lineNumber?: number | null, red?: number, green?: number, blue?: number): boolean
 	{
 		if (!this.initialized)
 		{
@@ -252,18 +250,15 @@ export class LogiLcd
 				result = result && this.setText(text[i], i, red, green, blue);
 			}
 		}
-		else if (lineNumber != null && this._checkLineNumber(lineNumber))
+		else if (lineNumber != null)
 		{
 			if (this.isColor)
 			{
-				if (this._checkColors(red, green, blue))
-				{
-					result = lcdLib.LogiLcdColorSetText(lineNumber, text, red, green, blue);
-				}
+				result = setColorText(lineNumber, text, red, green, blue);
 			}
 			else
 			{
-				result = lcdLib.LogiLcdMonoSetText(lineNumber, text);
+				result = setMonoText(lineNumber, text);
 			}
 			if (this._autoUpdate)
 			{
@@ -273,7 +268,7 @@ export class LogiLcd
 		return result;
 	}
 
-	public setTitle(text: string, red = 255, green = 255, blue = 255): boolean
+	public setTitle(text: string, red?: number, green?: number, blue?: number)
 	{
 		if (!this.initialized)
 		{
@@ -283,13 +278,10 @@ export class LogiLcd
 		let result = false;
 		if (this.isColor)
 		{
-			if (this._checkColors(red, green, blue))
+			result = setColorTitle(text, red, green, blue);
+			if (this._autoUpdate)
 			{
-				result = lcdLib.LogiLcdColorSetTitle(text, red, green, blue);
-				if (this._autoUpdate)
-				{
-					this.update();
-				}
+				this.update();
 			}
 		}
 		return result;
@@ -299,8 +291,7 @@ export class LogiLcd
 	{
 		if (this.initialized)
 		{
-			console.log('shutting down new api');
-			lcdLib.LogiLcdShutdown();
+			shutdown();
 			this._initialized = false;
 			return true;
 		}
@@ -317,56 +308,10 @@ export class LogiLcd
 			throw new Error(errorMsg.notInitialized);
 		}
 
-		lcdLib.LogiLcdUpdate();
+		update();
 	}
 
 
-
-	private _checkBitmap(bitmap: number[])
-	{
-		if (bitmap.length !== this.bitmapLength)
-		{
-			throw new Error(errorMsg.bitmapLength(this.bitmapLength));
-		}
-		else if (bitmap.some((byte) => (byte & 255) !== byte))
-		{
-			throw new Error(errorMsg.bitmapRange);
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	private _checkColors(red: number, green: number, blue: number)
-	{
-		if ((red & 255) !== red ||
-			(green & 255) !== green ||
-			(blue & 255) !== blue)
-		{
-			throw new Error(errorMsg.colorByte);
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	private _checkLineNumber(lineNumber: number)
-	{
-		if (!Number.isInteger(lineNumber))
-		{
-			throw new Error(errorMsg.lineIdNotInteger);
-		}
-		else if (lineNumber < 0 || lineNumber > this._config.numberOfLines - 1)
-		{
-			throw new Error(errorMsg.lineId(lineNumber, this._config.numberOfLines));
-		}
-		else
-		{
-			return true;
-		}
-	}
 
 	private _toGrayscaleAverage(red: number, green: number, blue: number, alpha = 255)
 	{

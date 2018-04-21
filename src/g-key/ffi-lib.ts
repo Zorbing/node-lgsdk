@@ -13,7 +13,7 @@ export type mouseButtonNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 
 export type gkeyNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29;
 export type modeNumber = 1 | 2 | 3;
 
-export interface GkeyCode
+export interface GkeyCodeData
 {
 	// 8 bit; index of the G key or mouse button, for example, 6 for G6 or Button 6
 	keyIdx: number;
@@ -49,7 +49,7 @@ Object.keys(GkeyCodeBitfield).forEach(key => GkeyCode[key] = GkeyCodeBitfield[ke
 
 export interface logiGkeyCB
 {
-	(gkeyCode: GkeyCode, gkeyOrButtonString: string/*wchar_string*/, context: any/*void* */): any/*void* */;
+	(gkeyCode: GkeyCodeData, gkeyOrButtonString: string/*wchar_string*/, context: any/*void* */): any/*void* */;
 }
 
 export interface logiGkeyCBContext
@@ -84,17 +84,17 @@ export const gkeyLib = ffi.Library(libPath('gkey'), {
 });
 
 
-export function isButtonNumberValid(buttonNumber: mouseButtonNumber)
+export function isButtonNumberValid(buttonNumber: mouseButtonNumber | number): buttonNumber is mouseButtonNumber
 {
 	return Number.isInteger(buttonNumber) && buttonNumber >= 0 && buttonNumber <= LOGITECH_MAX_MOUSE_BUTTONS;
 }
 
-export function isGkeyNumberValid(gkeyNumber: gkeyNumber)
+export function isGkeyNumberValid(gkeyNumber: gkeyNumber | number): gkeyNumber is gkeyNumber
 {
 	return Number.isInteger(gkeyNumber) && gkeyNumber >= 0 && gkeyNumber <= LOGITECH_MAX_GKEYS;
 }
 
-export function isModeNumberValid(modeNumber: modeNumber)
+export function isModeNumberValid(modeNumber: modeNumber | number): modeNumber is modeNumber
 {
 	return Number.isInteger(modeNumber) && modeNumber >= 1 && modeNumber <= LOGITECH_MAX_M_STATES;
 }

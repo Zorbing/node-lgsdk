@@ -3,18 +3,15 @@ import { errorMsg } from './error-messages';
 import {
     createInitCallback,
     gkeyLib,
-    gkeyNumber,
     isButtonNumberValid,
     isGkeyNumberValid,
     isModeNumberValid,
     logiGkeyCB,
     logiGkeyCBContext,
-    modeNumber,
-    mouseButtonNumber,
-} from './ffi-instance';
+} from './ffi-lib';
 
 
-function checkButtonNumber(buttonNumber: mouseButtonNumber)
+function checkButtonNumber(buttonNumber: number)
 {
 	if (!isButtonNumberValid(buttonNumber))
 	{
@@ -22,7 +19,7 @@ function checkButtonNumber(buttonNumber: mouseButtonNumber)
 	}
 }
 
-function checkGkeyNumber(gkeyNumber: gkeyNumber)
+function checkGkeyNumber(gkeyNumber: number)
 {
 	if (!isGkeyNumberValid(gkeyNumber))
 	{
@@ -30,7 +27,7 @@ function checkGkeyNumber(gkeyNumber: gkeyNumber)
 	}
 }
 
-function checkModeNumber(modeNumber: modeNumber)
+function checkModeNumber(modeNumber: number)
 {
 	if (!isModeNumberValid(modeNumber))
 	{
@@ -59,21 +56,21 @@ export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 	return false;
 }
 
-export function isMouseButtonPressed(buttonNumber: mouseButtonNumber): boolean
+export function isMouseButtonPressed(buttonNumber: number): boolean
 {
 	checkButtonNumber(buttonNumber);
 
 	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
 }
 
-export function getMouseButtonString(buttonNumber: mouseButtonNumber): string
+export function getMouseButtonString(buttonNumber: number): string
 {
 	checkButtonNumber(buttonNumber);
 
 	return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
 }
 
-export function isKeyboardGkeyPressed(gkeyNumber: gkeyNumber, modeNumber: modeNumber): boolean
+export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
@@ -81,7 +78,7 @@ export function isKeyboardGkeyPressed(gkeyNumber: gkeyNumber, modeNumber: modeNu
 	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
 }
 
-export function getKeyboardGkeyString(gkeyNumber: gkeyNumber, modeNumber: modeNumber): string
+export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
