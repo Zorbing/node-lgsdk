@@ -1,15 +1,15 @@
 import * as ref from 'ref';
 import * as wchar_t from 'ref-wchar';
 
-import { KeyName } from './constants';
-import { ledLib, isBitmapValid } from './ffi-instance';
+import { KeyName as KeyNameEnum } from './constants';
 import { errorMsg } from './error-messages';
+import { isBitmapValid, ledLib } from './ffi-instance';
 
 
 const wchar_string = wchar_t.string;
 
 
-export const KeyNameEnums = KeyName;
+export const KeyName = KeyNameEnum;
 
 export function init()
 {
@@ -228,7 +228,7 @@ export function setLightingForKeyWithQuartzCode(
 }
 
 export function setLightingForKeyWithKeyName(
-	keyName: KeyName,
+	keyName: KeyNameEnum,
 	redPercentage: number,
 	greenPercentage: number,
 	bluePercentage: number
@@ -242,23 +242,23 @@ export function setLightingForKeyWithKeyName(
 	) as boolean;
 }
 
-export function saveLightingForKey(keyName: KeyName)
+export function saveLightingForKey(keyName: KeyNameEnum)
 {
 	return ledLib.LogiLedSaveLightingForKey(keyName) as boolean;
 }
 
-export function restoreLightingForKey(keyName: KeyName)
+export function restoreLightingForKey(keyName: KeyNameEnum)
 {
 	return ledLib.LogiLedRestoreLightingForKey() as boolean;
 }
 
-export function excludeKeysFromBitmap(keyList: KeyName[])
+export function excludeKeysFromBitmap(keyList: KeyNameEnum[])
 {
 	return ledLib.LogiLedExcludeKeysFromBitmap(keyList, keyList.length) as boolean;
 }
 
 export function flashSingleKey(
-	keyName: KeyName,
+	keyName: KeyNameEnum,
 	redPercentage: number,
 	greenPercentage: number,
 	bluePercentage: number,
@@ -277,7 +277,7 @@ export function flashSingleKey(
 }
 
 export function pulseSingleKey(
-	keyName: KeyName,
+	keyName: KeyNameEnum,
 	startRedPercentage: number,
 	startGreenPercentage: number,
 	startBluePercentage: number,
@@ -301,7 +301,7 @@ export function pulseSingleKey(
 	) as boolean;
 }
 
-export function stopEffectsOnKey(keyName: KeyName)
+export function stopEffectsOnKey(keyName: KeyNameEnum)
 {
 	return ledLib.LogiLedStopEffectsOnKey(keyName) as boolean;
 }
