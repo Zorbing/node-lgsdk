@@ -98,7 +98,7 @@ export function getConfigOptionKeyInput(configPath: string, defaultValue?: strin
 	}
 }
 
-export function getConfigOptionLabel(configPath: string, label?: string)
+export function setConfigOptionLabel(configPath: string, label?: string)
 {
 	const labelPointer = ref.alloc(wchar_string, label);
 	if (ledLib.LogiLedSetConfigOptionLabel(configPath, labelPointer))
