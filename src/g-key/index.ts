@@ -1,4 +1,4 @@
 export { LogiGkey } from './logi-g-key';
 
-import * as gKeyTmp from './functional-api';
+import * as gKeyTmp from './old-api';
 export const gKey = gKeyTmp;

@@ -32,7 +32,7 @@ export const LOGI_LCD = {
 		height:			43,
 		numberOfLines:	4,
 		bitsPerPixel:	1,
-	},
+	} as LcdConfig,
 	color: {
 		type:			0x00000002,
 		buttons: {
@@ -48,13 +48,10 @@ export const LOGI_LCD = {
 		height:			240,
 		numberOfLines:	8,
 		bitsPerPixel:	4,
-	},
+	} as LcdConfig,
 };
 
 // blue, green, red, alpha
 export const WHITE = [255, 255, 255, 255];
 // blue, green, red, alpha
 export const BLACK = [0, 0, 0, 255];
-
-export const BITMAP_LENGTH_COLOR = LOGI_LCD.color.width * LOGI_LCD.color.height * LOGI_LCD.color.bitsPerPixel;
-export const BITMAP_LENGTH_MONO = LOGI_LCD.mono.width * LOGI_LCD.mono.height * LOGI_LCD.mono.bitsPerPixel;

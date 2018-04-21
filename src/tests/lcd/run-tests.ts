@@ -1,19 +1,19 @@
 import { executeTest } from '../test-helper';
 import * as tests from './logi-lcd';
-import * as functionalTests from './functional-api';
+import * as oldTests from './old-api';
 
 
 export async function runLcdTests()
 {
-	console.log('Functional API');
+	console.log('Old API');
 	console.log('---');
 
-	await executeTest('normal text', functionalTests.testText);
-	await executeTest('random background', functionalTests.testBackground);
-	functionalTests.shutdown();
+	await executeTest('normal text', oldTests.testText);
+	await executeTest('random background', oldTests.testBackground);
+	oldTests.shutdown();
 
 	console.log('');
-	console.log('Object Oriented API');
+	console.log('New API');
 	console.log('---');
 
 	await executeTest('normal text', tests.testText);
