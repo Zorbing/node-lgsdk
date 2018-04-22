@@ -1,3 +1,70 @@
+/**
+ * Devices:
+ *
+ * Keyboards:
+ * - G710+:
+ *     G-keys: 1 to 6
+ *     Number of modes: 3
+ * - G510/ G510s:
+ *     G-keys: 1 to 18
+ *     Number of modes: 3
+ * - G110:
+ *     G-keys: 1 to 12
+ *     Number of modes: 3
+ * - G19/G19s:
+ *     G-keys: 1 to 12
+ *     Number of modes: 3
+ * - G103:
+ *     G-keys: 1 to 6
+ *     Number of modes: 3
+ * - G105:
+ *     G-keys: 1 to 6
+ *     Number of modes: 3
+ * - G105 Call Of Duty:
+ *     G-keys: 1 to 6
+ *     Number of modes: 3
+ * - G11:
+ *     G-keys: 1 to 18
+ *     Number of modes: 3
+ * - G13 (The SDK treats this device as a keyboard.):
+ *     G-keys: 1 to 29
+ *     Number of modes: 3
+ * - G15 v1:
+ *     G-keys: 1 to 18
+ *     Number of modes: 3
+ * - G15 v2:
+ *     G-keys: 1 to 6
+ *     Number of modes: 3
+ *
+ * Headsets:
+ * - G35:
+ *     G-keys: 1 to 3
+ *     Number of modes: 1
+ * - G930:
+ *     G-keys: 1 to 3
+ *     Number of modes: 1
+ *
+ * Mice:
+ * - G600:
+ *     Extra buttons: 6 to 20
+ * - G300:
+ *     Extra buttons: 6 to 9
+ * - G400 / G400s:
+ *     Extra buttons: 6 to 8
+ * - G700 / G700s:
+ *     Extra buttons: up to 13
+ * - G9 / G9x / G9x Call of duty:
+ *     Extra buttons: 4 to 8
+ * - MX518:
+ *     Extra buttons: 6 to 8
+ * - G402:
+ *     Extra buttons: 5
+ * - G502 Proteus Core:
+ *     Extra buttons: 4 to 8
+ * - G602:
+ *     Extra buttons: 6 to 10
+ */
+
 import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
 import { errorMsg } from './error-messages';
 import {
@@ -37,6 +104,32 @@ function checkModeNumber(modeNumber: number)
 
 
 let callbackList: any[] = [];
+/**
+ * TODO: update this comment since the JavaScript wrapper does not use the `LogiGkeyInit()` function.
+ * Creating a callback context from a struct was not possible for me, so I decided to use
+ * `LogiGkeyInitWithoutCallback()` and `LogiGkeyInitWithoutContext()` instead.
+ *
+ * ---
+ * Copied from the official documentation without adapting to this particular context:
+ *
+ * The `init()` function initializes the G-key SDK. It must be called before your application can see G-key/button
+ * events.
+ *
+ * Parameters:
+ * - `gkeyCBContext`: context for callback. See sample code above or sample program in Samples folder. This value can
+ *     be set to NULL if the game wants to use the polling functions instead of a callback.
+ *
+ * Return value:
+ * If the function succeeds, it returns TRUE. Otherwise FALSE.
+ *
+ * Remarks:
+ * Use this initialization if working with any application that is not built using Unreal Engine or Unity game engine.
+ * For these two game engines use appropriates function as follows:
+ * - Unreal Engine -> `LogiGkeyInitWithoutCallback()`
+ * - Unity -> `LogiGkeyInitWithoutContext()`
+ *
+ * See the examples in the relative documentation to see how to get those functions to work.
+ */
 export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 {
 	if (!callback)
@@ -56,6 +149,15 @@ export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
 	return false;
 }
 
+/**
+ * The `isMouseButtonPressed()` function indicates whether a mouse button is currently being pressed.
+ *
+ * Parameters:
+ * - `buttonNumber`: number of the button to check (for example between 6 and 20 for G600).
+ *
+ * Return value:
+ * `true` if the specified button is currently being pressed, `false` otherwise.
+ */
 export function isMouseButtonPressed(buttonNumber: number): boolean
 {
 	checkButtonNumber(buttonNumber);
@@ -63,6 +165,15 @@ export function isMouseButtonPressed(buttonNumber: number): boolean
 	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
 }
 
+/**
+ * The `getMouseButtonString()` function returns a button-specific friendly string.
+ *
+ * Parameters:
+ * - `buttonNumber`: number of the button to check (for example between 6 and 20 for G600).
+ *
+ * Return value:
+ * Friendly string for specified button number. For example "Mouse Btn 8".
+ */
 export function getMouseButtonString(buttonNumber: number): string
 {
 	checkButtonNumber(buttonNumber);
@@ -70,6 +181,16 @@ export function getMouseButtonString(buttonNumber: number): string
 	return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
 }
 
+/**
+ * The `isKeyboardGkeyPressed()` function indicates whether a keyboard G-key is currently being pressed.
+ *
+ * Parameters:
+ * - `gkeyNumber`: number of the G-key to check (for example between 1 and 6 for G710).
+ * - `modeNumber`: number of the mode currently selected (1, 2 or 3)
+ *
+ * Return value:
+ * `true` if the specified G-key for the specified Mode is currently being pressed, `false` otherwise.
+ */
 export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
 {
 	checkGkeyNumber(gkeyNumber);
@@ -78,6 +199,16 @@ export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): b
 	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
 }
 
+/**
+ * The `getKeyboardGkeyString()` function returns a G-key-specific friendly string.
+ *
+ * Parameters:
+ * - `gkeyNumber`: number of the G-key to check (for example between 1 and 6 for G710).
+ * - `modeNumber`: number of the mode currently selected (1, 2 or 3)
+ *
+ * Return value:
+ * Friendly string for specified G-key and Mode number. For example "G5/M1".
+ */
 export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
 {
 	checkGkeyNumber(gkeyNumber);
@@ -86,6 +217,9 @@ export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): s
 	return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber);
 }
 
+/**
+ * The `shutdown()` function unloads the corresponding DLL and frees up any allocated resources.
+ */
 export function shutdown(): void
 {
 	// free all callbacks to be garbage collected
