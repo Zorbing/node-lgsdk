@@ -12,54 +12,54 @@ const wchar_string = wchar_t.string;
 /**
  * Devices:
  * - G910 Orion Spark:
- *		Single key RGB support.
- *		This keyboard supports all the functions available in the SDK, both per-key lighting and full keyboard lighting.
+ *     Single key RGB support.
+ *     This keyboard supports all the functions available in the SDK, both per-key lighting and full keyboard lighting.
  * - G810 Orion Spectrum:
- *		Single key RGB support.
- *		This keyboard supports all the functions available in the SDK, both per-key lighting and full keyboard lighting.
+ *     Single key RGB support.
+ *     This keyboard supports all the functions available in the SDK, both per-key lighting and full keyboard lighting.
  * - G610 Orion Brown:
- *		Single key Monochrome support.
- *		This device accepts all the functions for devices of type `LOGI_DEVICETYPE_PERKEY_RGB`. It will only display the
- *		highest value for R,G,B on each key.
+ *     Single key Monochrome support.
+ *     This device accepts all the functions for devices of type `LOGI_DEVICETYPE_PERKEY_RGB`. It will only display the
+ *     highest value for R,G,B on each key.
  * - G710+:
- *		Single color only. Full resolution. Highest value for R, G or B defines brightness.
+ *     Single color only. Full resolution. Highest value for R, G or B defines brightness.
  * - G633 & G933:
- *		Supports full RGB.
+ *     Supports full RGB.
  * - G600:
- *		Supports full RGB, will work with the SDK only if set to Host mode through Logitech Gaming Software.
+ *     Supports full RGB, will work with the SDK only if set to Host mode through Logitech Gaming Software.
  * - G510 / G510s:
- *		Supports full RGB.
+ *     Supports full RGB.
  * - G110:
- *		Supports full R(ed) and B(lue), but not G(reen).
- *		When calling the SDK’s LogiLedSetLighting function, values for green will be ignored.
+ *     Supports full R(ed) and B(lue), but not G(reen).
+ *     When calling the SDK’s LogiLedSetLighting function, values for green will be ignored.
  * - G19 / G19s:
- *		Supports full RGB.
+ *     Supports full RGB.
  * - G105:
- *		Single color only. Full resolution. Highest value for R, G or B defines brightness.
+ *     Single color only. Full resolution. Highest value for R, G or B defines brightness.
  * - G105 Call Of Duty:
- *		Single color only. Full resolution. Highest value for R, G or B defines brightness.
+ *     Single color only. Full resolution. Highest value for R, G or B defines brightness.
  * - G300:
- *		Supports red on/off, green on/off, blue on/off, or a combination of the three. When calling the SDK's
- *		`setLighting()` function, if the percentage given is below 50, the color will be off, and when above 50, the
- *		color will be on.
+ *     Supports red on/off, green on/off, blue on/off, or a combination of the three. When calling the SDK's
+ *     `setLighting()` function, if the percentage given is below 50, the color will be off, and when above 50, the
+ *     color will be on.
  * - G900 Chaos Spectrum:
- *		Supports Full RGB.
+ *     Supports Full RGB.
  * - G303 Daedalus Apex:
- *		Supports Full RGB.
+ *     Supports Full RGB.
  * - G11:
- *		Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
- *		RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
- *		when above 66, the brightness will be high.
+ *     Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
+ *     RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
+ *     when above 66, the brightness will be high.
  * - G13 (The SDK treats this device as a keyboard.):
- *		Supports full RGB.
+ *     Supports full RGB.
  * - G15 v1:
- *		Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
- *		RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
- *		when above 66, the brightness will be high.
+ *     Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
+ *     RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
+ *     when above 66, the brightness will be high.
  * - G15 v2:
- *		Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
- *		RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
- *		when above 66, the brightness will be high.
+ *     Single color only, 3 levels of brightness. When calling the SDK’s LogiLedSetLighting function, if the highest
+ *     RGB percentage given is below 33, the color will be off, if between 33 and 66, the brightness will be low, and
+ *     when above 66, the brightness will be high.
  */
 
 
@@ -202,9 +202,9 @@ export function init()
  *
  * Parameters:
  * - `majorNum`: [in] the function will fill this parameter with the major build number of the sdk installed in the
- *		system
+ *     system
  * - `minorNum`: [in] the function will fill this parameter with the minor build number of the sdk installed in the
- *		system
+ *   system
  * - `buildNum`: [in] the function will fill this parameter with the build number of the sdk installed in the system
  *
  * Return value:
@@ -236,7 +236,35 @@ export function getSdkVersion()
 }
 
 /**
- * TODO: docs
+ * The `getConfigOption*()` function set, allows the developer to query for an option set by the user and use that
+ * value to customize the interaction with the SDK. A call to any of these functions will create an entry in the
+ * Logitech Gaming Software – Applet Manager View. This view is disabled by default, since it’s something targeting
+ * only "Advanced users", to enable it click on the Settings Icon in LGS and then check the box "Show Game integration
+ * customization view"
+ *
+ * Parameters:
+ * - `configPath`: This identifies the option uniquely. This can be just a string (e.g., "Terrorist") or it can be a
+ *     two level tree ("Colors/Terrorist"). If the two level tree is specified, the option will be displayed in Logitech
+ *     Gaming Software as an entry ("Terrorist") inside a group ("Colors").
+ * - `defaultValue`: This parameter, depending on the specific function takes the default value for the relative
+ *     option. If the option has been modified through LGS by the user, it will be filled in with the modified value,
+ *     otherwise the default value will be saved (to be shown to the user) and it won't be modified.
+ *
+ * Return value:
+ * The function always returns true, unless some bad parameter has been specified.
+ *
+ * Usage Example:
+ * ```js
+ * const healthFlashingThreshold = lgsdk.led.getConfigOptionNumber("player/flashing_edge", 0.15);
+ * //This healthFlashingThreshold value will now contain the option as set by the user, or the default value if it has never been set.
+ *
+ * //This function is just to display a prettier name in the LGS customization interface.
+ * lgsdk.led.setConfigOptionLabel("player/flashing_edge", "Flash Health Percentage");
+ * if (player.health() < healthFlashingThreshold)
+ * {
+ *   lgsdk.led.flashLighting(100, 0, 0, 0, 100);
+ * }
+ * ```
  */
 export function getConfigOptionNumber(configPath: string, defaultValue?: number)
 {
@@ -252,7 +280,7 @@ export function getConfigOptionNumber(configPath: string, defaultValue?: number)
 }
 
 /**
- * TODO: docs
+ * @see getConfigOptionNumber
  */
 export function getConfigOptionBool(configPath: string, defaultValue?: boolean)
 {
@@ -268,7 +296,7 @@ export function getConfigOptionBool(configPath: string, defaultValue?: boolean)
 }
 
 /**
- * TODO: docs
+ * @see getConfigOptionNumber
  */
 export function getConfigOptionColor(configPath: string, defaultRed?: number, defaultGreen?: number, defaultBlue?: number)
 {
@@ -290,8 +318,11 @@ export function getConfigOptionColor(configPath: string, defaultRed?: number, de
 }
 
 /**
- * TODO: docs
- * TODO: is bufferSize really optional?
+ * TODO: is bufferSize really optional and what does it stand for?
+ * Probably the `bufferSize` is used for the `defaultValue` parameter, since it is an array in C/C++ and therefore has
+ * a maximum size for content copied to it.
+ *
+ * @see getConfigOptionNumber
  */
 export function getConfigOptionKeyInput(configPath: string, defaultValue?: string, bufferSize?: number)
 {
@@ -329,10 +360,10 @@ export function setConfigOptionLabel(configPath: string, label?: string)
  *
  * Parameters:
  * - `targetDevice`: one or a combination of the following values:
- *		`LOGI_DEVICETYPE_MONOCHROME`
- *		`LOGI_DEVICETYPE_RGB`
- *		`LOGI_DEVICETYPE_PERKEY_RGB`
- *		`LOGI_DEVICETYPE_ALL`
+ *     `LOGI_DEVICETYPE_MONOCHROME`
+ *     `LOGI_DEVICETYPE_RGB`
+ *     `LOGI_DEVICETYPE_PERKEY_RGB`
+ *     `LOGI_DEVICETYPE_ALL`
  *
  * Return value:
  * If the function succeeds, it returns true. Otherwise false.
@@ -429,7 +460,7 @@ export function restoreLighting()
  * - `greenPercentage`: amount of green. Range is 0 to 100.
  * - `bluePercentage`: amount of blue. Range is 0 to 100.
  * - `msDuration`: duration of the effect in milliseconds, this parameter can be set to
- *		`LOGI_LED_DURATION_INFINITE` to make the effect run until stopped through `stopEffects()`
+ *     `LOGI_LED_DURATION_INFINITE` to make the effect run until stopped through `stopEffects()`
  * - `msInterval`: duration of the flashing interval in milliseconds
  *
  * Return value:
@@ -463,7 +494,7 @@ export function flashLighting(
  * - `greenPercentage`: amount of green. Range is 0 to 100.
  * - `bluePercentage`: amount of blue. Range is 0 to 100.
  * - `msDuration`: duration of the effect in milliseconds, this parameter can be set to
- * 		`LOGI_LED_DURATION_INFINITE` to make the effect run until stopped through `stopEffects()`
+ *     `LOGI_LED_DURATION_INFINITE` to make the effect run until stopped through `stopEffects()`
  * - `msInterval`: duration of the flashing interval in milliseconds
  *
  * Return value:
@@ -507,7 +538,7 @@ export function stopEffects()
  *
  * Parameters:
  * - `bitmap`: an unsigned char array containing the colors to assign to each key on the per-lighting device connected.
- * 		The size required for this bitmap is defined by `LOGI_LED_BITMAP_SIZE`
+ *     The size required for this bitmap is defined by `LOGI_LED_BITMAP_SIZE`
  *
  * The array of pixels is organized as a rectangular area, 21x6, representing the keys on the device. Each color is
  * represented by four consecutive bytes (RGBA).
@@ -727,8 +758,8 @@ export function excludeKeysFromBitmap(keyList: KeyNameEnum[])
  * - `greenPercentage`: amount of green in the active color of the flash effect. Range is 0 to 100.
  * - `bluePercentage`: amount of blue in the active color of the flash effect. Range is 0 to 100.
  * - `msDuration`: duration in milliseconds of the effect on the single key. This parameter can be set to
- *		`LOGI_LED_DURATION_INFINITE` to make the effect run until stopped through `stopEffects()` or
- * 		`stopEffectsOnKey()`
+ *     `LOGI_LED_DURATION_INFINITE` to make the effect run until stopped through `stopEffects()` or
+ *     `stopEffectsOnKey()`
  * - `msInterval`: duration of the flashing interval in milliseconds
  *
  * Return value:
@@ -770,7 +801,7 @@ export function flashSingleKey(
  * - `finishBluePercentage`: amount of blue in the finish color of the pulse effect. Range is 0 to 100.
  * - `msDuration`: duration in milliseconds of the effect on the single key.
  * - `isInfinite`: if this is set to true the effect will loop infinitely until stopped with a called to
- *		`stopEffects()` or `stopEffectsOnKey()`
+ *     `stopEffects()` or `stopEffectsOnKey()`
  *
  * Return value:
  * If the function succeeds, it returns true. Otherwise false.
