@@ -21,13 +21,13 @@ export abstract class LogiApi
 
 
 
-	public static getInstance<T extends LogiApi>(klass: typeof LogiApi)
+	public static getInstance(klass: any/* extends LogiApi*/): any
 	{
 		if (!this._instance)
 		{
-			this._instance = new (klass as any)();
+			this._instance = new klass();
 		}
-		return this._instance as T;
+		return this._instance;
 	}
 
 
@@ -36,7 +36,7 @@ export abstract class LogiApi
 	{
 		if (this.initialized)
 		{
-			throw new Error(`'The ${type} API is already initialized.`);
+			throw new Error(`'The ${type}-API had already been initialized.`);
 		}
 	}
 

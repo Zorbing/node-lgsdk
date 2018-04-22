@@ -69,7 +69,7 @@ export class LogiLcd extends LogiApi
 
 	public static getInstance()
 	{
-		return super.getInstance<LogiLcd>(LogiLcd);
+		return super.getInstance(LogiLcd) as LogiLcd;
 	}
 
 

@@ -99,7 +99,7 @@ export class LogiLed extends LogiApi
 
 	public static getInstance()
 	{
-		return super.getInstance<LogiLed>(LogiLed);
+		return super.getInstance(LogiLed) as LogiLed;
 	}
 
 

@@ -42,7 +42,7 @@ export class LogiGkey extends LogiApi
 
 	public static getInstance()
 	{
-		return super.getInstance<LogiGkey>(LogiGkey);
+		return super.getInstance(LogiGkey) as LogiGkey;
 	}
 
 
