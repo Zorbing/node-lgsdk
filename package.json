@@ -13,7 +13,8 @@
     "example": "npm run compile && node dist/example.js",
     "test": "npm run compile && npm run test:samples",
     "test:samples": "node dist/tests/test.js",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "author": "Martin Boekhoff <zorbing@fileface.net>",
   "license": "ISC",
