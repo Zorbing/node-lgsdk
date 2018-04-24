@@ -17,7 +17,7 @@
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "author": "Martin Boekhoff <zorbing@fileface.net>",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": "^8.9.4"
   },
