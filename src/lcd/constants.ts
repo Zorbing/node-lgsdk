@@ -45,19 +45,6 @@ export interface LcdConfig
 }
 
 export const LOGI_LCD = {
-	mono: {
-		type:			0x00000001,
-		buttons: {
-			'0':		0x00000001,
-			'1':		0x00000002,
-			'2':		0x00000004,
-			'3':		0x00000008,
-		},
-		width:			160,
-		height:			43,
-		numberOfLines:	4,
-		bitsPerPixel:	1,
-	},
 	color: {
 		type:			0x00000002,
 		buttons: {
@@ -73,6 +60,19 @@ export const LOGI_LCD = {
 		height:			240,
 		numberOfLines:	8,
 		bitsPerPixel:	4,
+	},
+	mono: {
+		type:			0x00000001,
+		buttons: {
+			'0':		0x00000001,
+			'1':		0x00000002,
+			'2':		0x00000004,
+			'3':		0x00000008,
+		},
+		width:			160,
+		height:			43,
+		numberOfLines:	4,
+		bitsPerPixel:	1,
 	},
 };
 

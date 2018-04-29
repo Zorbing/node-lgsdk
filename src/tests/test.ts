@@ -27,7 +27,7 @@ import { runGkeyTests } from './g-key';
 import { runLcdTests } from './lcd';
 
 
-(async function ()
+(async function executeAllTests()
 {
 	console.log('Lcd');
 	console.log('===');
