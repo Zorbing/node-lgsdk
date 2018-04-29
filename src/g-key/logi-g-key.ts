@@ -24,7 +24,7 @@
  */
 
 import { getDestroyPromise } from '../error';
-import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
+import { MAX_GKEYS, MAX_M_STATES, MAX_MOUSE_BUTTONS } from './constants';
 import { errorMsg } from './error-messages';
 import { GkeyCodeData } from './ffi-lib';
 import {
@@ -52,9 +52,9 @@ export class LogiGkey
 
 
 
-	public static GKEY_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_GKEYS)).map((_, i) => i + 1);
-	public static MOUSE_BUTTON_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_MOUSE_BUTTONS)).map((_, i) => i + 1);
-	public static M_STATE_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_M_STATES)).map((_, i) => i + 1);
+	public static GKEY_LIST: number[] = Array.apply(null, Array(MAX_GKEYS)).map((_, i) => i + 1);
+	public static MOUSE_BUTTON_LIST: number[] = Array.apply(null, Array(MAX_MOUSE_BUTTONS)).map((_, i) => i + 1);
+	public static M_STATE_LIST: number[] = Array.apply(null, Array(MAX_M_STATES)).map((_, i) => i + 1);
 
 
 

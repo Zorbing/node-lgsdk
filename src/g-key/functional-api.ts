@@ -90,7 +90,7 @@
  *     Extra buttons: 6 to 10
  */
 
-import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
+import { MAX_GKEYS, MAX_M_STATES, MAX_MOUSE_BUTTONS } from './constants';
 import { errorMsg } from './error-messages';
 import {
     createInitCallback,
@@ -107,7 +107,7 @@ function checkButtonNumber(buttonNumber: number)
 {
 	if (!isButtonNumberValid(buttonNumber))
 	{
-		throw new Error(errorMsg.buttonNumberInvalid(LOGITECH_MAX_MOUSE_BUTTONS));
+		throw new Error(errorMsg.buttonNumberInvalid(MAX_MOUSE_BUTTONS));
 	}
 }
 
@@ -115,7 +115,7 @@ function checkGkeyNumber(gkeyNumber: number)
 {
 	if (!isGkeyNumberValid(gkeyNumber))
 	{
-		throw new Error(errorMsg.gkeyNumberInvalid(LOGITECH_MAX_GKEYS));
+		throw new Error(errorMsg.gkeyNumberInvalid(MAX_GKEYS));
 	}
 }
 
@@ -123,7 +123,7 @@ function checkModeNumber(modeNumber: number)
 {
 	if (!isModeNumberValid(modeNumber))
 	{
-		throw new Error(errorMsg.modeNumberInvalid(LOGITECH_MAX_M_STATES));
+		throw new Error(errorMsg.modeNumberInvalid(MAX_M_STATES));
 	}
 }
 

@@ -29,7 +29,7 @@ import * as Struct from 'ref-struct';
 import * as wchar_t from 'ref-wchar';
 
 import { libPath } from '../path';
-import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
+import { MAX_GKEYS, MAX_M_STATES, MAX_MOUSE_BUTTONS } from './constants';
 
 
 const wchar_string = wchar_t.string;
@@ -111,17 +111,17 @@ export const gkeyLib = ffi.Library(libPath('gkey'), {
 
 export function isButtonNumberValid(buttonNumber: mouseButtonNumber | number): buttonNumber is mouseButtonNumber
 {
-	return Number.isInteger(buttonNumber) && buttonNumber >= 0 && buttonNumber <= LOGITECH_MAX_MOUSE_BUTTONS;
+	return Number.isInteger(buttonNumber) && buttonNumber >= 0 && buttonNumber <= MAX_MOUSE_BUTTONS;
 }
 
 export function isGkeyNumberValid(gkeyNumber: gkeyNumber | number): gkeyNumber is gkeyNumber
 {
-	return Number.isInteger(gkeyNumber) && gkeyNumber >= 0 && gkeyNumber <= LOGITECH_MAX_GKEYS;
+	return Number.isInteger(gkeyNumber) && gkeyNumber >= 0 && gkeyNumber <= MAX_GKEYS;
 }
 
 export function isModeNumberValid(modeNumber: modeNumber | number): modeNumber is modeNumber
 {
-	return Number.isInteger(modeNumber) && modeNumber >= 1 && modeNumber <= LOGITECH_MAX_M_STATES;
+	return Number.isInteger(modeNumber) && modeNumber >= 1 && modeNumber <= MAX_M_STATES;
 }
 
 export function createInitCallback(callback: Function)

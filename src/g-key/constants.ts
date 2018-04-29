@@ -23,6 +23,6 @@
  * SOFTWARE.
  */
 
-export const LOGITECH_MAX_GKEYS = 29;
-export const LOGITECH_MAX_MOUSE_BUTTONS = 20;
-export const LOGITECH_MAX_M_STATES = 3;
+export const MAX_GKEYS = 29;
+export const MAX_MOUSE_BUTTONS = 20;
+export const MAX_M_STATES = 3;
