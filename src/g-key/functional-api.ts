@@ -103,6 +103,13 @@ import {
 } from './ffi-lib';
 
 
+// export the constants
+export {
+	MAX_GKEYS,
+	MAX_M_STATES,
+	MAX_MOUSE_BUTTONS,
+} from './constants';
+
 function checkButtonNumber(buttonNumber: number)
 {
 	if (!isButtonNumberValid(buttonNumber))
