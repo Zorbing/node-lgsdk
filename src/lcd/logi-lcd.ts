@@ -64,10 +64,10 @@ export class LogiLcd
 
 
 	public static BUTTON_LIST_COLOR = Object.keys(COLOR_CONFIG.buttons)
-		.map(buttonKey => COLOR_CONFIG.buttons[buttonKey])
+		.map<number>(buttonKey => COLOR_CONFIG.buttons[buttonKey])
 	;
 	public static BUTTON_LIST_MONO = Object.keys(MONO_CONFIG.buttons)
-		.map(buttonKey => MONO_CONFIG.buttons[buttonKey])
+		.map<number>(buttonKey => MONO_CONFIG.buttons[buttonKey])
 	;
 
 
@@ -220,7 +220,7 @@ export class LogiLcd
 		{
 			result = setMonoBackground(bitmap);
 		}
-		if (this._autoUpdate)
+		if (result && this._autoUpdate)
 		{
 			this.update();
 		}
@@ -263,10 +263,23 @@ export class LogiLcd
 		if (text instanceof Array)
 		{
 			result = true;
+			// disable auto update as long as every line of text is set and check once after everything is finished
+			const autoUpdate = this._autoUpdate;
+			this._autoUpdate = false;
 			for (let i = 0; i < text.length; i++)
 			{
-				result = result && this.setText(text[i], i, red, green, blue);
+				try
+				{
+					result = result && this.setText(text[i], i, red, green, blue);
+				}
+				catch (error)
+				{
+					// restore the value of auto update before re-throwing the error
+					this._autoUpdate = autoUpdate;
+					throw error;
+				}
 			}
+			this._autoUpdate = autoUpdate;
 		}
 		else if (lineNumber != null)
 		{
@@ -278,10 +291,10 @@ export class LogiLcd
 			{
 				result = setMonoText(lineNumber, text);
 			}
-			if (this._autoUpdate)
-			{
-				this.update();
-			}
+		}
+		if (result && this._autoUpdate)
+		{
+			this.update();
 		}
 		return result;
 	}
@@ -297,10 +310,10 @@ export class LogiLcd
 		if (this.isColor)
 		{
 			result = setColorTitle(text, red, green, blue);
-			if (this._autoUpdate)
-			{
-				this.update();
-			}
+		}
+		if (result && this._autoUpdate)
+		{
+			this.update();
 		}
 		return result;
 	}
@@ -311,6 +324,7 @@ export class LogiLcd
 		{
 			shutdown();
 			this._initialized = false;
+			this.name = null;
 			return true;
 		}
 		else
