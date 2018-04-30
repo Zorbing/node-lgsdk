@@ -47,6 +47,8 @@ import {
     MONO_TYPE,
     MONO_WHITE,
     MONO_WIDTH,
+	MONO_NUMBER_OF_LINES,
+	COLOR_NUMBER_OF_LINES,
 } from './constants';
 import { errorMsg } from './error-messages';
 import {
@@ -224,9 +226,9 @@ export function setColorText(lineNumber: number, text: string, red = 255, green 
 	{
 		throw new Error(errorMsg.lineIdNotInteger);
 	}
-	else if (lineNumber < 0 || lineNumber > 7)
+	else if (lineNumber < 0 || lineNumber > COLOR_NUMBER_OF_LINES - 1)
 	{
-		throw new Error(errorMsg.lineId(lineNumber, 7));
+		throw new Error(errorMsg.lineId(lineNumber, COLOR_NUMBER_OF_LINES - 1));
 	}
 	else if ((red & 255) !== red ||
 		(green & 255) !== green ||
@@ -256,9 +258,9 @@ export function setMonoText(lineNumber: number, text: string)
 	{
 		throw new Error(errorMsg.lineIdNotInteger);
 	}
-	else if (lineNumber < 0 || lineNumber > 3)
+	else if (lineNumber < 0 || lineNumber > MONO_NUMBER_OF_LINES - 1)
 	{
-		throw new Error(errorMsg.lineId(lineNumber, 4));
+		throw new Error(errorMsg.lineId(lineNumber, MONO_NUMBER_OF_LINES - 1));
 	}
 	else
 	{
