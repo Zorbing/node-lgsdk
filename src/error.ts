@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk
  * @license
  * The MIT License (MIT)
  *
@@ -23,6 +24,13 @@
  * SOFTWARE.
  */
 
+ /**
+  * Returns a promise for tidying up on application destroy.
+  *
+  * @private
+  * @returns
+  * A promise which resolves when the process exists either because the application is closing, `Ctrl+C` (or similar) has been pressed, or an uncaught exception occurred.
+  */
 export function getDestroyPromise()
 {
 	return new Promise<void>((resolve, reject) =>

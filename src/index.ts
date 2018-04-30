@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk
  * @license
  * The MIT License (MIT)
  *

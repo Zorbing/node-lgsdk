@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk
  * @license
  * The MIT License (MIT)
  *
@@ -23,9 +24,15 @@
  * SOFTWARE.
  */
 
+ /**
+  * @hidden
+  */
 const pckg = require('../package.json');
 
 
+ /**
+  * @hidden
+  */
 let pathMap = {
 	 'ia32': 'x86'
 	, 'x64': 'x64'
@@ -35,6 +42,17 @@ if (!pathMap.hasOwnProperty(process.arch))
 	throw new Error(`Architecture ${process.arch} not supported.`)
 }
 
+/**
+ * Gets the file path to the requested library type and version (the file extension `.dll` is not included).
+ * If no version is provided, the version specified for that library tpye in the `config` part of the `package.json` is used.
+ *
+ * @private
+ * @param type The libraries type (e.g., 'lcd', 'gkey').
+ * @param version The version string of the dll files to use.
+ *
+ * @returns
+ * The path for the requested library type and version, considering the running machine's architectue (e.g., `./lib/x64/LogitechLcdEnginesWrapper-8.57.148`).
+ */
 export function libPath(type: string, version?: string)
 {
 	if (version === undefined)
