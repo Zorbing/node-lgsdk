@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/g-key
  * @license
  * The MIT License (MIT)
  *
@@ -23,6 +24,20 @@
  * SOFTWARE.
  */
 
+/**
+ * The maximum of all g-key numbers/ids.
+ * If not using a callback, this value is used alongside `MAX_M_STATES` for checking the pressed states of all g-keys.
+ */
 export const MAX_GKEYS = 29;
+
+/**
+ * The maximum of all mouse button numbers/ids.
+ * If not using a callback, this value is used for checking the pressed state of all mouse buttons.
+ */
 export const MAX_MOUSE_BUTTONS = 20;
+
+/**
+ * The maximumx of all mode numbers/ids.
+ * If not using a callback, this value is used alongside `MAX_GKEYS` for checking the pressed state of all g-keys.
+ */
 export const MAX_M_STATES = 3;

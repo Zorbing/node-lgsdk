@@ -1,4 +1,7 @@
 /**
+ * @todo Describe the node-lgsdk/g-key api here!
+ *
+ * @module node-lgsdk/g-key
  * @license
  * The MIT License (MIT)
  *
