@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/lcd
  * @license
  * The MIT License (MIT)
  *
@@ -22,7 +23,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import * as ffi from 'ffi';
 import * as ref from 'ref';
 import * as ArrayType from 'ref-array';
@@ -46,11 +46,23 @@ import {
 } from './constants';
 
 
+/**
+ * @hidden
+ */
 const byte = ref.types.uchar;
+/**
+ * @hidden
+ */
 const byteArray = ArrayType<number>(byte);
+/**
+ * @hidden
+ */
 const wchar_string = wchar_t.string;
 
 
+/**
+ * @private
+ */
 interface LcdLib
 {
 	LogiLcdInit: Function;
@@ -69,7 +81,10 @@ interface LcdLib
 	LogiLcdColorSetText: Function;
 }
 
-
+/**
+ * The `node-ffi` instance which is linked to the lcd library file.
+ * @type {@link LcdLib}
+ */
 export const lcdLib: LcdLib = ffi.Library(libPath('lcd'), {
 	'LogiLcdInit': ['bool', [wchar_string /*friendlyName*/, 'int' /*lcdType*/]],
 	'LogiLcdIsConnected': ['bool', ['int' /*lcdType*/]],

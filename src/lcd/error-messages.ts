@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/lcd
  * @license
  * The MIT License (MIT)
  *
@@ -23,6 +24,9 @@
  * SOFTWARE.
  */
 
+ /**
+  * All error messages which are thrown by the lcd wrapper apis.
+  */
 export const errorMsg = {
 	alreadyInitialized: 'The LCD-connection is already established.',
 	bitmapLength: (num) => `The bitmap must contain ${num} elements`,

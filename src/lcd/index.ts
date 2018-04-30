@@ -1,4 +1,7 @@
 /**
+ * @todo Describe the node-lgsdk/lcd api here!
+ *
+ * @module node-lgsdk/lcd
  * @license
  * The MIT License (MIT)
  *
@@ -26,4 +29,7 @@
 export { LogiLcd } from './logi-lcd';
 
 import * as lcdTmp from './functional-api';
+/**
+ * @hidden
+ */
 export const lcd = lcdTmp;

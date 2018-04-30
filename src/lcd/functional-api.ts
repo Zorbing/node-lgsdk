@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/lcd
  * @license
  * The MIT License (MIT)
  *
@@ -22,7 +23,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import {
     COLOR_BITMAP_LENGTH,
     COLOR_BLACK,
@@ -64,15 +64,13 @@ import {
  * The `init()` function makes necessary initializations. You must call this function prior to any other function in
  * the library.
  *
- * Parameters:
- * - `friendlyName`: the name of your applet, you can't change it after initialization.
- * - `lcdType`: defines the type of your applet lcd target, it can be one of the following:
- *     + `LOGI_LCD_TYPE_MONO`
- *     + `LOGI_LCD_TYPE_COLOR`
- *     + If you want to initialize your applet for both LCD types just use
- *       `LOGI_LCD_TYPE_MONO | LOGI_LCD_TYPE_COLOR`
+ * @param friendlyName The name of your applet, you can't change it after initialization.
+ * @param lcdType Defines the type of your applet lcd target, it can be one of the following:
+ *   - {@link MONO_TYPE}
+ *   - {@link MONO_TYPE}
+ *   - `MONO_TYPE | COLOR_TYPE` (if you want to initialize your applet for both LCD types)
  *
- * Return value:
+ * @return
  * If the function succeeds, it returns true. Otherwise false.
  */
 export function init(friendlyName: string, lcdType: number)
@@ -83,25 +81,24 @@ export function init(friendlyName: string, lcdType: number)
 /**
  * The `isButtonPressed()` function checks if the button specified by the parameter is being pressed.
  *
- * Parameters:
- * - `button`: defines the button to check on, it can be one of the following:
- *     + `LOGI_LCD_MONO_BUTTON_0`
- *     + `LOGI_LCD_MONO_BUTTON_1`
- *     + `LOGI_LCD_MONO_BUTTON_2`
- *     + `LOGI_LCD_MONO_BUTTON_3`
- *     + `LOGI_LCD_COLOR_BUTTON_LEFT`
- *     + `LOGI_LCD_COLOR_BUTTON_RIGHT`
- *     + `LOGI_LCD_COLOR_BUTTON_OK`
- *     + `LOGI_LCD_COLOR_BUTTON_CANCEL`
- *     + `LOGI_LCD_COLOR_BUTTON_UP`
- *     + `LOGI_LCD_COLOR_BUTTON_DOWN`
- *     + `LOGI_LCD_COLOR_BUTTON_MENU`
- *
- * Return value:
- * If the button specified is being pressed it returns true. Otherwise false.
- *
  * Notes:
  * The button will be considered pressed only if your applet is the one currently in the foreground.
+ *
+ * @param button Defines the button to check on, it can be one of the following:
+ *   - {@link MONO_BUTTON_0}
+ *   - {@link MONO_BUTTON_1}
+ *   - {@link MONO_BUTTON_2}
+ *   - {@link MONO_BUTTON_3}
+ *   - {@link COLOR_BUTTON_LEFT}
+ *   - {@link COLOR_BUTTON_RIGHT}
+ *   - {@link COLOR_BUTTON_OK}
+ *   - {@link COLOR_BUTTON_CANCEL}
+ *   - {@link COLOR_BUTTON_UP}
+ *   - {@link COLOR_BUTTON_DOWN}
+ *   - {@link COLOR_BUTTON_MENU}
+ *
+ * @return
+ * If the button specified is being pressed it returns true. Otherwise false.
  */
 export function isButtonPressed(button: number)
 {
@@ -118,16 +115,14 @@ export function isButtonPressed(button: number)
 /**
  * The `isConnected()` function checks if a device of the type specified by the parameter is connected.
  *
- * Parameters:
- * - `lcdType`: defines the lcd type to look for, it can be one of the following:
- *     + `LOGI_LCD_TYPE_MONO`
- *     + `LOGI_LCD_TYPE_COLOR`
- *     + If you want to look for both LCD types just use
- *       `LOGI_LCD_TYPE_MONO | LOGI_LCD_TYPE_COLOR`
+ * @param lcdType Defines the lcd type to look for, it can be one of the following:
+ *   - {@link MONO_TYPE}
+ *   - {@link COLOR_TYPE}
+ *   - `MONO_TYPE | COLOR_TYPE` (if you want to look for both LCD types)
  *
- * Return value:
+ * @return
  * If a device supporting the lcd type specified is found, it returns true. If the device has not been found or the
- * `init()` function has not been called before, returns false.
+ * {@link init} function has not been called before, returns false.
  */
 export function isConnected(type: number)
 {
@@ -137,27 +132,26 @@ export function isConnected(type: number)
 /**
  * The `setColorBackground()` function sets the specified image as background for the color lcd device connected.
  *
- * Parameters:
- * - `colorBitmap`: the array of pixels that define the actual color bitmap
- *     The array of pixels is organized as a rectangular area, 320 bytes wide and 240 bytes high. Since the color lcd
- *     can display the full RGB gamma, 32 bits per pixel (4 bytes) are used. The size of the colorBitmap array has to
- *     be 320x240x4 = 307200 therefore. To learn how to use GDI drawing functions efficiently with such an arrangement,
- *     see the sample code.
- *     The pixels are arranged in the following order:
- *     [see page 10 of "LogitechGamingLCDSDK.pdf" from https://www.logitechg.com/en-us/developers]
- *
- *     32 bit values are stored in 4 consecutive bytes that represent the RGB color values for that pixel.
- *     These values use the same top left to bottom right raster style transform to the flat character array with the
- *     exception that each pixel value is specified using 4 consecutive bytes. The illustration below shows the data
- *     arrangement for these RGB quads.
- *     Each of the bytes in the RGB quad specify the intensity of the given color. The value ranges from 0 (the darkest
- *     color value) to 255 (brightest color value)
- *
- * Return value:
- * True if it succeeds, false otherwise.
- *
  * Notes:
  * The image size must be 320x240 in order to use this function.
+ *
+ * @param colorBitmap The array of pixels that define the actual color bitmap
+ *
+ *   The array of pixels is organized as a rectangular area, 320 bytes wide and 240 bytes high.
+ *   Since the color lcd can display the full RGB gamma, 32 bits per pixel (4 bytes) are used.
+ *   The size of the colorBitmap array has to be 320x240x4 = 307200 therefore.
+ *   To learn how to use GDI drawing functions efficiently with such an arrangement, see the sample code.
+ *   The pixels are arranged in the following order:
+ *   [see page 10 of "LogitechGamingLCDSDK.pdf" from https://www.logitechg.com/en-us/developers ]
+ *
+ *   32 bit values are stored in 4 consecutive bytes that represent the RGB color values for that pixel.
+ *   These values use the same top left to bottom right raster style transform to the flat character array with the exception that each pixel value is specified using 4 consecutive bytes.
+ *   The illustration below shows the data arrangement for these RGB quads.
+ *   Each of the bytes in the RGB quad specify the intensity of the given color.
+ *   The value ranges from 0 (the darkest color value) to 255 (brightest color value).
+ *
+ * @return
+ * True if it succeeds, false otherwise.
  */
 export function setColorBackground(colorBitmap: number[])
 {
@@ -178,20 +172,20 @@ export function setColorBackground(colorBitmap: number[])
 /**
  * The `setMonoBackground()` function sets the specified image as background for the monochrome lcd device connected.
  *
- * Parameters:
- * - `monoBitmap`: the array of pixels that define the actual monochrome bitmap
- *     The array of pixels is organized as a rectangular area, 160 bytes wide and 43 bytes high. Despite the display
- *     being monochrome, 8 bits per pixel are used here for simple manipulation of individual pixels. To learn how to
- *     use GDI drawing functions efficiently with such an arrangement, see the sample code.
- *     The pixels are arranged in the following order
- *     [see page 9 of "LogitechGamingLCDSDK.pdf" from https://www.logitechg.com/en-us/developers]
- *
- * Return value:
- * True if it succeeds, false otherwise.
- *
  * Notes:
  * The image size must be 160x43 in order to use this function. The SDK will turn on the pixel on the screen if the
  * value assigned to that byte is >= 128, it will remain off if the value is < 128.
+ *
+ * @param monoBitmap The array of pixels that define the actual monochrome bitmap
+ *
+ *   The array of pixels is organized as a rectangular area, 160 bytes wide and 43 bytes high.
+ *   Despite the display being monochrome, 8 bits per pixel are used here for simple manipulation of individual pixels.
+ *   To learn how to use GDI drawing functions efficiently with such an arrangement, see the sample code.
+ *   The pixels are arranged in the following order:
+ *   [see page 9 of "LogitechGamingLCDSDK.pdf" from https://www.logitechg.com/en-us/developers]
+ *
+ * @return
+ * True if it succeeds, false otherwise.
  */
 export function setMonoBackground(monoBitmap: number[])
 {
@@ -212,15 +206,16 @@ export function setMonoBackground(monoBitmap: number[])
 /**
  * The `setColorText()` function sets the specified text in the requested line on the color lcd device connected.
  *
- * Parameters:
- * - `lineNumber`: the line on the screen you want the text to appear. The color lcd display has 8 lines for standard
- *     text, so this parameter can be any number from 0 to 7.
- * - `text`: defines the text you want to display
- * - `red`, `green`, `blue`: this lcd can display a full RGB color gamma, you can define the color of your text using
- *     this parameters. Values between 0 and 255 are accepted. The default value for this parameters is 255, so if you
- *     don’t specify any color, your text will be white.
+ * @param lineNumber The line on the screen you want the text to appear.
+ *   The color lcd display has 8 lines for standard text, so this parameter can be any number from 0 to 7.
+ * @param text Defines the text you want to display
+ * @param red This lcd can display a full RGB color gamma, you can define the color of your text using this parameters.
+ *   Values between 0 and 255 are accepted.
+ *   The default value for this parameters is 255, so if you don't specify any color, your text will be white.
+ * @param green See parameter `red`.
+ * @param blue See parameter `red`.
  *
- * Return value:
+ * @return
  * True if it succeeds, false otherwise.
  */
 export function setColorText(lineNumber: number, text: string, red = 255, green = 255, blue = 255)
@@ -248,12 +243,11 @@ export function setColorText(lineNumber: number, text: string, red = 255, green 
 /**
  * The `setMonoText()` function sets the specified text in the requested line on the monochrome lcd device connected.
  *
- * Parameters:
- * - `lineNumber`: the line on the screen you want the text to appear. The monochrome lcd display has 4 lines, so this
- *     parameter can be any number from 0 to 3.
- * - `text`: defines the text you want to display
+ * @param lineNumber The line on the screen you want the text to appear.
+ *   The monochrome lcd display has 4 lines, so this parameter can be any number from 0 to 3.
+ * @param text Defines the text you want to display
  *
- * Return value:
+ * @return
  * True if it succeeds, false otherwise.
  */
 export function setMonoText(lineNumber: number, text: string)
@@ -277,13 +271,14 @@ export function setMonoText(lineNumber: number, text: string)
  * size that will be displayed is bigger than the one used in the other lines, so you can use this function to set the
  * title of your applet/page.
  *
- * Parameters:
- * - `text`: defines the text you want to display as title
- * - `red`, `green`, `blue`: this lcd can display a full RGB color gamma, you can define the color of your title using
- *     this parameters. Values between 0 and 255 are accepted. The default value for this parameters is 255, so if you
- *     don’t specify any color, your title will be white.
+ * @param text Defines the text you want to display as title
+ * @param red This lcd can display a full RGB color gamma, you can define the color of your title using this parameters.
+ *   Values between 0 and 255 are accepted.
+ *   The default value for this parameters is 255, so if you don't specify any color, your title will be white.
+ * @param green See parameter `red`.
+ * @param blue See parameter `red`.
  *
- * Return value:
+ * @return
  * True if it succeeds, false otherwise.
  */
 export function setColorTitle(text: string, red = 255, green = 255, blue = 255)
@@ -305,7 +300,7 @@ export function setColorTitle(text: string, red = 255, green = 255, blue = 255)
  */
 export function shutdown()
 {
-	return lcdLib.LogiLcdShutdown();
+	return lcdLib.LogiLcdShutdown() as void;
 }
 
 /**
@@ -316,9 +311,12 @@ export function shutdown()
  */
 export function update()
 {
-	return lcdLib.LogiLcdUpdate();
+	return lcdLib.LogiLcdUpdate() as void;
 }
 
+/**
+ * @hidden
+ */
 const generalApi = {
 	init,
 	isButtonPressed,
@@ -333,21 +331,56 @@ const generalApi = {
 };
 
 
+/**
+ * All constants and functions which are used interacting with monochrome devices.
+ *
+ * @module node-lgsdk/lcd/mono
+ */
 export module mono
 {
+	/**
+	 * @see {@link MONO_TYPE}
+	 */
 	export const TYPE = MONO_TYPE;
+	/**
+	 * @see {@link MONO_BUTTON_0}
+	 */
 	export const BUTTON_0 = MONO_BUTTON_0;
+	/**
+	 * @see {@link MONO_BUTTON_1}
+	 */
 	export const BUTTON_1 = MONO_BUTTON_1;
+	/**
+	 * @see {@link MONO_BUTTON_2}
+	 */
 	export const BUTTON_2 = MONO_BUTTON_2;
+	/**
+	 * @see {@link MONO_BUTTON_3}
+	 */
 	export const BUTTON_3 = MONO_BUTTON_3;
+	/**
+	 * @see {@link MONO_WIDTH}
+	 */
 	export const WIDTH = MONO_WIDTH;
+	/**
+	 * @see {@link MONO_HEIGHT}
+	 */
 	export const HEIGHT = MONO_HEIGHT;
+	/**
+	 * @see {@link MONO_BITMAP_LENGTH}
+	 */
 	export const BITMAP_LENGTH = MONO_BITMAP_LENGTH;
+	/**
+	 * @see {@link MONO_WHITE}
+	 */
 	export const WHITE = MONO_WHITE[0];
+	/**
+	 * @see {@link MONO_BLACK}
+	 */
 	export const BLACK = MONO_BLACK[0];
 
 	/**
-	 * @see init
+	 * Executes {@link node-lgsdk/lcd/init} where the `type` parameter is set to {@link MONO_TYPE}.
 	 */
 	export function init(friendlyName: string)
 	{
@@ -355,7 +388,7 @@ export module mono
 	}
 
 	/**
-	 * @see isButtonPressed
+	 * Checks the button number to be valid for monochrome displays and executes {@link node-lgsdk/lcd/isButtonPressed} afterwards.
 	 */
 	export function isButtonPressed(button: number)
 	{
@@ -370,7 +403,7 @@ export module mono
 	}
 
 	/**
-	 * @see isConnected
+	 * Executes {@link node-lgsdk/lcd/isConnected} where the `type` parameter is set to {@link MONO_TYPE}.
 	 */
 	export function isConnected()
 	{
@@ -378,7 +411,7 @@ export module mono
 	}
 
 	/**
-	 * @see setMonoBackground
+	 * @see {@link setMonoBackground}
 	 */
 	export function setBackground(monoBitmap: number[])
 	{
@@ -386,7 +419,7 @@ export module mono
 	}
 
 	/**
-	 * @see setMonoText
+	 * @see {@link setMonoText}
 	 */
 	export function setText(lineNumber: number, text: string)
 	{
@@ -394,7 +427,7 @@ export module mono
 	}
 
 	/**
-	 * @see shutdown
+	 * Executes {@link node-lgsdk/lcd/shutdown}.
 	 */
 	export function shutdown()
 	{
@@ -402,7 +435,7 @@ export module mono
 	}
 
 	/**
-	 * @see update
+	 * Executes {@link node-lgsdk/lcd/update}.
 	 */
 	export function update()
 	{
@@ -411,24 +444,68 @@ export module mono
 }
 
 
+/**
+ * All constants and functions which are used interacting with color devices.
+ *
+ * @module node-lgsdk/lcd/color
+ */
 export module color
 {
+	/**
+	 * @see {@link COLOR_TYPE}
+	 */
 	export const TYPE = COLOR_TYPE;
+	/**
+	 * @see {@link COLOR_BUTTON_LEFT}
+	 */
 	export const BUTTON_LEFT = COLOR_BUTTON_LEFT;
+	/**
+	 * @see {@link COLOR_BUTTON_RIGHT}
+	 */
 	export const BUTTON_RIGHT = COLOR_BUTTON_RIGHT;
+	/**
+	 * @see {@link COLOR_BUTTON_OK}
+	 */
 	export const BUTTON_OK = COLOR_BUTTON_OK;
+	/**
+	 * @see {@link COLOR_BUTTON_CANCEL}
+	 */
 	export const BUTTON_CANCEL = COLOR_BUTTON_CANCEL;
+	/**
+	 * @see {@link COLOR_BUTTON_UP}
+	 */
 	export const BUTTON_UP = COLOR_BUTTON_UP;
+	/**
+	 * @see {@link COLOR_BUTTON_DOWN}
+	 */
 	export const BUTTON_DOWN = COLOR_BUTTON_DOWN;
+	/**
+	 * @see {@link COLOR_BUTTON_MENU}
+	 */
 	export const BUTTON_MENU = COLOR_BUTTON_MENU;
+	/**
+	 * @see {@link COLOR_WIDTH}
+	 */
 	export const WIDTH = COLOR_WIDTH;
+	/**
+	 * @see {@link COLOR_HEIGHT}
+	 */
 	export const HEIGHT = COLOR_HEIGHT;
+	/**
+	 * @see {@link COLOR_BITMAP_LENGTH}
+	 */
 	export const BITMAP_LENGTH = COLOR_BITMAP_LENGTH;
+	/**
+	 * @see {@link COLOR_WHITE}
+	 */
 	export const WHITE = COLOR_WHITE;
+	/**
+	 * @see {@link COLOR_BLACK}
+	 */
 	export const BLACK = COLOR_BLACK;
 
 	/**
-	 * @see init
+	 * Executes {@link node-lgsdk/lcd/init} where the `type` parameter is set to {@link COLOR_TYPE}.
 	 */
 	export function init(friendlyName: string)
 	{
@@ -436,7 +513,7 @@ export module color
 	}
 
 	/**
-	 * @see isButtonPressed
+	 * Checks the button number to be valid for color displays and executes {@link node-lgsdk/lcd/isButtonPressed} afterwards.
 	 */
 	export function isButtonPressed(button: number)
 	{
@@ -451,7 +528,7 @@ export module color
 	}
 
 	/**
-	 * @see isConnected
+	 * Executes {@link node-lgsdk/lcd/isConnected} where the `type` parameter is set to {@link COLOR_TYPE}.
 	 */
 	export function isConnected()
 	{
@@ -459,7 +536,7 @@ export module color
 	}
 
 	/**
-	 * @see setColorBackground
+	 * @see {@link setColorBackground}
 	 */
 	export function setBackground(colorBitmap: number[])
 	{
@@ -467,7 +544,7 @@ export module color
 	}
 
 	/**
-	 * @see setColorText
+	 * @see {@link setColorText}
 	 */
 	export function setText(lineNumber: number, text: string, red?: number, green?: number, blue?: number)
 	{
@@ -475,7 +552,7 @@ export module color
 	}
 
 	/**
-	 * @see setColorTitle
+	 * @see {@link setColorTitle}
 	 */
 	export function setTitle(text: string, red?: number, green?: number, blue?: number)
 	{
@@ -483,7 +560,7 @@ export module color
 	}
 
 	/**
-	 * @see shutdown
+	 * Executes {@link node-lgsdk/lcd/shutdown}.
 	 */
 	export function shutdown()
 	{
@@ -491,7 +568,7 @@ export module color
 	}
 
 	/**
-	 * @see update
+	 * Executes {@link node-lgsdk/lcd/update}.
 	 */
 	export function update()
 	{

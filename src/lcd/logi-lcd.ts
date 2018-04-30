@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/lcd
  * @license
  * The MIT License (MIT)
  *
@@ -22,7 +23,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import { getDestroyPromise } from '../error';
 import { COLOR_BLACK, LcdConfig, COLOR_WHITE, MONO_CONFIG, COLOR_CONFIG, COLOR_TYPE, MONO_TYPE } from './constants';
 import { errorMsg } from './error-messages';
@@ -40,6 +40,9 @@ import {
 } from './functional-api';
 
 
+/**
+ * @private
+ */
 interface Color2GrayscaleConversionFunction
 {
 	(red: number, green: number, blue: number, alpha?: number): number;
