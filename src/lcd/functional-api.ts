@@ -70,7 +70,7 @@ import {
  *   - {@link MONO_TYPE}
  *   - `MONO_TYPE | COLOR_TYPE` (if you want to initialize your applet for both LCD types)
  *
- * @return
+ * @returns
  * If the function succeeds, it returns true. Otherwise false.
  */
 export function init(friendlyName: string, lcdType: number)
@@ -97,7 +97,7 @@ export function init(friendlyName: string, lcdType: number)
  *   - {@link COLOR_BUTTON_DOWN}
  *   - {@link COLOR_BUTTON_MENU}
  *
- * @return
+ * @returns
  * If the button specified is being pressed it returns true. Otherwise false.
  */
 export function isButtonPressed(button: number)
@@ -120,7 +120,7 @@ export function isButtonPressed(button: number)
  *   - {@link COLOR_TYPE}
  *   - `MONO_TYPE | COLOR_TYPE` (if you want to look for both LCD types)
  *
- * @return
+ * @returns
  * If a device supporting the lcd type specified is found, it returns true. If the device has not been found or the
  * {@link init} function has not been called before, returns false.
  */
@@ -150,7 +150,7 @@ export function isConnected(type: number)
  *   Each of the bytes in the RGB quad specify the intensity of the given color.
  *   The value ranges from 0 (the darkest color value) to 255 (brightest color value).
  *
- * @return
+ * @returns
  * True if it succeeds, false otherwise.
  */
 export function setColorBackground(colorBitmap: number[])
@@ -184,7 +184,7 @@ export function setColorBackground(colorBitmap: number[])
  *   The pixels are arranged in the following order:
  *   [see page 9 of "LogitechGamingLCDSDK.pdf" from https://www.logitechg.com/en-us/developers]
  *
- * @return
+ * @returns
  * True if it succeeds, false otherwise.
  */
 export function setMonoBackground(monoBitmap: number[])
@@ -215,7 +215,7 @@ export function setMonoBackground(monoBitmap: number[])
  * @param green See parameter `red`.
  * @param blue See parameter `red`.
  *
- * @return
+ * @returns
  * True if it succeeds, false otherwise.
  */
 export function setColorText(lineNumber: number, text: string, red = 255, green = 255, blue = 255)
@@ -247,7 +247,7 @@ export function setColorText(lineNumber: number, text: string, red = 255, green 
  *   The monochrome lcd display has 4 lines, so this parameter can be any number from 0 to 3.
  * @param text Defines the text you want to display
  *
- * @return
+ * @returns
  * True if it succeeds, false otherwise.
  */
 export function setMonoText(lineNumber: number, text: string)
@@ -278,7 +278,7 @@ export function setMonoText(lineNumber: number, text: string)
  * @param green See parameter `red`.
  * @param blue See parameter `red`.
  *
- * @return
+ * @returns
  * True if it succeeds, false otherwise.
  */
 export function setColorTitle(text: string, red = 255, green = 255, blue = 255)
