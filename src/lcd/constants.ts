@@ -34,6 +34,51 @@
  *	- G19 / G19s
  */
 
+export const COLOR_TYPE = 0x00000002;
+
+export const MONO_TYPE = 0x00000001;
+
+export const COLOR_BUTTON_LEFT = 0x00000100;
+export const COLOR_BUTTON_RIGHT = 0x00000200;
+export const COLOR_BUTTON_OK = 0x00000400;
+export const COLOR_BUTTON_CANCEL = 0x00000800;
+export const COLOR_BUTTON_UP = 0x00001000;
+export const COLOR_BUTTON_DOWN = 0x00002000;
+export const COLOR_BUTTON_MENU = 0x00004000;
+
+export const MONO_BUTTON_0 = 0x00000001;
+export const MONO_BUTTON_1 = 0x00000002;
+export const MONO_BUTTON_2 = 0x00000004;
+export const MONO_BUTTON_3 = 0x00000008;
+
+export const COLOR_WIDTH = 320;
+
+export const MONO_WIDTH = 160;
+
+export const COLOR_HEIGHT = 240;
+
+export const MONO_HEIGHT = 43;
+
+export const COLOR_NUMBER_OF_LINES = 8;
+
+export const MONO_NUMBER_OF_LINES = 4;
+
+export const COLOR_BYTES_PER_PIXEL = 4;
+
+export const MONO_BYTES_PER_PIXEL = 1;
+
+export const COLOR_WHITE = [255, 255, 255, 255];
+
+export const MONO_WHITE = [255];
+
+export const COLOR_BLACK = [0, 0, 0, 255];
+
+export const MONO_BLACK = [0];
+
+export const COLOR_BITMAP_LENGTH = COLOR_WIDTH * COLOR_HEIGHT * COLOR_BYTES_PER_PIXEL;
+
+export const MONO_BITMAP_LENGTH = MONO_WIDTH * MONO_HEIGHT * MONO_BYTES_PER_PIXEL;
+
 export interface LcdConfig
 {
 	buttons: Record<string, number>;
@@ -44,42 +89,33 @@ export interface LcdConfig
 	width: number;
 }
 
-export const LOGI_LCD = {
-	color: {
-		type:			0x00000002,
-		buttons: {
-			'left':		0x00000100,
-			'right':	0x00000200,
-			'ok':		0x00000400,
-			'cancel':	0x00000800,
-			'up':		0x00001000,
-			'down':		0x00002000,
-			'menu':		0x00004000,
-		},
-		width:			320,
-		height:			240,
-		numberOfLines:	8,
-		bytesPerPixel:	4,
+export const COLOR_CONFIG = Object.freeze({
+	type:			COLOR_TYPE,
+	buttons: {
+		'left':		COLOR_BUTTON_LEFT,
+		'right':	COLOR_BUTTON_RIGHT,
+		'ok':		COLOR_BUTTON_OK,
+		'cancel':	COLOR_BUTTON_CANCEL,
+		'up':		COLOR_BUTTON_UP,
+		'down':		COLOR_BUTTON_DOWN,
+		'menu':		COLOR_BUTTON_MENU,
 	},
-	mono: {
-		type:			0x00000001,
-		buttons: {
-			'0':		0x00000001,
-			'1':		0x00000002,
-			'2':		0x00000004,
-			'3':		0x00000008,
-		},
-		width:			160,
-		height:			43,
-		numberOfLines:	4,
-		bytesPerPixel:	1,
+	width:			COLOR_WIDTH,
+	height:			COLOR_HEIGHT,
+	numberOfLines:	COLOR_NUMBER_OF_LINES,
+	bytesPerPixel:	COLOR_BYTES_PER_PIXEL,
+});
+
+export const MONO_CONFIG = Object.freeze({
+	type:			MONO_TYPE,
+	buttons: {
+		'0':		MONO_BUTTON_0,
+		'1':		MONO_BUTTON_1,
+		'2':		MONO_BUTTON_2,
+		'3':		MONO_BUTTON_3,
 	},
-};
-
-// blue, green, red, alpha
-export const WHITE = [255, 255, 255, 255];
-// blue, green, red, alpha
-export const BLACK = [0, 0, 0, 255];
-
-export const BITMAP_LENGTH_COLOR = LOGI_LCD.color.width * LOGI_LCD.color.height * LOGI_LCD.color.bytesPerPixel;
-export const BITMAP_LENGTH_MONO = LOGI_LCD.mono.width * LOGI_LCD.mono.height * LOGI_LCD.mono.bytesPerPixel;
+	width:			MONO_WIDTH,
+	height:			MONO_HEIGHT,
+	numberOfLines:	MONO_NUMBER_OF_LINES,
+	bytesPerPixel:	MONO_BYTES_PER_PIXEL,
+});

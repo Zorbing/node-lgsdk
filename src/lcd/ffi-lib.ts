@@ -29,7 +29,21 @@ import * as ArrayType from 'ref-array';
 import * as wchar_t from 'ref-wchar';
 
 import { libPath } from '../path';
-import { LOGI_LCD, BITMAP_LENGTH_COLOR, BITMAP_LENGTH_MONO } from './constants';
+import {
+    COLOR_BITMAP_LENGTH,
+    COLOR_BUTTON_CANCEL,
+    COLOR_BUTTON_DOWN,
+    COLOR_BUTTON_LEFT,
+    COLOR_BUTTON_MENU,
+    COLOR_BUTTON_OK,
+    COLOR_BUTTON_RIGHT,
+    COLOR_BUTTON_UP,
+    MONO_BITMAP_LENGTH,
+    MONO_BUTTON_0,
+    MONO_BUTTON_1,
+    MONO_BUTTON_2,
+    MONO_BUTTON_3,
+} from './constants';
 
 
 const byte = ref.types.uchar;
@@ -80,33 +94,33 @@ export function isButtonValid(button: number)
 
 export function isButtonValidForMono(button: number)
 {
-	return button === LOGI_LCD.mono.buttons['0']
-		|| button === LOGI_LCD.mono.buttons['1']
-		|| button === LOGI_LCD.mono.buttons['2']
-		|| button === LOGI_LCD.mono.buttons['3']
+	return button === MONO_BUTTON_0
+		|| button === MONO_BUTTON_1
+		|| button === MONO_BUTTON_2
+		|| button === MONO_BUTTON_3
 	;
 }
 
 export function isButtonValidForColor(button: number)
 {
-	return button === LOGI_LCD.color.buttons['left']
-		|| button === LOGI_LCD.color.buttons['right']
-		|| button === LOGI_LCD.color.buttons['ok']
-		|| button === LOGI_LCD.color.buttons['cancel']
-		|| button === LOGI_LCD.color.buttons['up']
-		|| button === LOGI_LCD.color.buttons['down']
-		|| button === LOGI_LCD.color.buttons['menu']
+	return button === COLOR_BUTTON_LEFT
+		|| button === COLOR_BUTTON_RIGHT
+		|| button === COLOR_BUTTON_OK
+		|| button === COLOR_BUTTON_CANCEL
+		|| button === COLOR_BUTTON_UP
+		|| button === COLOR_BUTTON_DOWN
+		|| button === COLOR_BUTTON_MENU
 	;
 }
 
 export function isValidColorBitmapLength(bitmap: number[])
 {
-	return bitmap.length === BITMAP_LENGTH_COLOR;
+	return bitmap.length === COLOR_BITMAP_LENGTH;
 }
 
 export function isValidMonoBitmapLength(bitmap: number[])
 {
-	return bitmap.length === BITMAP_LENGTH_MONO;
+	return bitmap.length === MONO_BITMAP_LENGTH;
 }
 
 export function isValidBitmapValues(bitmap: number[])

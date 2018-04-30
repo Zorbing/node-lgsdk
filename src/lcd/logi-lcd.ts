@@ -24,7 +24,7 @@
  */
 
 import { getDestroyPromise } from '../error';
-import { BLACK, LcdConfig, LOGI_LCD, WHITE } from './constants';
+import { COLOR_BLACK, LcdConfig, COLOR_WHITE, MONO_CONFIG, COLOR_CONFIG, COLOR_TYPE, MONO_TYPE } from './constants';
 import { errorMsg } from './error-messages';
 import {
     init,
@@ -59,11 +59,11 @@ export class LogiLcd
 
 
 
-	public static BUTTON_LIST_COLOR = Object.keys(LOGI_LCD.color.buttons)
-		.map(buttonKey => LOGI_LCD.color.buttons[buttonKey])
+	public static BUTTON_LIST_COLOR = Object.keys(COLOR_CONFIG.buttons)
+		.map(buttonKey => COLOR_CONFIG.buttons[buttonKey])
 	;
-	public static BUTTON_LIST_MONO = Object.keys(LOGI_LCD.mono.buttons)
-		.map(buttonKey => LOGI_LCD.mono.buttons[buttonKey])
+	public static BUTTON_LIST_MONO = Object.keys(MONO_CONFIG.buttons)
+		.map(buttonKey => MONO_CONFIG.buttons[buttonKey])
 	;
 
 
@@ -145,7 +145,7 @@ export class LogiLcd
 		this._autoUpdate = true;
 	}
 
-	public init(name: string, type = LOGI_LCD.mono.type | LOGI_LCD.color.type)
+	public init(name: string, type = MONO_TYPE | COLOR_TYPE)
 	{
 		if (this.initialized)
 		{
@@ -156,24 +156,24 @@ export class LogiLcd
 		this._initialized = init(name, type);
 		if (this.initialized)
 		{
-			this.isColor = this.isConnected(LOGI_LCD.color.type);
+			this.isColor = this.isConnected(COLOR_TYPE);
 			if (this.isColor)
 			{
 				this._config = {
-					...LOGI_LCD.color,
+					...COLOR_CONFIG,
 				};
 				this.bitmapLength = this._config.width * this._config.height * 4;
-				this.black = [...BLACK];
-				this.white = [...WHITE];
+				this.black = [...COLOR_BLACK];
+				this.white = [...COLOR_WHITE];
 			}
 			else
 			{
 				this._config = {
-					...LOGI_LCD.mono,
+					...MONO_CONFIG,
 				};
 				this.bitmapLength = this._config.width * this._config.height * 1;
-				this.black = [this._color2Grayscale(BLACK[0], BLACK[1], BLACK[2], BLACK[3])];
-				this.white = [this._color2Grayscale(WHITE[0], WHITE[1], WHITE[2], WHITE[3])];
+				this.black = [this._color2Grayscale(COLOR_BLACK[0], COLOR_BLACK[1], COLOR_BLACK[2], COLOR_BLACK[3])];
+				this.white = [this._color2Grayscale(COLOR_WHITE[0], COLOR_WHITE[1], COLOR_WHITE[2], COLOR_WHITE[3])];
 			}
 
 			getDestroyPromise().then(() => this.shutdown());
@@ -205,7 +205,7 @@ export class LogiLcd
 		{
 			if (type === undefined)
 			{
-				type = this.isColor ? LOGI_LCD.color.type : LOGI_LCD.mono.type;
+				type = this.isColor ? COLOR_TYPE : MONO_TYPE;
 			}
 			return isConnected(type);
 		}

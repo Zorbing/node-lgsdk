@@ -23,7 +23,31 @@
  * SOFTWARE.
  */
 
-import { BITMAP_LENGTH_COLOR, BITMAP_LENGTH_MONO, LOGI_LCD } from './constants';
+import {
+    COLOR_BITMAP_LENGTH,
+    COLOR_BLACK,
+    COLOR_BUTTON_CANCEL,
+    COLOR_BUTTON_DOWN,
+    COLOR_BUTTON_LEFT,
+    COLOR_BUTTON_MENU,
+    COLOR_BUTTON_OK,
+    COLOR_BUTTON_RIGHT,
+    COLOR_BUTTON_UP,
+    COLOR_HEIGHT,
+    COLOR_TYPE,
+    COLOR_WHITE,
+    COLOR_WIDTH,
+    MONO_BITMAP_LENGTH,
+    MONO_BLACK,
+    MONO_BUTTON_0,
+    MONO_BUTTON_1,
+    MONO_BUTTON_2,
+    MONO_BUTTON_3,
+    MONO_HEIGHT,
+    MONO_TYPE,
+    MONO_WHITE,
+    MONO_WIDTH,
+} from './constants';
 import { errorMsg } from './error-messages';
 import {
     isButtonValid,
@@ -139,7 +163,7 @@ export function setColorBackground(colorBitmap: number[])
 {
 	if (!isValidColorBitmapLength(colorBitmap))
 	{
-		throw new Error(errorMsg.bitmapLength(BITMAP_LENGTH_COLOR));
+		throw new Error(errorMsg.bitmapLength(COLOR_BITMAP_LENGTH));
 	}
 	else if (!isValidBitmapValues(colorBitmap))
 	{
@@ -173,7 +197,7 @@ export function setMonoBackground(monoBitmap: number[])
 {
 	if (!isValidMonoBitmapLength(monoBitmap))
 	{
-		throw new Error(errorMsg.bitmapLength(BITMAP_LENGTH_MONO));
+		throw new Error(errorMsg.bitmapLength(MONO_BITMAP_LENGTH));
 	}
 	else if (!isValidBitmapValues(monoBitmap))
 	{
@@ -311,16 +335,16 @@ const generalApi = {
 
 export module mono
 {
-	export const TYPE = LOGI_LCD.mono.type;
-	export const BUTTON_0 = LOGI_LCD.mono.buttons['0'];
-	export const BUTTON_1 = LOGI_LCD.mono.buttons['1'];
-	export const BUTTON_2 = LOGI_LCD.mono.buttons['2'];
-	export const BUTTON_3 = LOGI_LCD.mono.buttons['3'];
-	export const WIDTH = LOGI_LCD.mono.width;
-	export const HEIGHT = LOGI_LCD.mono.height;
-	export const BITMAP_LENGTH = BITMAP_LENGTH_MONO;
-	export const WHITE = 0;
-	export const BLACK = 255;
+	export const TYPE = MONO_TYPE;
+	export const BUTTON_0 = MONO_BUTTON_0;
+	export const BUTTON_1 = MONO_BUTTON_1;
+	export const BUTTON_2 = MONO_BUTTON_2;
+	export const BUTTON_3 = MONO_BUTTON_3;
+	export const WIDTH = MONO_WIDTH;
+	export const HEIGHT = MONO_HEIGHT;
+	export const BITMAP_LENGTH = MONO_BITMAP_LENGTH;
+	export const WHITE = MONO_WHITE[0];
+	export const BLACK = MONO_BLACK[0];
 
 	/**
 	 * @see init
@@ -389,17 +413,19 @@ export module mono
 
 export module color
 {
-	export const TYPE = LOGI_LCD.color.type;
-	export const BUTTON_LEFT = LOGI_LCD.color.buttons['left'];
-	export const BUTTON_RIGHT = LOGI_LCD.color.buttons['right'];
-	export const BUTTON_OK = LOGI_LCD.color.buttons['ok'];
-	export const BUTTON_CANCEL = LOGI_LCD.color.buttons['cancel'];
-	export const BUTTON_UP = LOGI_LCD.color.buttons['up'];
-	export const BUTTON_DOWN = LOGI_LCD.color.buttons['down'];
-	export const BUTTON_MENU = LOGI_LCD.color.buttons['menu'];
-	export const WIDTH = LOGI_LCD.color.width;
-	export const HEIGHT = LOGI_LCD.color.height;
-	export const BITMAP_LENGTH = BITMAP_LENGTH_COLOR;
+	export const TYPE = COLOR_TYPE;
+	export const BUTTON_LEFT = COLOR_BUTTON_LEFT;
+	export const BUTTON_RIGHT = COLOR_BUTTON_RIGHT;
+	export const BUTTON_OK = COLOR_BUTTON_OK;
+	export const BUTTON_CANCEL = COLOR_BUTTON_CANCEL;
+	export const BUTTON_UP = COLOR_BUTTON_UP;
+	export const BUTTON_DOWN = COLOR_BUTTON_DOWN;
+	export const BUTTON_MENU = COLOR_BUTTON_MENU;
+	export const WIDTH = COLOR_WIDTH;
+	export const HEIGHT = COLOR_HEIGHT;
+	export const BITMAP_LENGTH = COLOR_BITMAP_LENGTH;
+	export const WHITE = COLOR_WHITE;
+	export const BLACK = COLOR_BLACK;
 
 	/**
 	 * @see init
