@@ -24,15 +24,7 @@
  * SOFTWARE.
  */
 import { getDestroyPromise } from '../error';
-import {
-    COLOR_BITMAP_LENGTH,
-    COLOR_CONFIG,
-    COLOR_TYPE,
-    LcdConfig,
-    MONO_BITMAP_LENGTH,
-    MONO_CONFIG,
-    MONO_TYPE,
-} from './constants';
+import { COLOR_CONFIG, COLOR_TYPE, LcdConfig, MONO_CONFIG, MONO_TYPE } from './constants';
 import { errorMsg } from './error-messages';
 import {
     convert2Grayscale,
@@ -92,7 +84,10 @@ export class LogiLcd
 		return this._config.black;
 	}
 
-	public bitmapLength: number = 0;
+	public get bitmapLength()
+	{
+		return this._config.bitmapLength;
+	}
 
 	public get initialized()
 	{
@@ -173,17 +168,7 @@ export class LogiLcd
 		if (this.initialized)
 		{
 			this.isColor = this.isConnected(COLOR_TYPE);
-			if (this.isColor)
-			{
-				this._config = COLOR_CONFIG;
-				this.bitmapLength = COLOR_BITMAP_LENGTH;
-			}
-			else
-			{
-				this._config = MONO_CONFIG;
-				this.bitmapLength = MONO_BITMAP_LENGTH;
-			}
-
+			this._config = this.isColor ? COLOR_CONFIG : MONO_CONFIG;
 			getDestroyPromise().then(() => this.shutdown());
 			return true;
 		}
