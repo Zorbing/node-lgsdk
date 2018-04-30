@@ -24,9 +24,18 @@
  * SOFTWARE.
  */
 import { getDestroyPromise } from '../error';
-import { COLOR_BLACK, LcdConfig, COLOR_WHITE, MONO_CONFIG, COLOR_CONFIG, COLOR_TYPE, MONO_TYPE } from './constants';
+import {
+    COLOR_BITMAP_LENGTH,
+    COLOR_CONFIG,
+    COLOR_TYPE,
+    LcdConfig,
+    MONO_BITMAP_LENGTH,
+    MONO_CONFIG,
+    MONO_TYPE,
+} from './constants';
 import { errorMsg } from './error-messages';
 import {
+    convert2Grayscale,
     init,
     isButtonPressed,
     isConnected,
@@ -78,7 +87,11 @@ export class LogiLcd
 
 
 
-	public black: number[];
+	public get black()
+	{
+		return this._config.black;
+	}
+
 	public bitmapLength: number = 0;
 
 	public get initialized()
@@ -88,16 +101,16 @@ export class LogiLcd
 
 	public isColor = false;
 	public name: string | null = null;
-	public white: number[];
+
+	public get white()
+	{
+		return this._config.white;
+	}
 
 
 
 	private constructor()
 	{
-		this._toGrayscaleAverage = this._toGrayscaleAverage.bind(this);
-		this._toGrayscaleLightness = this._toGrayscaleLightness.bind(this);
-		this._toGrayscaleLuminosity = this._toGrayscaleLuminosity.bind(this);
-
 		this.setGrayscaleConversion(COLOR_TO_GRAYSCALE_CONVERSION.luminosity);
 	}
 
@@ -162,21 +175,13 @@ export class LogiLcd
 			this.isColor = this.isConnected(COLOR_TYPE);
 			if (this.isColor)
 			{
-				this._config = {
-					...COLOR_CONFIG,
-				};
-				this.bitmapLength = this._config.width * this._config.height * 4;
-				this.black = [...COLOR_BLACK];
-				this.white = [...COLOR_WHITE];
+				this._config = COLOR_CONFIG;
+				this.bitmapLength = COLOR_BITMAP_LENGTH;
 			}
 			else
 			{
-				this._config = {
-					...MONO_CONFIG,
-				};
-				this.bitmapLength = this._config.width * this._config.height * 1;
-				this.black = [this._color2Grayscale(COLOR_BLACK[0], COLOR_BLACK[1], COLOR_BLACK[2], COLOR_BLACK[3])];
-				this.white = [this._color2Grayscale(COLOR_WHITE[0], COLOR_WHITE[1], COLOR_WHITE[2], COLOR_WHITE[3])];
+				this._config = MONO_CONFIG;
+				this.bitmapLength = MONO_BITMAP_LENGTH;
 			}
 
 			getDestroyPromise().then(() => this.shutdown());
@@ -208,7 +213,7 @@ export class LogiLcd
 		{
 			if (type === undefined)
 			{
-				type = this.isColor ? COLOR_TYPE : MONO_TYPE;
+				type = this._config.type;
 			}
 			return isConnected(type);
 		}
@@ -246,15 +251,15 @@ export class LogiLcd
 	{
 		if (conversionType === COLOR_TO_GRAYSCALE_CONVERSION.average)
 		{
-			this._color2Grayscale = this._toGrayscaleAverage;
+			this._color2Grayscale = convert2Grayscale.average;
 		}
 		else if (conversionType === COLOR_TO_GRAYSCALE_CONVERSION.lightness)
 		{
-			this._color2Grayscale = this._toGrayscaleLightness;
+			this._color2Grayscale = convert2Grayscale.lightness;
 		}
 		else if (conversionType === COLOR_TO_GRAYSCALE_CONVERSION.luminosity)
 		{
-			this._color2Grayscale = this._toGrayscaleLuminosity;
+			this._color2Grayscale = convert2Grayscale.luminosity;
 		}
 		else
 		{
@@ -337,22 +342,5 @@ export class LogiLcd
 		}
 
 		update();
-	}
-
-
-
-	private _toGrayscaleAverage(red: number, green: number, blue: number, alpha = 255)
-	{
-		return Math.round((red + green + blue) / 3);
-	}
-
-	private _toGrayscaleLightness(red: number, green: number, blue: number, alpha = 255)
-	{
-		return Math.round((Math.max(red, green, blue) + Math.min(red, green, blue)) / 2);
-	}
-
-	private _toGrayscaleLuminosity(red: number, green: number, blue: number, alpha = 255)
-	{
-		return Math.round(0.21 * red + 0.72 * green + 0.07 * blue);
 	}
 }

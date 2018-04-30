@@ -165,38 +165,46 @@ export const MONO_BYTES_PER_PIXEL = 1;
  *
  * @private
  */
-export const COLOR_WHITE = [255, 255, 255, 255];
+export const COLOR_WHITE = Object.freeze([255, 255, 255, 255]) as [255, 255, 255, 255];
 
 /**
  * The color value for white for monochrome bitmaps.
  *
+ * __Note:__
+ * The colors black and white are inverted for the G15 device.
+ *
  * @private
  */
-export const MONO_WHITE = [255];
+export const MONO_WHITE = Object.freeze([255]) as [255];
 
 /**
  * The color value of black (blue, green, red, alpha) for color bitmaps.
  *
  * @private
  */
-export const COLOR_BLACK = [0, 0, 0, 255];
+export const COLOR_BLACK = Object.freeze([0, 0, 0, 255]) as [0, 0, 0, 255];
 
 /**
  * The color value for black for monochrome bitmaps.
  *
+ * __Note:__
+ * The colors black and white are inverted for the G15 device.
+ *
  * @private
  */
-export const MONO_BLACK = [0];
+export const MONO_BLACK = Object.freeze([0]) as [0];
 
 /**
- * The length of a bitmap for a lcd device supporting the colors blue, green and red.
+ * The length of a bitmap for a LCD device supporting the colors blue, green and red.
+ * It is the product of {@link COLOR_WIDTH}, {@link COLOR_HEIGHT} and {@link COLOR_BYTES_PER_PIXEL}.
  *
  * @private
  */
 export const COLOR_BITMAP_LENGTH = COLOR_WIDTH * COLOR_HEIGHT * COLOR_BYTES_PER_PIXEL;
 
 /**
- * The length of a bitmap for a lcd device supporting only monochrome colors.
+ * The length of a bitmap for a LCD device supporting only monochrome colors.
+ * It is the product of {@link MONO_WIDTH}, {@link MONO_HEIGHT} and {@link MONO_BYTES_PER_PIXEL}.
  *
  * @private
  */
@@ -211,20 +219,32 @@ export const MONO_BITMAP_LENGTH = MONO_WIDTH * MONO_HEIGHT * MONO_BYTES_PER_PIXE
 export interface LcdConfig
 {
 	/**
-	 * A map containing the button codes of the device.
+	 * The color array for black on this device.
+	 * The array has one element for monochrome LCDs and four elements for color LCDs.
 	 */
-	buttons: Record<string, number>;
+	black: ReadonlyArray<number>;
+	/**
+	 * The length of a bitmap for the device.
+	 * It is the product of {@link width}, {@link height} and {@link bytesPerPixel}.
+	 */
+	bitmapLength: number;
+	/**
+	 * A map containing the button codes of the device.
+	 * Its values are used as the argument when calling {@link isButtonPressed}.
+	 */
+	buttons: Readonly<Record<string, number>>;
 	/**
 	 * Number of bits per pixel.
 	 * 4 bits for the color device (blue, green, red, and alpha) and 1  bit for monochrome devices.
 	 */
 	bytesPerPixel: number;
 	/**
-	 * The height of the lcd.
+	 * The height of the LCD.
 	 */
 	height: number;
 	/**
-	 * The number of text lines that can be displayed in the device's lcd.
+	 * The number of text lines that can be displayed in the device's LCD.
+	 * It is used to validate the line number given in {@link setColorText} or {@link setMonoText}.
 	 */
 	numberOfLines: number;
 	/**
@@ -233,13 +253,18 @@ export interface LcdConfig
 	 */
 	type: number;
 	/**
-	 * The width of the lcd.
+	 * The color array for white on this device.
+	 * The array has one element for monochrome LCDs and four elements for color LCDs.
+	 */
+	white: ReadonlyArray<number>;
+	/**
+	 * The width of the LCD.
 	 */
 	width: number;
 }
 
 /**
- * Configuration for devices which support colors.
+ * Configuration for devices which does support colors.
  *
  * @private
  */
@@ -247,35 +272,47 @@ export const COLOR_CONFIG = Object.freeze({
 	/**
 	 * @see {@link LcdConfig.type}
 	 */
-	type:			COLOR_TYPE,
+	type: COLOR_TYPE,
 	/**
 	 * @see {@link LcdConfig.buttons}
 	 */
-	buttons: {
-		'left':		COLOR_BUTTON_LEFT,
-		'right':	COLOR_BUTTON_RIGHT,
-		'ok':		COLOR_BUTTON_OK,
-		'cancel':	COLOR_BUTTON_CANCEL,
-		'up':		COLOR_BUTTON_UP,
-		'down':		COLOR_BUTTON_DOWN,
-		'menu':		COLOR_BUTTON_MENU,
-	},
+	buttons: Object.freeze({
+		'left':		COLOR_BUTTON_LEFT	as typeof COLOR_BUTTON_LEFT,
+		'right':	COLOR_BUTTON_RIGHT	as typeof COLOR_BUTTON_RIGHT,
+		'ok':		COLOR_BUTTON_OK		as typeof COLOR_BUTTON_OK,
+		'cancel':	COLOR_BUTTON_CANCEL	as typeof COLOR_BUTTON_CANCEL,
+		'up':		COLOR_BUTTON_UP		as typeof COLOR_BUTTON_UP,
+		'down':		COLOR_BUTTON_DOWN	as typeof COLOR_BUTTON_DOWN,
+		'menu':		COLOR_BUTTON_MENU	as typeof COLOR_BUTTON_MENU,
+	}),
 	/**
 	 * @see {@link LcdConfig.width}
 	 */
-	width:			COLOR_WIDTH,
+	width: COLOR_WIDTH,
 	/**
 	 * @see {@link LcdConfig.height}
 	 */
-	height:			COLOR_HEIGHT,
+	height: COLOR_HEIGHT,
 	/**
 	 * @see {@link LcdConfig.numberOfLines}
 	 */
-	numberOfLines:	COLOR_NUMBER_OF_LINES,
+	numberOfLines: COLOR_NUMBER_OF_LINES,
 	/**
 	 * @see {@link LcdConfig.bytesPerPixel}
 	 */
-	bytesPerPixel:	COLOR_BYTES_PER_PIXEL,
+	bytesPerPixel: COLOR_BYTES_PER_PIXEL,
+	/**
+	 * @see {@link LcdConfig.bitmapLength}
+	 */
+	bitmapLength: COLOR_BITMAP_LENGTH,
+	/**
+	 * @see {@link LcdConfig.white}
+	 */
+	white: COLOR_WHITE,
+	/**
+	 * @see {@link LcdConfig.black}
+	 */
+	black: COLOR_BLACK,
 });
 
 /**
@@ -287,30 +324,42 @@ export const MONO_CONFIG = Object.freeze({
 	/**
 	 * @see {@link LcdConfig.type}
 	 */
-	type:			MONO_TYPE,
+	type: MONO_TYPE,
 	/**
 	 * @see {@link LcdConfig.buttons}
 	 */
-	buttons: {
-		'0':		MONO_BUTTON_0,
-		'1':		MONO_BUTTON_1,
-		'2':		MONO_BUTTON_2,
-		'3':		MONO_BUTTON_3,
-	},
+	buttons: Object.freeze({
+		'0': MONO_BUTTON_0 as typeof MONO_BUTTON_0,
+		'1': MONO_BUTTON_1 as typeof MONO_BUTTON_1,
+		'2': MONO_BUTTON_2 as typeof MONO_BUTTON_2,
+		'3': MONO_BUTTON_3 as typeof MONO_BUTTON_3,
+	}),
 	/**
 	 * @see {@link LcdConfig.width}
 	 */
-	width:			MONO_WIDTH,
+	width: MONO_WIDTH,
 	/**
 	 * @see {@link LcdConfig.height}
 	 */
-	height:			MONO_HEIGHT,
+	height: MONO_HEIGHT,
 	/**
 	 * @see {@link LcdConfig.numberOfLines}
 	 */
-	numberOfLines:	MONO_NUMBER_OF_LINES,
+	numberOfLines: MONO_NUMBER_OF_LINES,
 	/**
 	 * @see {@link LcdConfig.bytesPerPixel}
 	 */
-	bytesPerPixel:	MONO_BYTES_PER_PIXEL,
+	bytesPerPixel: MONO_BYTES_PER_PIXEL,
+	/**
+	 * @see {@link LcdConfig.bitmapLength}
+	 */
+	bitmapLength: MONO_BITMAP_LENGTH,
+	/**
+	 * @see {@link LcdConfig.white}
+	 */
+	white: MONO_WHITE,
+	/**
+	 * @see {@link LcdConfig.black}
+	 */
+	black: MONO_BLACK,
 });

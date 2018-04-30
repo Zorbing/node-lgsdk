@@ -55,7 +55,7 @@ function resetText(instance: LogiLcd)
 	instance.update();
 }
 
-function fillBitmap(instance: LogiLcd, colorFn: (i: number) => number[])
+function fillBitmap(instance: LogiLcd, colorFn: (i: number) => ReadonlyArray<number>)
 {
 	let bitmap: number[] = [];
 	for (let i = 0; i < instance.bitmapLength; i++)

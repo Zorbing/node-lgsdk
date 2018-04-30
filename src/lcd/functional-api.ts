@@ -315,6 +315,36 @@ export function update()
 }
 
 /**
+ * @todo
+ */
+export namespace convert2Grayscale
+{
+	/**
+	 * @todo
+	 */
+	export function average(red: number, green: number, blue: number, alpha = 255)
+	{
+		return Math.round((red + green + blue) / 3);
+	}
+
+	/**
+	 * @todo
+	 */
+	export function lightness(red: number, green: number, blue: number, alpha = 255)
+	{
+		return Math.round((Math.max(red, green, blue) + Math.min(red, green, blue)) / 2);
+	}
+
+	/**
+	 * @todo
+	 */
+	export function luminosity(red: number, green: number, blue: number, alpha = 255)
+	{
+		return Math.round(0.21 * red + 0.72 * green + 0.07 * blue);
+	}
+}
+
+/**
  * @hidden
  */
 const generalApi = {
