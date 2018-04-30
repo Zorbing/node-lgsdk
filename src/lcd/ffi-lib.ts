@@ -83,7 +83,6 @@ interface LcdLib
 
 /**
  * The `node-ffi` instance which is linked to the lcd library file.
- * @type {@link LcdLib}
  */
 export const lcdLib: LcdLib = ffi.Library(libPath('lcd'), {
 	'LogiLcdInit': ['bool', [wchar_string /*friendlyName*/, 'int' /*lcdType*/]],
@@ -102,11 +101,21 @@ export const lcdLib: LcdLib = ffi.Library(libPath('lcd'), {
 	'LogiLcdColorSetText': ['bool', ['int' /*lineNumber*/, wchar_string /*text*/, 'int' /*red = 255*/, 'int' /*green = 255*/, 'int' /*blue = 255*/]],
 });
 
+/**
+ * Checks if the given button number is a valid button number for either color devices or monochrome devices.
+ *
+ * @param button The number to check.
+ */
 export function isButtonValid(button: number)
 {
 	return isButtonValidForColor(button) || isButtonValidForMono(button);
 }
 
+/**
+ * Checks if the given button number is a valid button number for monochrome devices.
+ *
+ * @param button The number to check.
+ */
 export function isButtonValidForMono(button: number)
 {
 	return button === MONO_BUTTON_0
@@ -116,6 +125,11 @@ export function isButtonValidForMono(button: number)
 	;
 }
 
+/**
+ * Checks if the given button number is a valid button number for color devices.
+ *
+ * @param button The number to check.
+ */
 export function isButtonValidForColor(button: number)
 {
 	return button === COLOR_BUTTON_LEFT
@@ -128,16 +142,32 @@ export function isButtonValidForColor(button: number)
 	;
 }
 
+/**
+ * Checks if the given bitmap array has the correct length for color devices.
+ *
+ * @param bitmap The bitmap array to check.
+ */
 export function isValidColorBitmapLength(bitmap: number[])
 {
 	return bitmap.length === COLOR_BITMAP_LENGTH;
 }
 
+/**
+ * Checks if the given bitmap array has the correct length for monochrome devices.
+ *
+ * @param bitmap The bitmap array to check.
+ */
 export function isValidMonoBitmapLength(bitmap: number[])
 {
 	return bitmap.length === MONO_BITMAP_LENGTH;
 }
 
+/**
+ * Checks if all entries of the given bitmap array are valid values.
+ * They are supposed to be bytes which means they allow values from 0-255.
+ *
+ * @param bitmap The bitmap array to check.
+ */
 export function isValidBitmapValues(bitmap: number[])
 {
 	return bitmap.every((byte) => (byte & 255) === byte);
