@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/g-key
  * @license
  * The MIT License (MIT)
  *
@@ -22,7 +23,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import * as ffi from 'ffi';
 import * as ref from 'ref';
 import * as Struct from 'ref-struct';
@@ -32,7 +32,11 @@ import { libPath } from '../path';
 import { MAX_GKEYS, MAX_M_STATES, MAX_MOUSE_BUTTONS } from './constants';
 
 
+/**
+ * @hidden
+ */
 const wchar_string = wchar_t.string;
+
 
 export type mouseButtonNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
 export type gkeyNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29;
@@ -88,7 +92,9 @@ export const CBContext = Struct({
 });
 export const CBContextPtr = ref.refType(CBContext);
 
-
+/**
+ * The `node-ffi` instance which is linked to the g-key library file.
+ */
 export const gkeyLib = ffi.Library(libPath('gkey'), {
 	// Enable the Gkey SDK by calling this function
 	'LogiGkeyInit': ['bool', [CBContextPtr/*logiGkeyCBContext* gkeyCBContext*/]],
@@ -108,23 +114,42 @@ export const gkeyLib = ffi.Library(libPath('gkey'), {
 	'LogiGkeyShutdown': ['void', []],
 });
 
-
+/**
+ * Checks if the given number is a valid button number for a mouse.
+ *
+ * @param buttonNumber The number to check.
+ */
 export function isButtonNumberValid(buttonNumber: mouseButtonNumber | number): buttonNumber is mouseButtonNumber
 {
 	return Number.isInteger(buttonNumber) && buttonNumber >= 0 && buttonNumber <= MAX_MOUSE_BUTTONS;
 }
 
+/**
+ * Checks if the given number is a valid button number for a g-key.
+ *
+ * @param gkeyNumber The number to check.
+ */
 export function isGkeyNumberValid(gkeyNumber: gkeyNumber | number): gkeyNumber is gkeyNumber
 {
 	return Number.isInteger(gkeyNumber) && gkeyNumber >= 0 && gkeyNumber <= MAX_GKEYS;
 }
 
+/**
+ * Checks if the given number is a valid mode number (M1, M2, ...).
+ *
+ * @param modeNumber The number to check.
+ */
 export function isModeNumberValid(modeNumber: modeNumber | number): modeNumber is modeNumber
 {
 	return Number.isInteger(modeNumber) && modeNumber >= 1 && modeNumber <= MAX_M_STATES;
 }
 
-export function createInitCallback(callback: Function)
+/**
+ * Creates an ffi callback for initializing the g-key api.
+ *
+ * @param callback The callback function.
+ */
+export function createInitCallback(callback: logiGkeyCB)
 {
 	return ffi.Callback(
 		ref.types.void

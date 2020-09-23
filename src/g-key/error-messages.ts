@@ -1,4 +1,5 @@
 /**
+ * @module node-lgsdk/g-key
  * @license
  * The MIT License (MIT)
  *
@@ -23,6 +24,9 @@
  * SOFTWARE.
  */
 
+/**
+ * All error messages which are thrown by the g-key wrapper apis.
+ */
 export const errorMsg = {
 	alreadyInitialized: 'The G-Key API is already initialized.',
 	buttonNumberInvalid: (max) => `Mouse button number out of range (allowed values: 0-${max})`,

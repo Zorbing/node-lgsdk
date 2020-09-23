@@ -1,5 +1,9 @@
 /**
- * @todo Describe the node-lgsdk/lcd api here!
+ * The `node-lgsdk/lcd` module provides two API wrapper for the controling a Logitech device with a LCD display:
+ * 1. The functional API which is available through the `lcd` namespace.
+ * 2. The context aware API which is available through the class `LogiLcd`.
+ *
+ * @todo Add some example for both here.
  *
  * @module node-lgsdk/lcd
  * @license
