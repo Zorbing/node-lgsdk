@@ -31,7 +31,7 @@
   ],
   "dependencies": {
     "bmp-js": "0.0.3",
-    "ffi": "2.2.0",
+    "ffi": "git+https://github.com/node-ffi/node-ffi.git",
     "ref": "1.3.5",
     "ref-array": "1.2.0",
     "ref-wchar": "1.0.2"
@@ -42,9 +42,9 @@
     "@types/ref": "0.0.27",
     "@types/ref-array": "0.0.27",
     "@types/ref-struct": "0.0.27",
-    "conventional-changelog-cli": "1.3.22",
+    "conventional-changelog-cli": "2.1.0",
     "rimraf": "2.6.2",
-    "typedoc": "0.11.1",
+    "typedoc": "0.19.2",
     "typescript": "2.8.1"
   }
 }

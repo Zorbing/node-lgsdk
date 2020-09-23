@@ -439,13 +439,13 @@ es6-symbol@^3.0.2, es6-symbol@^3.1.1, es6-symbol@~3.1.1:
     d "1"
     es5-ext "~0.10.14"
 
-ffi@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/ffi/-/ffi-2.2.0.tgz#bf18b04666a29f71227ed56895d5430af47042fa"
+"ffi@git+https://github.com/node-ffi/node-ffi.git":
+  version "2.3.0"
+  resolved "git+https://github.com/node-ffi/node-ffi.git#d9b843c03b35b99f205d001ebcbedd1b6c63b3d0"
   dependencies:
     bindings "~1.2.0"
     debug "2"
-    nan "2"
+    nan "^2.12.0"
     ref "1"
     ref-struct "1"
 
@@ -791,6 +791,11 @@ ms@2.0.0:
 nan@2, nan@^2.3.5:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
+
+nan@^2.12.0:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.1.tgz#d7be34dfa3105b91494c3147089315eff8874b01"
+  integrity sha512-isWHgVjnFjh2x2yuJ/tj3JbwoHu3UC2dX5G/88Cm24yB6YopVgxvBObDY7n5xW6ExmFhJpSEQqFPvq9zaXc8Jw==
 
 next-tick@1:
   version "1.0.0"
