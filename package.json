@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "compile": "npm run clean && npm run tsc",
-    "doc": "typedoc --module commonjs --name node-lgsdk --out ../node-lgsdk-doc/ --target ES6 --theme minimal ./src/",
+    "doc": "typedoc --module commonjs --name node-lgsdk --out ./docs/ --target ES6 --theme minimal ./src/",
     "example": "npm run compile && node dist/example.js",
     "test": "npm run compile && npm run test:samples",
     "test:samples": "node dist/tests/test.js",
