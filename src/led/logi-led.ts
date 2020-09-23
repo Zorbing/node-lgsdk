@@ -83,6 +83,73 @@ export class LogiLedConfig
 }
 
 
+export class LogiLedSingleKey
+{
+	constructor(public keyName: KeyName)
+	{
+	}
+
+
+
+	public flash(percentage: Color, msDuration: number, msInterval: number)
+	{
+		return flashSingleKey(
+			this.keyName,
+			percentage.red,
+			percentage.green,
+			percentage.blue,
+			msDuration,
+			msInterval
+		);
+	}
+
+	public pulse(
+		startPercentage: Color,
+		finishPercentage: Color,
+		msDuration: number,
+		isInfinite: boolean
+	)
+	{
+		return pulseSingleKey(
+			this.keyName,
+			startPercentage.red,
+			startPercentage.green,
+			startPercentage.blue,
+			finishPercentage.red,
+			finishPercentage.green,
+			finishPercentage.blue,
+			msDuration,
+			isInfinite
+		);
+	}
+
+	public restoreLighting()
+	{
+		return restoreLightingForKey(this.keyName);
+	}
+
+	public saveLighting()
+	{
+		return saveLightingForKey(this.keyName);
+	}
+
+	public setLighting(percentage: Color)
+	{
+		return setLightingForKeyWithKeyName(
+			this.keyName,
+			percentage.red,
+			percentage.green,
+			percentage.blue
+		);
+	}
+
+	public stopEffects()
+	{
+		return stopEffectsOnKey(this.keyName);
+	}
+}
+
+
 export class LogiLed extends LogiApi
 {
 	public config: LogiLedConfig;
@@ -120,16 +187,9 @@ export class LogiLed extends LogiApi
 		);
 	}
 
-	public flashSingleKey(keyName: KeyName, percentage: Color, msDuration: number, msInterval: number)
+	public forKey(keyName: KeyName)
 	{
-		return flashSingleKey(
-			keyName,
-			percentage.red,
-			percentage.green,
-			percentage.blue,
-			msDuration,
-			msInterval
-		);
+		return new LogiLedSingleKey(keyName);
 	}
 
 	public getSdkVersion()
@@ -160,45 +220,14 @@ export class LogiLed extends LogiApi
 		);
 	}
 
-	public pulseSingleKey(
-		keyName: KeyName,
-		startPercentage: Color,
-		finishPercentage: Color,
-		msDuration: number,
-		isInfinite: boolean
-	)
-	{
-		return pulseSingleKey(
-			keyName,
-			startPercentage.red,
-			startPercentage.green,
-			startPercentage.blue,
-			finishPercentage.red,
-			finishPercentage.green,
-			finishPercentage.blue,
-			msDuration,
-			isInfinite
-		);
-	}
-
 	public restoreLighting()
 	{
 		return restoreLighting();
 	}
 
-	public restoreLightingForKey(keyName: KeyName)
-	{
-		return restoreLightingForKey(keyName);
-	}
-
-	public saveCurrentLighting()
+	public saveLighting()
 	{
 		return saveCurrentLighting();
-	}
-
-	public saveLightingForKey(keyName: KeyName)
-	{
-		return saveLightingForKey(keyName);
 	}
 
 	public setLighting(percentage: Color)
@@ -206,20 +235,10 @@ export class LogiLed extends LogiApi
 		return setLighting(percentage.red, percentage.green, percentage.blue);
 	}
 
-	public setLightingForKeyWithHidCode(keyCode: number,percentage: Color)
+	public setLightingForKeyWithHidCode(keyCode: number, percentage: Color)
 	{
 		return setLightingForKeyWithHidCode(
 			keyCode,
-			percentage.red,
-			percentage.green,
-			percentage.blue
-		);
-	}
-
-	public setLightingForKeyWithKeyName(keyName: KeyName, percentage: Color)
-	{
-		return setLightingForKeyWithKeyName(
-			keyName,
 			percentage.red,
 			percentage.green,
 			percentage.blue
@@ -272,10 +291,5 @@ export class LogiLed extends LogiApi
 	public stopEffects()
 	{
 		return stopEffects();
-	}
-
-	public stopEffectsOnKey(keyName: KeyName)
-	{
-		return stopEffectsOnKey(keyName);
 	}
 }

@@ -741,6 +741,9 @@ export function restoreLightingForKey(keyName: KeyNameEnum)
  *
  * Parameters:
  * - `keyList`: A preallocated array of `KeyName(s)` to be excluded when calling `setLightingFromBitmap()`
+ *
+ * Return value:
+ * ?
  */
 export function excludeKeysFromBitmap(keyList: KeyNameEnum[])
 {
