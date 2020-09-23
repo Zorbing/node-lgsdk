@@ -5,13 +5,16 @@ A node.js-wrapper for the [Logitech Gaming SDKs](http://gaming.logitech.com/en-u
 It provides a wrapper for the Logitech Gamepanel SDK in node.js and is written in TypeScript.
 The [Logitech Gaming Software (LGS)](http://support.logitech.com/en_us/software/lgs) is used and has to be installed.
 
+For installation instructions, go to [INSTALLATION.md](INSTALLATION.md).
+
 
 ## Roadmap
 
-* Support Logitech LED Illumination SDK
-* Support Logitech Arx Control SDK
-* Support Logitech Steering Wheel SDK
+* Support Logitech LED Illumination SDK (currently no device available)
+* Support Logitech Arx Control SDK (currently no device available)
+* Support Logitech Steering Wheel SDK (currently no device available)
 * Documentation
+
 
 ## Example
 
