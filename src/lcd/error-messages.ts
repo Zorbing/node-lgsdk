@@ -1,5 +1,4 @@
 export const errorMsg = {
-	alreadyInitialized: 'The LCD-connection is already established.',
 	bitmapLength: (num) => `The bitmap must contain ${num} elements`,
 	bitmapRange: 'The bitmap must contain only bytes. Allowed values are: 0-255',
 	buttonId: 'The given button does not exist.',

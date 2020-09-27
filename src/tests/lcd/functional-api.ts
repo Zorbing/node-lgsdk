@@ -6,10 +6,10 @@ let isRunning = false;
 function init()
 {
 	const success = lcd.mono.init('Test');
-	console.log('success:', success);
+	console.log('init success:', success);
 
-	const connected = lcd.mono.isConnected();
-	console.log('connected:', connected);
+	const isConnected = lcd.mono.isConnected();
+	console.log('is connected:', isConnected);
 
 	if (!isRunning)
 	{

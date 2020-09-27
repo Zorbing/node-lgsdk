@@ -1,6 +1,6 @@
 import { getDestroyPromise } from '../error';
+import { LogiApi } from '../logi-api';
 import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
-import { errorMsg } from './error-messages';
 import { GkeyCodeData } from './ffi-lib';
 import {
     getKeyboardGkeyString,
@@ -21,12 +21,8 @@ interface ListenerFunction
 }
 
 
-export class LogiGkey
+export class LogiGkey extends LogiApi
 {
-	private static _instance: LogiGkey | null = null;
-
-
-
 	public static GKEY_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_GKEYS)).map((_, i) => i + 1);
 	public static MOUSE_BUTTON_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_MOUSE_BUTTONS)).map((_, i) => i + 1);
 	public static M_STATE_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_M_STATES)).map((_, i) => i + 1);
@@ -34,30 +30,19 @@ export class LogiGkey
 
 
 	private _eventListener: Record<string, ListenerFunction[]> = {};
-	private _initialized = false;
 
 
 
-	public get initialized()
+	protected constructor()
 	{
-		return this._initialized;
-	}
-
-
-
-	private constructor()
-	{
+		super();
 	}
 
 
 
 	public static getInstance()
 	{
-		if (!this._instance)
-		{
-			this._instance = new LogiGkey();
-		}
-		return this._instance;
+		return super.getInstance(LogiGkey) as LogiGkey;
 	}
 
 
@@ -83,10 +68,7 @@ export class LogiGkey
 
 	public init()
 	{
-		if (this.initialized)
-		{
-			throw new Error(errorMsg.alreadyInitialized);
-		}
+		super._init('G-key');
 
 		const that = this;
 		// always init with a callback
@@ -147,10 +129,9 @@ export class LogiGkey
 
 	public shutdown()
 	{
-		if (this.initialized)
+		if (super._shutdown())
 		{
 			shutdown();
-			this._initialized = false;
 			return true;
 		}
 		else

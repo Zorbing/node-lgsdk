@@ -37,30 +37,33 @@ function checkModeNumber(modeNumber: number)
 
 
 let callbackList: any[] = [];
-export function init(callback?: logiGkeyCB | logiGkeyCBContext): boolean
+export function init(callback?: logiGkeyCB | logiGkeyCBContext)
 {
 	if (!callback)
 	{
-		return gkeyLib.LogiGkeyInitWithoutCallback();
+		return gkeyLib.LogiGkeyInitWithoutCallback() as boolean;
 	}
-	if (typeof callback === 'function')
+	else if (typeof callback === 'function')
 	{
 		const ffiCallback = createInitCallback(callback);
 		callbackList.push(ffiCallback);
-		return gkeyLib.LogiGkeyInitWithoutContext(ffiCallback);
+		return gkeyLib.LogiGkeyInitWithoutContext(ffiCallback) as boolean;
 	}
-	if (callback.hasOwnProperty('gkeyCallBack') && callback.hasOwnProperty('gkeyContext'))
+	else if (callback.hasOwnProperty('gkeyCallBack') && callback.hasOwnProperty('gkeyContext'))
 	{
-		return init(callback.gkeyCallBack.bind(callback.gkeyContext));
+		return init(callback.gkeyCallBack.bind(callback.gkeyContext)) as any;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
-export function isMouseButtonPressed(buttonNumber: number): boolean
+export function isMouseButtonPressed(buttonNumber: number)
 {
 	checkButtonNumber(buttonNumber);
 
-	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber);
+	return gkeyLib.LogiGkeyIsMouseButtonPressed(buttonNumber) as boolean;
 }
 
 export function getMouseButtonString(buttonNumber: number): string
@@ -70,25 +73,25 @@ export function getMouseButtonString(buttonNumber: number): string
 	return gkeyLib.LogiGkeyGetMouseButtonString(buttonNumber);
 }
 
-export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number): boolean
+export function isKeyboardGkeyPressed(gkeyNumber: number, modeNumber: number)
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
 
-	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber);
+	return gkeyLib.LogiGkeyIsKeyboardGkeyPressed(gkeyNumber, modeNumber) as boolean;
 }
 
-export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number): string
+export function getKeyboardGkeyString(gkeyNumber: number, modeNumber: number)
 {
 	checkGkeyNumber(gkeyNumber);
 	checkModeNumber(modeNumber);
 
-	return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber);
+	return gkeyLib.LogiGkeyGetKeyboardGkeyString(gkeyNumber, modeNumber) as string;
 }
 
-export function shutdown(): void
+export function shutdown()
 {
 	// free all callbacks to be garbage collected
 	callbackList = [];
-	return gkeyLib.LogiGkeyShutdown();
+	return gkeyLib.LogiGkeyShutdown() as void;
 }

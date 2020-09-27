@@ -1,4 +1,5 @@
 import { getDestroyPromise } from '../error';
+import { LogiApi } from '../logi-api';
 import { BLACK, LcdConfig, LOGI_LCD, WHITE } from './constants';
 import { errorMsg } from './error-messages';
 import {
@@ -28,12 +29,8 @@ export enum COLOR_TO_GRAYSCALE_CONVERSION
 }
 
 
-export class LogiLcd
+export class LogiLcd extends LogiApi
 {
-	private static _instance: LogiLcd | null = null;
-
-
-
 	public static BUTTON_LIST_COLOR = Object.keys(LOGI_LCD.color.buttons)
 		.map(buttonKey => LOGI_LCD.color.buttons[buttonKey])
 	;
@@ -46,26 +43,21 @@ export class LogiLcd
 	private _autoUpdate = false;
 	private _config: LcdConfig;
 	private _color2Grayscale: Color2GrayscaleConversionFunction;
-	private _initialized = false;
 
 
 
 	public black: number[];
 	public bitmapLength: number = 0;
-
-	public get initialized()
-	{
-		return this._initialized;
-	}
-
 	public isColor = false;
 	public name: string | null = null;
 	public white: number[];
 
 
 
-	private constructor()
+	protected constructor()
 	{
+		super();
+
 		this._toGrayscaleAverage = this._toGrayscaleAverage.bind(this);
 		this._toGrayscaleLightness = this._toGrayscaleLightness.bind(this);
 		this._toGrayscaleLuminosity = this._toGrayscaleLuminosity.bind(this);
@@ -77,11 +69,7 @@ export class LogiLcd
 
 	public static getInstance()
 	{
-		if (!this._instance)
-		{
-			this._instance = new LogiLcd();
-		}
-		return this._instance;
+		return super.getInstance(LogiLcd) as LogiLcd;
 	}
 
 
@@ -122,10 +110,7 @@ export class LogiLcd
 
 	public init(name: string, type = LOGI_LCD.mono.type | LOGI_LCD.color.type)
 	{
-		if (this.initialized)
-		{
-			throw new Error(errorMsg.alreadyInitialized);
-		}
+		super._init('LCD');
 
 		this.name = name;
 		this._initialized = init(name, type);
@@ -289,10 +274,9 @@ export class LogiLcd
 
 	public shutdown()
 	{
-		if (this.initialized)
+		if (super._shutdown())
 		{
 			shutdown();
-			this._initialized = false;
 			return true;
 		}
 		else

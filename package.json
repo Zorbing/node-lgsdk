@@ -5,7 +5,8 @@
   "main": "./dist/index.js",
   "config": {
     "gkey": "8.57.148",
-    "lcd": "8.57.148"
+    "lcd": "8.57.148",
+    "led": "8.87"
   },
   "scripts": {
     "clean": "rimraf ./dist",
