@@ -1,5 +1,30 @@
+/**
+ * @license
+ * The MIT License (MIT)
+ *
+ * Copyright 2018 Martin Boekhoff
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import { getDestroyPromise } from '../error';
-import { LOGITECH_MAX_GKEYS, LOGITECH_MAX_M_STATES, LOGITECH_MAX_MOUSE_BUTTONS } from './constants';
+import { MAX_GKEYS, MAX_M_STATES, MAX_MOUSE_BUTTONS } from './constants';
 import { errorMsg } from './error-messages';
 import { GkeyCodeData } from './ffi-lib';
 import {
@@ -27,9 +52,9 @@ export class LogiGkey
 
 
 
-	public static GKEY_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_GKEYS)).map((_, i) => i + 1);
-	public static MOUSE_BUTTON_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_MOUSE_BUTTONS)).map((_, i) => i + 1);
-	public static M_STATE_LIST: number[] = Array.apply(null, Array(LOGITECH_MAX_M_STATES)).map((_, i) => i + 1);
+	public static GKEY_LIST: number[] = Array.apply(null, Array(MAX_GKEYS)).map((_, i) => i + 1);
+	public static MOUSE_BUTTON_LIST: number[] = Array.apply(null, Array(MAX_MOUSE_BUTTONS)).map((_, i) => i + 1);
+	public static M_STATE_LIST: number[] = Array.apply(null, Array(MAX_M_STATES)).map((_, i) => i + 1);
 
 
 
